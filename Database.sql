@@ -1,4 +1,10 @@
-CREATE DATABASE IF NOT EXISTS `soundsphere` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'soundsphere')
+BEGIN
+    CREATE DATABASE soundsphere
+    COLLATE SQL_Latin1_General_CP1_CI_AS;
+END;
+GO
+USE soundsphere;
 USE `soundsphere`;
 
 CREATE TABLE [users] (
@@ -22,14 +28,32 @@ CREATE TABLE [songs] (
     [genre_id] int NOT NULL,
     [description] nvarchar(255) NOT NULL,
     [time_play] int NOT NULL DEFAULT 0,
-    [song_data] varbinary(max) NOT NULL,
-    [release_day] date NOT NULL CHECK (release_day < GETDATE()),
-    [lyric] nvarchar(255) NOT NULL,
+    [song_data] TEXT NOT NULL,
+    [image] TEXT NOT NULL, --Save url to file in firebase
+    [lyric] varchar(MAX) NOT NULL, --Save url to file in firebase
     [rating] float NOT NULL DEFAULT 0,
     CHECK (rating >= 0 AND rating <= 10),
     [status] nvarchar(10) CHECK (status IN ('unavailable', 'available', 'deleted')) DEFAULT ('available'),
     FOREIGN KEY ([id_artist]) REFERENCES [users]([id]),
     PRIMARY KEY ([id])
+);
+
+CREATE TABLE [song_detail] (
+    [song_id] int NOT NULL,
+    [written_by] nvarchar(255) NOT NULL,
+    [produced_by] nvarchar(255) NOT NULL,
+    [date_release] date NOT NULL CHECK (date_release < GETDATE()),
+    CONSTRAINT [PK_song_detail] PRIMARY KEY ([song_id]),
+    CONSTRAINT [FK_song_detail_songs_song_id] FOREIGN KEY ([song_id]) REFERENCES [songs]([id])
+);
+
+CREATE TABLE [rating] (
+    [user_id] int NOT NULL,
+    [song_id] int NOT NULL,
+    [rating] float NOT NULL CHECK (rating >= 0 AND rating <= 10),
+    CONSTRAINT [PK_rating] PRIMARY KEY ([user_id], [song_id]),
+    CONSTRAINT [FK_rating_users_user_id] FOREIGN KEY ([user_id]) REFERENCES [users]([id]),
+    CONSTRAINT [FK_rating_songs_song_id] FOREIGN KEY ([song_id]) REFERENCES [songs]([id])
 );
 
 CREATE TABLE [genre] (
@@ -84,3 +108,16 @@ BEGIN
     FROM inserted;
 END;
 
+CREATE TRIGGER [after_insert_rating]
+ON [rating]
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE songs
+    SET rating = (
+        SELECT AVG(rating) 
+        FROM rating 
+        WHERE song_id = inserted.song_id)
+    WHERE id = inserted.id;
+END;
