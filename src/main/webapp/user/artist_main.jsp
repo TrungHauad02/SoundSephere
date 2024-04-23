@@ -11,7 +11,7 @@
     <jsp:include page="../link_css.jsp"/>
 </head>
 <body>
-
+    <jsp:include page="../header.jsp"/>
 
 
     <jsp:include page="../link_js.jsp"/>
