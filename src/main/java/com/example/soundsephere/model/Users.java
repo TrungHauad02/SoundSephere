@@ -5,7 +5,7 @@ import com.example.soundsephere.enumModel.EnumRole;
 import com.example.soundsephere.enumModel.EnumSex;
 import com.example.soundsephere.enumModel.EnumUserStatus;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Users {
     private int id;
