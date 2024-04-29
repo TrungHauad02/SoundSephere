@@ -32,7 +32,25 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #1e52c8;
         }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen nhẹ */
+            z-index: 999; /* Chỉ số z để popup hiển thị trên cùng */
+            justify-content: center;
+            align-items: center;
+        }
 
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -247,14 +265,14 @@
 
     <!-- Thêm div để hiển thị danh sách playlist -->
     <!-- Popup cho danh sách playlist -->
-    <div id="playlistList" class="popup" style="display: none;">
+    <div id="popupAddSongToAlbum" class="popup" style="display: none;">
         <div class="popup-content" style="min-width: 500px; max-height:90vh; overflow-y: auto; " >
             <span class="close" onclick="closePopup()">&times;</span>
-            <h5 class="mb-4">Add Song to Playlist</h5>
+            <h5 class="mb-4">Add Song to Albums</h5>
             <ul id="playlistItems" class="list-group">
                 <!-- Các playlist sẽ được thêm vào đây bằng JavaScript -->
             </ul>
-            <button type="button" class="btn btn-secondary mt-2" onclick="closePopup()">Cancel</button>
+            <button type="button" class="btn btn-secondary mt-2" onclick="closeAddSongToAlbumPopup()">Cancel</button>
         </div>
     </div>
 
@@ -320,7 +338,7 @@
         openPopupButton.addEventListener('click', function() {
             albumPopup.style.display = 'flex';
         });
-        function closePopup() {
+        function closeAddSongToAlbumPopup() {
             albumPopup.style.display = 'none';
         }
 
@@ -328,7 +346,6 @@
             const albumName = document.getElementById('albumName').value;
             const description = document.getElementById('description').value;
 
-            // Gọi JSP hoặc các hàm xử lý tiếp theo ở đây (ví dụ: gửi dữ liệu điều khiển tới server)
             console.log('Album Name:', albumName);
             console.log('Description:', description);
             closePopup();
