@@ -2,7 +2,7 @@ package com.example.soundsephere.dao;
 
 import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.enumModel.EnumTypePlaylist;
-import com.example.soundsephere.model.Playlists;
+import com.example.soundsephere.model.PlaylistSongs;
 import com.example.soundsephere.utils.JDBCUtil;
 
 import java.sql.Connection;
@@ -12,19 +12,20 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
-    private static final String INSERT_PLAYLIST_QUERY =
-            "INSERT INTO playlists (name, user_id, type, status) " +
-                    "VALUES (?, ?, ?, ?)";
-    public boolean insert(Playlists entity) {
+public class PlaylistSongsDAO extends SoundSysDAO<PlaylistSongs, Integer>{
+    private static final String INSERT_SONG_TO_PLAYLIST_QUERY = "INSERT INTO playlist_songs (playlist_id, song_id)" +
+            "VALUE (?,?)";
+    public static final String SELECT_ALL_SONG_IN_PLAYLIST_QUERY =
+            "SELECT ps.playlist_id, ps.song_id " +
+                    "FROM playlist_songs ps" +
+                    "WHERE playlist_id = ?";
+    public boolean insert(PlaylistSongs entity) {
         Connection conn = JDBCUtil.getConnection();
         boolean result = true;
         if (conn != null) {
-            try (PreparedStatement ps = conn.prepareStatement(INSERT_PLAYLIST_QUERY)) {
-                ps.setString(1, entity.getName());
-                ps.setInt(2, entity.getId());
-                ps.setString(3,entity.getType().name().toLowerCase());
-                ps.setString(4,entity.getStatus().name().toLowerCase());
+            try (PreparedStatement ps = conn.prepareStatement(INSERT_SONG_TO_PLAYLIST_QUERY)) {
+                ps.setInt(1, entity.getPlaylist_id());
+                ps.setInt(2, entity.getSong_id());
 
                 int rowsAffected = ps.executeUpdate();
                 result = rowsAffected > 0;
@@ -41,7 +42,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         return result;
     }
 
-    public boolean update(Playlists entity) {
+    public boolean update(PlaylistSongs entity) {
         return false;
     }
 
@@ -49,16 +50,16 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         return false;
     }
 
-    public Playlists selectById(Integer id) {
+    public PlaylistSongs selectById(Integer id) {
         return null;
     }
 
-    public List<Playlists> selectAll() {
+    public List<PlaylistSongs> selectAll() {
         return null;
     }
 
-    protected List<Playlists> selectBySql(String sql, Object... args) {
-        List<Playlists> lstPlaylist = new LinkedList<>();
+    protected List<PlaylistSongs> selectBySql(String sql, Object... args) {
+        List<PlaylistSongs> lstPlaylistSongs = new LinkedList<>();
         Connection conn = JDBCUtil.getConnection();
         if(conn != null){
             try(PreparedStatement ps = conn.prepareStatement(sql)){
@@ -67,13 +68,10 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                 }
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()){
-                    Playlists playlist = new Playlists();
-                    playlist.setId(rs.getInt("id"));
-                    playlist.setName(rs.getString("name"));
-                    playlist.setUser_id(rs.getInt("user_id"));
-                    playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
-                    playlist.setStatus(EnumStatus.valueOf(rs.getString("status").toUpperCase()));
-                    lstPlaylist.add(playlist);
+                    PlaylistSongs playlistSongs = new PlaylistSongs();
+                    playlistSongs.setSong_id(rs.getInt("song_id"));
+                    playlistSongs.setPlaylist_id(rs.getInt("playlist_id"));
+                    lstPlaylistSongs.add(playlistSongs);
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -85,6 +83,6 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                 }
             }
         }
-        return lstPlaylist;
+        return lstPlaylistSongs;
     }
 }
