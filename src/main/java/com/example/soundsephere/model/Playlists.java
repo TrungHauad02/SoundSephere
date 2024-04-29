@@ -11,7 +11,6 @@ public class Playlists {
     private int user_id;
     private EnumTypePlaylist type = EnumTypePlaylist.PLAYLIST;
     private EnumStatus status = EnumStatus.AVAILABLE;
-    private List<Songs> lstSong;
     public int getId() {
         return id;
     }
@@ -52,11 +51,4 @@ public class Playlists {
         this.status = status;
     }
 
-    public List<Songs> getLstSong() {
-        return lstSong;
-    }
-
-    public void setLstSong(List<Songs> lstSong) {
-        this.lstSong = lstSong;
-    }
 }
