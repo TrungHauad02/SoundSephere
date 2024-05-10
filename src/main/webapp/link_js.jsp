@@ -15,5 +15,8 @@
     <script src="./assets/js/owl.carousel.min.js"></script>
     <script src="./assets/js/mixitup.min.js"></script>
     <script src="./assets/js/main.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </body>
 </html>
