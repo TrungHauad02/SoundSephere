@@ -12,7 +12,7 @@
 </head>
 <body>
     <header class="header-section clearfix">
-        <a href="./index.jsp" class="site-logo">
+        <a href="index_1.jsp" class="site-logo">
             <img src="./assets/img/logo.png" alt="">
         </a>
         <div class="header-right">
@@ -21,7 +21,7 @@
             </div>
         </div>
         <ul class="main-menu">
-            <li><a href="index.jsp">Home</a></li>
+            <li><a href="index_1.jsp">Home</a></li>
             <li><a href="#">Artist</a></li>
             <li><a href="#">Search</a></li>
             <li><a href="#">Playlist</a></li>

@@ -1,0 +1,74 @@
+/* Set font size for sidebar brand text */
+.sidebar-brand .sidebar-brand-text {
+    font-size: 0.8rem;
+}
+
+/* Set text color for greenText */
+.sidebar-brand-text.greenText {
+    color: #78DBAD;
+}
+
+/* Set size for sidebar brand icon */
+.sidebar-brand-icon {
+    font-size: 1rem;
+}
+
+/* Set background color for nav items */
+.nav-item,
+.nav-link.collapsed {
+    background-color: #526A76;
+}
+
+/* Set background color for sidebar brand */
+.sidebar-brand.d-flex {
+    background-color: #526A76;
+}
+
+/* Set background color and text color for sidebar divider */
+.hr.sidebar-divider {
+    background-color: #526A76;
+    color: #526A76;
+}
+
+/* Set background color for sidebar heading */
+.sidebar-heading {
+    background-color: #526A76;
+}
+
+/* Set background color and text color for text center */
+.text-center.d-none {
+    background-color: #526A76;
+    color: #526A76;
+}
+
+/* Set background color for navbar and sidebar */
+.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion,
+.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark {
+    background-color: #526A76;
+}
+
+/* Set background color for accordion content */
+.collapse-inner {
+    background-color: #526A76;
+}
+
+/* Set text color for accordion content items */
+.collapse-inner a {
+    color: #ffffff; /* or any other desired color */
+}
+.hr.sidebar-divider.d-none.d-md-block{
+    background-color: #526A76 !important;
+}
+
+.bg-gradient-custome {
+    background-color: #526A76;
+}
+.table-header-color {
+    background-color: #78DBAD;
+    color : #526A76;
+
+}
+#dataTable th {
+    text-align: center;
+    vertical-align: middle;
+}
