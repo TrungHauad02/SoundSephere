@@ -146,3 +146,17 @@ INSERT INTO [user_listened] ([user_id], [song_id], [count]) VALUES
 (6, 1, 2)
 INSERT INTO [user_listened] ([user_id], [song_id], [count]) VALUES
 (7, 1, 5)
+
+INSERT INTO [playlists] ([name], [user_id], [type], [status]) VALUES
+('FIRST ALBUM', 6, 'album', 'available')
+
+INSERT INTO [playlist_songs] ([playlist_id], [song_id]) VALUES
+(1, 1)
+
+SELECT COUNT(*) AS playlist_count
+                    FROM playlists
+                    WHERE user_id = 6 AND type = 'album';
+
+UPDATE [songs]
+SET song_data = 'songdata/BENNETT_Lullaby.mp3', image = 'image/Lullaby_bennett.png', lyric = 'lyric/Lullaby_bennett_lyric.txt'
+WHERE id = 1;

@@ -16,6 +16,17 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     private static final String INSERT_PLAYLIST_QUERY =
             "INSERT INTO playlists (name, user_id, type, status) " +
                     "VALUES (?, ?, ?, ?)";
+
+    private static final String ALBUM_COUNT_BY_ID_ARTIST_QUERY =
+            "SELECT COUNT(*) AS playlist_count\n" +
+                    "FROM playlists\n" +
+                    "WHERE user_id = ? AND type = 'album';\n";
+
+    public static final String SELECT_ALBUM_BY_ID_ARTIST_QUERY =
+            "SELECT id, name, user_id, type, status\n" +
+                    "FROM playlists\n" +
+                    "WHERE user_id = ? AND type = 'album';\n";
+
     public boolean insert(Playlists entity) {
         Connection conn = JDBCUtil.getConnection();
         boolean result = true;
@@ -57,7 +68,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         return null;
     }
 
-    protected List<Playlists> selectBySql(String sql, Object... args) {
+    public List<Playlists> selectBySql(String sql, Object... args) {
         List<Playlists> lstPlaylist = new LinkedList<>();
         Connection conn = JDBCUtil.getConnection();
         if(conn != null){
@@ -86,5 +97,22 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
             }
         }
         return lstPlaylist;
+    }
+
+    public int playlistCount(int idArtist){
+        int count = 0;
+        Connection conn = JDBCUtil.getConnection();
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(ALBUM_COUNT_BY_ID_ARTIST_QUERY)) {
+                ps.setInt(1, idArtist);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt("playlist_count");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return count;
     }
 }

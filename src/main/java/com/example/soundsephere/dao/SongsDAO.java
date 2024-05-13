@@ -1,5 +1,6 @@
 package com.example.soundsephere.dao;
 
+import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.utils.JDBCUtil;
 
@@ -7,12 +8,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SongsDAO extends SoundSysDAO<Songs, Integer> {
     private static final String INSERT_SONG_QUERY =
             "INSERT INTO [songs] ([title], [id_artist], [genre_id], [description], [time_play], [song_data], [image], [lyric], [rating], [status]) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SONGS_COUNT_BY_ID_ARTIST_QUERY =
+        "SELECT COUNT(*) AS song_count\n" +
+                "FROM songs\n" +
+                "WHERE id_artist = ?;\n";
+
+    public static final String SELECT_SONGS_BY_ID_ARTIST_QUERY =
+            "SELECT id, title,id_artist, genre_id, description, time_play, song_data, image, lyric, rating, status\n" +
+                    "FROM songs\n" +
+                    "WHERE id_artist = ?;\n";
 
     public boolean insert(Songs entity) {
         Connection conn = JDBCUtil.getConnection();
@@ -61,7 +72,58 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
         return null;
     }
 
-    protected List<Songs> selectBySql(String sql, Object... args) {
-        return null;
+    public List<Songs> selectBySql(String sql, Object... args) {
+        Connection conn = JDBCUtil.getConnection();
+        List<Songs> lstSong = new LinkedList<>();
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                for (int i = 0; i < args.length; i++) {
+                    ps.setObject(i + 1, args[i]);
+                }
+                ResultSet resultSet = ps.executeQuery();
+                while (resultSet.next()) {
+                    Songs song = new Songs();
+                    song.setId(resultSet.getInt("id"));
+                    song.setTitle(resultSet.getString("title"));
+                    song.setId_artist(resultSet.getInt("id_artist"));
+                    song.setGenre_id(resultSet.getInt("genre_id"));
+                    song.setDescription(resultSet.getString("description"));
+                    song.setTime_play(resultSet.getInt("time_play"));
+                    song.setSong_data(resultSet.getString("song_data"));
+                    song.setImage(resultSet.getString("image"));
+                    song.setLyric(resultSet.getString("lyric"));
+                    song.setRating(resultSet.getFloat("rating"));
+                    song.setStatus(EnumStatus.valueOf(resultSet.getString("status").toUpperCase()));
+                    lstSong.add(song);
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return lstSong;
+    }
+
+    public int songsCount(int idArtist){
+        int count = 0;
+        Connection conn = JDBCUtil.getConnection();
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(SONGS_COUNT_BY_ID_ARTIST_QUERY)) {
+                ps.setInt(1, idArtist);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt("song_count");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return count;
     }
 }
