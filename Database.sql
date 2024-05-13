@@ -131,3 +131,18 @@ END;
 INSERT INTO [users] ([name], [sex], [birthday], [description], [username], [email], [password], [role]) VALUES
 (N'Nguyễn Trung Hậu', 'male', '2003-09-01', 'Singer, songwriter, and record producer', '1', '1@gmail.com', '1','artist')
 UPDATE [users] SET [status] = 'normal' WHERE [id] = 6;
+
+INSERT INTO [users] ([name], [sex], [birthday], [description], [username], [email], [password], [role]) VALUES
+(N'Nguyễn Thanh Bá', 'male', '2003-09-01', 'user', '2', '2@gmail.com', '2','listener')
+
+
+INSERT INTO [songs] ([title], [id_artist], [genre_id], [description], [time_play], [song_data], [image], [lyric], [rating], [status]) VALUES
+('Lullaby', 6, 1, 'Lullaby', 0, 'https://firebasestorage.googleapis.com/v0/b/soundsphere-16b0b.appspot.com/o/songdata%2FBENNETT_Lullaby.mp3?alt=media&token=666eabbd-ee5b-471e-b539-b71d5a9a20fc', 'https://firebasestorage.googleapis.com/v0/b/soundsphere-16b0b.appspot.com/o/image%2FLullaby_bennett.png?alt=media&token=fe3484c2-0152-4b01-b377-d858b80160de', 'https://firebasestorage.googleapis.com/v0/b/soundsphere-16b0b.appspot.com/o/lyric%2FLullaby_bennett_lyric.txt?alt=media&token=57d5df0f-f93e-4231-88a0-3601b3c47c26', 0, 'available')
+
+INSERT INTO [song_detail] ([song_id], [written_by], [produced_by], [date_release]) VALUES
+(1, 'BENNETT', 'BENNETT', '2021-06-01')
+
+INSERT INTO [user_listened] ([user_id], [song_id], [count]) VALUES
+(6, 1, 2)
+INSERT INTO [user_listened] ([user_id], [song_id], [count]) VALUES
+(7, 1, 5)
