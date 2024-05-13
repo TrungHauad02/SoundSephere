@@ -18,6 +18,12 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
             "SELECT u.id, u.name, u.sex, u.birthday, u.description, u.username, u.email, u.password, u.role, u.status\n" +
                     "FROM [users] u\n" +
                     "WHERE [id] = ?;";
+    private static final String LISTEN_COUNT_BY_ID_ARTIST_QUERY =
+            "SELECT s.id_artist, SUM(ul.count) AS total_listens_count\n" +
+                    "FROM songs s\n" +
+                    "INNER JOIN user_listened ul ON s.id = ul.song_id\n" +
+                    "WHERE s.id_artist = ?  \n" +
+                    "GROUP BY s.id_artist;\n";
 
     public boolean insert(Users entity) {
         return false;
@@ -66,5 +72,22 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
 
     protected List<Users> selectBySql(String sql, Object... args) {
         return null;
+    }
+
+    public int listenCount(int idArtist){
+        int count = 0;
+        Connection conn = JDBCUtil.getConnection();
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(LISTEN_COUNT_BY_ID_ARTIST_QUERY)) {
+                ps.setInt(1, idArtist);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt("total_listens_count");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return count;
     }
 }

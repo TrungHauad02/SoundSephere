@@ -100,9 +100,9 @@
                             <div class="col-md-1"></div>
                             <div class="col-md-4">
                                 <ul class="list-group">
-                                    <li class="list-group-item">Số lượng lượt nghe</li>
-                                    <li class="list-group-item">Số lượng bài hát</li>
-                                    <li class="list-group-item">Số lượng album</li>
+                                    <li class="list-group-item">Số lượng lượt nghe: ${requestScope.listensCount}</li>
+                                    <li class="list-group-item">Số lượng bài hát: ${requestScope.songCount}</li>
+                                    <li class="list-group-item">Số lượng album: ${requestScope.albumCount}</li>
                                 </ul>
                             </div>
                         </div>

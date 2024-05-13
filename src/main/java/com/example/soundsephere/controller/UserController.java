@@ -51,6 +51,13 @@ public class UserController extends HttpServlet {
         Users curUser = usersDAO.selectById(6);
         HttpSession session = request.getSession();
         session.setAttribute("curUser", curUser);
+        int listensCount = usersDAO.listenCount(6);
+        int songCount = 2;
+        int albumCount = 3;
+        request.setAttribute("listensCount", listensCount);
+        request.setAttribute("songCount", songCount);
+        request.setAttribute("albumCount", albumCount);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
         dispatcher.forward(request, response);
     }
