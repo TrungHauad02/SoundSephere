@@ -1,5 +1,6 @@
 package com.example.soundsephere.controller;
 
+
 import com.example.soundsephere.dao.UsersDAO;
 import com.example.soundsephere.model.Users;
 import jakarta.servlet.RequestDispatcher;
@@ -9,10 +10,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
 
 @WebServlet("/User")
 public class UserController extends HttpServlet {
@@ -22,11 +22,15 @@ public class UserController extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         usersDAO = new UsersDAO();
     }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String action = request.getPathInfo();
         switch (action) {
             case "/login":
                 login(request, response);
+                break;
+            case "/artist_login":
+                artistLogin(request, response);
                 break;
             default:
                 break;
@@ -39,8 +43,14 @@ public class UserController extends HttpServlet {
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Users user = usersDAO.selectById(1);
-        request.setAttribute("user", user);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/User/artist_login");
+        dispatcher.forward(request, response);
+    }
+
+    private void artistLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Users curUser = usersDAO.selectById(6);
+        HttpSession session = request.getSession();
+        session.setAttribute("curUser", curUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
         dispatcher.forward(request, response);
     }
