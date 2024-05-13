@@ -21,10 +21,13 @@
             <li><a href="<%=url%>/User?action=goToHome">Home</a></li>
             <li><a href="#">Artist</a></li>
             <li><a href="<%=url%>/Search?action=goToSearch">Search</a></li>
+            <li><a href="index.jsp">Home</a></li>
+            <li><a href="<%= request.getContextPath() %>/User/login" class="nav-link">Artist</a></li>
+            <li><a href="#">Search</a></li>
             <li><a href="#">Playlist</a></li>
             <li><a href="<%=url%>/User?action=showAccount">Profile</a></li>
         </ul>
     </header>
-<jsp:include page="link_js.jsp"/>
+    <jsp:include page="link_js.jsp"/>
 </body>
 </html>

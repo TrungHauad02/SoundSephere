@@ -13,7 +13,7 @@
 
 
     <servlet-mapping>
-    <servlet-name>UserController</servlet-name>
-    <url-pattern>/User/*</url-pattern>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/User/*</url-pattern>
     </servlet-mapping>
 </web-app>

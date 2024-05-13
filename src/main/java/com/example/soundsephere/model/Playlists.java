@@ -3,8 +3,6 @@ package com.example.soundsephere.model;
 import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.enumModel.EnumTypePlaylist;
 
-import java.util.List;
-
 public class Playlists {
     private int id;
     private String name;

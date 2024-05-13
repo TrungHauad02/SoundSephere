@@ -8,17 +8,16 @@ import com.example.soundsephere.enumModel.EnumSex;
 import com.example.soundsephere.model.Playlists;
 import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.model.Users;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,20 +25,18 @@ import java.util.Objects;
 public class UserController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     UsersDAO usersDAO;
-    PlaylistsDAO playlistsDAO;
     SongsDAO songsDAO;
-
-    public void init(ServletConfig config) throws ServletException {
+    PlaylistsDAO playlistsDAO;
+    public void init() {
         usersDAO = new UsersDAO();
-        playlistsDAO= new PlaylistsDAO();
         songsDAO = new SongsDAO();
-
+        playlistsDAO = new PlaylistsDAO();
     }
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String action = request.getParameter("action");
-
-        System.out.println(action);
-
         switch (action) {
             case "login":
                 login(request, response);
@@ -64,6 +61,14 @@ public class UserController extends HttpServlet {
                 break;
             case "updateAccount":
                 updateAccount(request, response);
+            case "/artist_login":
+                artistLogin(request, response);
+                break;
+            case "/getListSongJson":
+                getListSongJson(request, response);
+                break;
+            case "/getListAlbumJson":
+                getListAlbumJson(request, response);
                 break;
             default:
                 System.out.println("default");
@@ -190,7 +195,41 @@ public class UserController extends HttpServlet {
             dispatcher.forward(request, response);
         }
     }
+    public  void artistLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Users curUser = usersDAO.selectById(6);
+        HttpSession session = request.getSession();
+        session.setAttribute("currentUserLogin", curUser);
+        int listensCount = usersDAO.listenCount(6);
+        int songCount = songsDAO.songsCount(6);
+        int albumCount = playlistsDAO.playlistCount(6);
+        request.setAttribute("listensCount", listensCount);
+        request.setAttribute("songCount", songCount);
+        request.setAttribute("albumCount", albumCount);
 
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
+        dispatcher.forward(request, response);
+    }
 
+    public void getListSongJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<Songs> lstSong = songsDAO.selectBySql(SongsDAO.SELECT_SONGS_BY_ID_ARTIST_QUERY, 6);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonSongs = objectMapper.writeValueAsString(lstSong);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        response.getWriter().write(jsonSongs);
+    }
+
+    public void getListAlbumJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<Playlists> lstPlaylist = playlistsDAO.selectBySql(PlaylistsDAO.SELECT_ALBUM_BY_ID_ARTIST_QUERY, 6);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        response.getWriter().write(jsonPlaylist);
+    }
 
 }
