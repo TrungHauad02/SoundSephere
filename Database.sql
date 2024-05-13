@@ -5,7 +5,7 @@ BEGIN
 END;
 GO
 USE soundsphere;
-USE `soundsphere`;
+
 
 CREATE TABLE [users] (
     [id] int IDENTITY(1,1) NOT NULL,
@@ -20,6 +20,9 @@ CREATE TABLE [users] (
     [status] nvarchar(10) CHECK (status IN ('normal', 'block', 'pending')) DEFAULT ('normal'),
     PRIMARY KEY ([id])
 );
+
+ALTER TABLE users
+ALTER COLUMN [name] nvarchar(255) COLLATE Vietnamese_CI_AS;
 
 CREATE TABLE [songs] (
     [id] int IDENTITY(1,1) NOT NULL,
@@ -99,9 +102,8 @@ BEGIN
     DECLARE @new_role NVARCHAR(10) = (SELECT i.role FROM inserted i);
     DECLARE @new_birthday DATE = (SELECT i.birthday FROM inserted i);
     INSERT INTO [users] ([name], [sex], [birthday], [description], [username], [email], [password], [role], [status])
-    SELECT [name], [sex], [birthday], [description], [username], [email], [password],
-        CASE WHEN @new_role = 'artist' THEN 'pending' ELSE 'normal' END,
-        CASE WHEN @new_birthday >= GETDATE() THEN 'The birthday cannot be in the future' ELSE 'normal' END
+    SELECT [name], [sex], [birthday], [description], [username], [email], [password], [role]
+        CASE WHEN @new_role = 'artist' THEN 'pending' ELSE 'normal' END AS [status]
     FROM inserted;
     INSERT INTO playlists (name, user_id, status)
     SELECT 'Favorite', inserted.id, 'available'
@@ -121,3 +123,11 @@ BEGIN
         WHERE song_id = inserted.song_id)
     WHERE id = inserted.id;
 END;
+
+
+
+-------------------------------------------DATA-----------------------------------------------
+
+INSERT INTO [users] ([name], [sex], [birthday], [description], [username], [email], [password], [role]) VALUES
+(N'Nguyễn Trung Hậu', 'male', '2003-09-01', 'Singer, songwriter, and record producer', '1', '1@gmail.com', '1','artist')
+UPDATE [users] SET [status] = 'normal' WHERE [id] = 6;
