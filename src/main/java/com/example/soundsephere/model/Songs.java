@@ -30,6 +30,9 @@ public class Songs {
         this.status = status;
     }
 
+    public Songs() {
+    }
+
     public int getId() {
         return id;
     }

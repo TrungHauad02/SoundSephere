@@ -71,9 +71,9 @@
 <body style="background-color: black;">
     <jsp:include page="../header.jsp"/>
     <%
-        Users curUser = (Users) session.getAttribute("curUser");%>
+        Users currentUserLogin = (Users) session.getAttribute("currentUserLogin");%>
         <%
-            if (curUser == null) {
+            if (currentUserLogin == null) {
         %>
         <%
             response.sendRedirect(request.getContextPath()+"/index.jsp");
@@ -93,8 +93,8 @@
                             <div class="col-md-4">
                                 <ul class="list-group">
                                     <li class="list-group-item">Artist details</li>
-                                    <li class="list-group-item">${curUser.name}</li>
-                                    <li class="list-group-item">${curUser.description}</li>
+                                    <li class="list-group-item">${currentUserLogin.name}</li>
+                                    <li class="list-group-item">${currentUserLogin.description}</li>
                                 </ul>
                             </div>
                             <div class="col-md-1"></div>
@@ -125,61 +125,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <ul class="list-group" style="list-style-type: none; max-height: 300px; overflow-y: auto;">
-                                        <li class="pb-2">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 50px; width: 50px;"> </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h6 class="card-title">Album 1</h6>
-                                                            <p class="card-text">Description</p>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <button class="btn btn-primary">Play</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="pb-2">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 50px; width: 50px;"> </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h6 class="card-title">Album 1</h6>
-                                                            <p class="card-text">Description</p>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <button class="btn btn-primary">Play</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="pb-2">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 50px; width: 50px;"> </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h6 class="card-title">Album 1</h6>
-                                                            <p class="card-text">Description</p>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <button class="btn btn-primary">Play</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
+                                    <ul class="list-group" id="albumContainer" style="list-style-type: none; max-height: 300px; overflow-y: auto;">
+
                                     </ul>
                                 </div>
                             </div>
@@ -199,86 +146,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <ul class="list-group" style="list-style-type: none; max-height: 300px; overflow-y: auto;">
-                                        <li class="pb-2">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 50px; width: 50px;"> </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h6 class="card-title">Song 1</h6>
-                                                            <p class="card-text">Artist Name</p>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-primary dropdown-toggle dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    ...
-                                                                </button>
-                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                    <a class="dropdown-item playSong" href="#">Play</a>
-                                                                    <a class="dropdown-item addToPlaylist" href="#">Add to Playlist</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="pb-2">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 50px; width: 50px;"> </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h6 class="card-title">Song 2</h6>
-                                                            <p class="card-text">Description</p>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-primary dropdown-toggle dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    ...
-                                                                </button>
-                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                    <a class="dropdown-item playSong" href="#">Play</a>
-                                                                    <a class="dropdown-item addToPlaylist" href="#">Add to Playlist</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="pb-2">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 50px; width: 50px;"> </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h6 class="card-title">Song 3</h6>
-                                                            <p class="card-text">Description</p>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-primary dropdown-toggle dropdownMenuButton" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    ...
-                                                                </button>
-                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                                    <a class="dropdown-item playSong" href="#">Play</a>
-                                                                    <a class="dropdown-item addToPlaylist" href="#">Add to Playlist</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                        <ul id="songListContainer" class="list-group" style="list-style-type: none; max-height: 300px; overflow-y: auto;">
+                                            <!-- Các thẻ <li> sẽ được thêm vào đây bởi JavaScript -->
+                                        </ul>
                                 </div>
                             </div>
                         </div>
@@ -292,7 +162,7 @@
     <!-- Popup Add Song To Playlist -->
     <div id="addSongToPlaylistPopUp" class="popup" style="display: none;">
         <div class="popup-content" style="min-width: 500px; max-height:90vh; overflow-y: auto; " >
-            <span class="close" onclick="closeAddSongToPlaylistPopup()">&times;</span>
+            <span class="close" id="btnClosePlaylistPopupTop">&times;</span>
             <h5 class="mb-4">Add Song to Playlist</h5>
             <ul id="playlistItems" class="list-group">
 
@@ -355,7 +225,7 @@
         </div>
     </div>
     <!-- Javascript -->
-    <script src="<%= request.getContextPath() %>/assets/js/artist_main.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/artist_main.js" type="module"></script>
     <jsp:include page="../link_js.jsp"/>
 </body>
 </html>
