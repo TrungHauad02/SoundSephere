@@ -18,6 +18,10 @@
     <jsp:include page="../../link_css.jsp"/>
     <title>Document</title>
 </head>
+<%
+    String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+            + request.getContextPath();
+%>
 <body style="height: 80vh">
     <jsp:include page="../../header.jsp"/>
     <%
@@ -79,9 +83,19 @@
                                 <p class="card-text"><%= song.getArtistName()%></p>
                             </div>
 
-                            <a href="#" class="btn btn-primary card-button">
-                                <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">
-                            </a>
+<%--                            <a href="#" class="btn btn-primary card-button">--%>
+<%--                                <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">--%>
+<%--                            </a>--%>
+
+                            <form action="<%=path%>/Song" method="get">
+                                <button class="btn btn-primary card-button">
+                                    <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">
+                                </button>
+                                <input type="hidden" name="action" value="getSong">
+                                <input type="hidden" name="idSong" value="<%= song.getId() %>">
+                            </form>
+
+
                         </div>
                     </div>
                 <%

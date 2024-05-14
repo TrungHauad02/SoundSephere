@@ -196,7 +196,7 @@ public class UserController extends HttpServlet {
         }
     }
     public  void artistLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Users curUser = usersDAO.selectById(6);
+        Users curUser = usersDAO.selectById("");
         HttpSession session = request.getSession();
         session.setAttribute("currentUserLogin", curUser);
         int listensCount = usersDAO.listenCount(6);

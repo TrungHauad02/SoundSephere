@@ -83,7 +83,7 @@ public class SongsDAO{
 
                     //lấy tên nghệ sĩ
                     UsersDAO usersDAO = new UsersDAO();
-                    Users artistName = usersDAO.selectById(rs.getInt("id_artist"));
+                    Users artistName = usersDAO.selectById(rs.getString("id_artist"));
 
                     song.setArtistName(artistName.getName());
                     song.setGenre_id(rs.getInt("genre_id"));
@@ -123,7 +123,7 @@ public class SongsDAO{
 
                     //lấy tên nghệ sĩ
                     UsersDAO usersDAO = new UsersDAO();
-                    Users artistName = usersDAO.selectById(rs.getInt("id_artist"));
+                    Users artistName = usersDAO.selectById(rs.getString("id_artist"));
                     song.setArtistName(artistName.getName());
 
                     song.setId_artist(rs.getString("id_artist"));

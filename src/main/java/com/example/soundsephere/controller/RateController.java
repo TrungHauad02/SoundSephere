@@ -36,6 +36,38 @@ public class RateController extends HttpServlet {
         }
     }
 
+
+    protected void GetPointData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try{
+            HttpSession session = request.getSession();
+            String username = (String) session.getAttribute("currentUserLogin");
+            int id_song = Integer.parseInt(request.getParameter("id_song"));
+            Rating rateCurrent = GetData("user2", id_song);
+            if(rateCurrent != null)
+            {
+                int point = (int) rateCurrent.getRating();
+                PrintWriter out = response.getWriter();
+
+                out.println("<div class=\"rating\">");
+                // Điều chỉnh radio button dựa trên điểm đã nhận được
+                for (int i = 5; i >= 1; i--) {
+                    out.println("<input type=\"radio\" id=\"star" + i + "\" name=\"rating\" value=\"" + i + "\"");
+                    // Nếu điểm hiện tại bằng i, đánh dấu input này là checked
+                    if (point == i) {
+                        out.println(" checked");
+                    }
+                    out.println("/><label for=\"star" + i + "\"><i class=\"fas fa-star\"></i></label>");
+                }
+                out.println("</div>");
+            }else {
+
+            }
+        } catch (Exception e){
+            PrintWriter out = response.getWriter();
+            out.println("<h3 style='color: red;'>Lấy thông tin thất bại</h3>");
+        }
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -71,36 +103,6 @@ public class RateController extends HttpServlet {
             }
         }
 
-    protected void GetPointData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try{
-            HttpSession session = request.getSession();
-            String username = (String) session.getAttribute("currentUserLogin");
-            int id_song = Integer.parseInt(request.getParameter("id_song"));
-            Rating rateCurrent = GetData("user2", id_song);
-            if(rateCurrent != null)
-            {
-                int point = (int) rateCurrent.getRating();
-                PrintWriter out = response.getWriter();
-
-                out.println("<div class=\"rating\">");
-                // Điều chỉnh radio button dựa trên điểm đã nhận được
-                for (int i = 5; i >= 1; i--) {
-                    out.println("<input type=\"radio\" id=\"star" + i + "\" name=\"rating\" value=\"" + i + "\"");
-                    // Nếu điểm hiện tại bằng i, đánh dấu input này là checked
-                    if (point == i) {
-                        out.println(" checked");
-                    }
-                    out.println("/><label for=\"star" + i + "\"><i class=\"fas fa-star\"></i></label>");
-                }
-                out.println("</div>");
-            }else {
-
-            }
-        } catch (Exception e){
-            PrintWriter out = response.getWriter();
-            out.println("<h3 style='color: red;'>Lấy thông tin thất bại</h3>");
-        }
-    }
 
     //Service
     protected Rating GetData(String username, int id_song)
