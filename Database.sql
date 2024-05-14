@@ -8,7 +8,7 @@ USE soundsphere;
 USE `soundsphere`;
 
 CREATE TABLE [users] (
-    [id] int IDENTITY(1,1) NOT NULL,
+    [id] int IDENTITY(1,1) NOT NULL, //Bỏ chỉ dùng mô usernamme làm khóa chính
     [name] nvarchar(255) NOT NULL,
     [sex] nvarchar(6) CHECK (sex IN ('male', 'female')) DEFAULT ('male'),
     [birthday] date NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE [users] (
 );
 
 CREATE TABLE [songs] (
-    [id] int IDENTITY(1,1) NOT NULL,
+    [id] int IDENTITY(1,1) NOT NULL, //Song id
     [title] nvarchar(255) NOT NULL,
     [id_artist] int NOT NULL,
     [genre_id] int NOT NULL,

@@ -1,15 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
+
+    <welcome-file-list>
+        <welcome-file>user/testmusic.jsp</welcome-file>
+    </welcome-file-list>
+
     <servlet>
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.example.soundsephere.controller.UserController</servlet-class>
     </servlet>
 
     <servlet-mapping>
-    <servlet-name>UserController</servlet-name>
-    <url-pattern>/User/*</url-pattern>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/User/*</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SongController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.SongController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SongController</servlet-name>
+        <url-pattern>/Song</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RateController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.RateController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RateController</servlet-name>
+        <url-pattern>/Rate</url-pattern>
+    </servlet-mapping>
+
 </web-app>

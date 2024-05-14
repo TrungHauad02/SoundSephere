@@ -8,7 +8,6 @@
 <body>
     <jsp:include page="header.jsp"/>
 
-
     <jsp:include page="link_js.jsp"/>
 </body>
 </html>
