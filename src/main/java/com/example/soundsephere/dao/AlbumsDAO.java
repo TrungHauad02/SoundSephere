@@ -17,7 +17,7 @@ import java.util.List;
 public class AlbumsDAO extends SoundSysDAO<Albums, Integer> {
     private static final String SELECT_ALL_ALBUMS_QUERY = "SELECT p.*, u.name as artist_name " +
             "FROM playlists p " +
-            "JOIN users u ON p.user_id = u.id " +
+            "JOIN users u ON p.user_id = u.username " +
             "WHERE p.type = 'album'";
     private static final String DELETE_ALBUM_BY_ID = "DELETE FROM playlists WHERE id = ?" ;
 

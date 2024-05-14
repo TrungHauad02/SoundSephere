@@ -22,7 +22,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                     "VALUES (?, ?, ?, ?)";
     private static final String SELECT_ALL_PLAYLISTS_QUERY = "SELECT p.*, u.name as user_name " +
             "FROM playlists p " +
-            "JOIN users u ON p.user_id = u.id " +
+            "JOIN users u ON p.user_id = u.username " +
             "WHERE p.type = 'playlist'";
     private static final String DELETE_PLAYLIST_BY_ID =  "DELETE FROM playlists WHERE id = ? " ;
 
