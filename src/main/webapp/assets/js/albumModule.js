@@ -5,7 +5,7 @@ export function openCreateAlbumPopup() {
 }
 
 export function createAlbum() {
-    console.log("Add new album");
+
 }
 
 export function closePopupCreateAlbum() {

@@ -1,4 +1,4 @@
-
+import {getImageFromFirebase} from './firebaseModule.js';
 
 export function openAddSongPopup() {
     const addSongPopup = document.getElementById('addSongPopup');
@@ -42,12 +42,23 @@ export function createSongCard(song){
 
     const badgeDiv = document.createElement('div');
     badgeDiv.className = 'col-auto';
-    const badge = document.createElement('div');
-    badge.className = 'badge badge-primary rounded-circle';
-    badge.style.backgroundColor = '#3E862C';
-    badge.style.height = '50px';
-    badge.style.width = '50px';
-    badgeDiv.appendChild(badge);
+
+    const badgeImg = document.createElement('img');
+    badgeImg.className = 'rounded-circle';
+    badgeImg.style.backgroundColor = '#3E862C';
+    badgeImg.style.height = '50px';
+    badgeImg.style.width = '50px';
+    badgeImg.style.objectFit = 'cover';
+
+    getImageFromFirebase(song.image)
+        .then((url) => {
+            console.log(url)
+            badgeImg.src = url;
+            badgeDiv.appendChild(badgeImg);
+        })
+        .catch((error) => {
+            console.error('Error fetching image:', error);
+        });
 
     const songInfoDiv = document.createElement('div');
     songInfoDiv.className = 'col';

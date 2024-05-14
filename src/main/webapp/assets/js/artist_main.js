@@ -1,4 +1,4 @@
-//import { initializeFirebase } from './firebaseModule.js';
+import { initializeFirebase } from './firebaseModule.js';
 import {
     openCreateAlbumPopup,
     createAlbum,
@@ -9,7 +9,8 @@ import {
 import {fetchDataSong, renderSongList, openAddSongPopup, closeSongPopup, addNewSong} from './songModule.js';
 
 document.addEventListener('DOMContentLoaded', function() {
-    //initializeFirebase();
+    initializeFirebase();
+
     // Handle Create Album Popup
     const openCreateAlbumPopupButton = document.getElementById('openCreateAlbumPopup');
     openCreateAlbumPopupButton.addEventListener('click', openCreateAlbumPopup);

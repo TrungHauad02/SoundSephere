@@ -48,6 +48,9 @@ public class UserController extends HttpServlet {
             case "/getListAlbumJson":
                 getListAlbumJson(request, response);
                 break;
+            case "/addNewAlbum":
+                addNewAlbum(request, response);
+                break;
             default:
                 break;
         }
@@ -98,5 +101,9 @@ public class UserController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         response.getWriter().write(jsonPlaylist);
+    }
+
+        private void addNewAlbum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
     }
 }
