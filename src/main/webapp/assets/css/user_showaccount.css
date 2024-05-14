@@ -1,0 +1,143 @@
+body{
+    color: white;
+}
+.main-profile {
+    height: 500px;
+    max-width: 600px;
+    background-color: #1ED760;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+.img-profile{
+    height: 150px;
+    width: 150px;
+    border-radius: 100px;
+    border-width: medium;
+}
+
+
+.edit-profile{
+    height: 10%;
+    display: flex;
+    align-self: end;
+    padding: 10px;
+}
+.edit-profile img{
+    height: 25px;
+    width: 25px;
+}
+
+.bottom-profile{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.item-profile{
+    margin: 15px;
+    height: 25%;
+}
+.item-profile-p{
+    width: 150px;
+    text-align: center;
+    align-items: center;
+    color: white;
+}
+.item-profile-p p{
+    font-size: 20px;
+}
+.item-profile h2{
+    color: white;
+    align-self: center;
+}
+
+
+.main-profile-edit{
+    height: 500px;
+    max-width: 600px;
+    background-color: #1ED760;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.img-profile{
+    border-radius: 100px;
+    height: 130px;
+    width: 150px;
+}
+
+.main-profile-edit-component-header{
+    display:flex;
+    justify-content: center;
+    margin-top: 15px;
+    height: 20%;
+}
+
+
+.main-profile-edit-component{
+    height: 80%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.main-profile-edit-image{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.main-profile-edit-infor{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.main-profile-edit-infor .input-item{
+    border-radius: 30px;
+    margin-left: 30px;
+    align-items:end;
+    width: 65%;
+}
+.main-profile-edit-infor .item{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    width: 80%;
+}
+
+.main-profile-edit-button{
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+}
+
+.main-profile-edit-button .item{
+    width: 150px;
+    margin: 15px;
+    background-color: black;
+    color: white;
+}
+
+.main-profile-edit-button div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}

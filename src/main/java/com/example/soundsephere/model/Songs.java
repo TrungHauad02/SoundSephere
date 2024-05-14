@@ -13,8 +13,13 @@ public class Songs {
     private String image;
     private String lyric;
     private float rating;
+
+    private String artistName;
     private EnumStatus status;
 
+
+    public Songs() {
+    }
     public Songs(int id, String title, int id_artist, int genre_id, String description,
                  int time_play, String song_data, String image, String lyric, float rating, EnumStatus status) {
         this.id = id;
@@ -30,7 +35,12 @@ public class Songs {
         this.status = status;
     }
 
-    public Songs() {
+
+    public Songs(int id, String title, String artistName, String img) {
+        this.id = id;
+        this.title = title;
+        this.artistName = artistName;
+        this.image = img;
     }
 
     public int getId() {
@@ -121,4 +131,11 @@ public class Songs {
         this.status = status;
     }
 
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
 }

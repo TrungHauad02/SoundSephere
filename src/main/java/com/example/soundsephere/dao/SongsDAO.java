@@ -2,6 +2,7 @@ package com.example.soundsephere.dao;
 
 import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.model.Songs;
+import com.example.soundsephere.model.Users;
 import com.example.soundsephere.utils.JDBCUtil;
 
 import java.sql.Connection;
@@ -15,6 +16,8 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
     private static final String INSERT_SONG_QUERY =
             "INSERT INTO [songs] ([title], [id_artist], [genre_id], [description], [time_play], [song_data], [image], [lyric], [rating], [status]) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    private static final String SELECT_ALL_SONG_BY_ID_QUERY = "SELECT * FROM user_listened join songs on user_listened.song_id = songs.id  WHERE user_id = ?";
     private static final String SONGS_COUNT_BY_ID_ARTIST_QUERY =
         "SELECT COUNT(*) AS song_count\n" +
                 "FROM songs\n" +
@@ -54,6 +57,87 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
             }
         }
         return result;
+    }
+
+    public List<Songs> selectAllSongById(int id) {
+        Connection conn = JDBCUtil.getConnection();
+        List<Songs> songs = null;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(SELECT_ALL_SONG_BY_ID_QUERY)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                songs = new LinkedList<>();
+                while (rs.next()) {
+                    Songs song = new Songs();
+                    song.setId(rs.getInt("id"));
+                    song.setTitle(rs.getString("title"));
+
+                    //lấy tên nghệ sĩ
+                    UsersDAO usersDAO = new UsersDAO();
+                    Users artistName = usersDAO.selectById(rs.getInt("id_artist"));
+
+                    song.setArtistName(artistName.getName());
+                    song.setGenre_id(rs.getInt("genre_id"));
+                    song.setDescription(rs.getString("description"));
+                    song.setTime_play(rs.getInt("time_play"));
+                    song.setSong_data(rs.getString("song_data"));
+                    song.setImage(rs.getString("image"));
+                    song.setLyric(rs.getString("lyric"));
+                    song.setRating(rs.getFloat("rating"));
+                    songs.add(song);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return songs;
+    }
+
+    public List<Songs> searchSong(String search) {
+        Connection conn = JDBCUtil.getConnection();
+        List<Songs> songs = null;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM songs WHERE title LIKE ?")) {
+                ps.setString(1, "%" + search + "%");
+                ResultSet rs = ps.executeQuery();
+                songs = new LinkedList<>();
+                while (rs.next()) {
+                    Songs song = new Songs();
+                    song.setId(rs.getInt("id"));
+                    song.setTitle(rs.getString("title"));
+
+                    //lấy tên nghệ sĩ
+                    UsersDAO usersDAO = new UsersDAO();
+                    Users artistName = usersDAO.selectById(rs.getInt("id_artist"));
+                    song.setArtistName(artistName.getName());
+
+                    song.setId_artist(rs.getInt("id_artist"));
+                    song.setGenre_id(rs.getInt("genre_id"));
+                    song.setDescription(rs.getString("description"));
+                    song.setTime_play(rs.getInt("time_play"));
+                    song.setSong_data(rs.getString("song_data"));
+                    song.setImage(rs.getString("image"));
+                    song.setLyric(rs.getString("lyric"));
+                    song.setRating(rs.getFloat("rating"));
+                    songs.add(song);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return songs;
     }
 
     public boolean update(Songs entity) {

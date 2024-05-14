@@ -14,6 +14,11 @@
   <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/owl.carousel.min.css"/>
   <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/slicknav.min.css"/>
 
+  <link rel="stylesheet" href="./assets/css/loginlogout.css"/>
+  <link rel="stylesheet" href="./assets/css/style.css"/>
+  <link rel="stylesheet" href="./assets/css/home.css"/>
+  <link rel="stylesheet" href="./assets/css/search.css">
+  <link rel="stylesheet" href="./assets/css/user_showaccount.css"/>
   <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/style.css"/>
 </head>
 </html>
