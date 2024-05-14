@@ -16,6 +16,18 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     private static final String INSERT_PLAYLIST_QUERY =
             "INSERT INTO playlists (name, user_id, type, status) " +
                     "VALUES (?, ?, ?, ?)";
+    private static final String SELECT_ALL_PLAYLIST_BY_USER_ID_QUERY ="SELECT * FROM playlists WHERE user_id = ?";
+    private static final String SELECT_NUMBER_OF_SONGS_IN_PLAYLIST_QUERY = "SELECT COUNT(*) FROM playlist_songs WHERE playlist_id = ?";
+    private static final String ALBUM_COUNT_BY_ID_ARTIST_QUERY =
+            "SELECT COUNT(*) AS playlist_count\n" +
+                    "FROM playlists\n" +
+                    "WHERE user_id = ? AND type = 'album';\n";
+
+    public static final String SELECT_ALBUM_BY_ID_ARTIST_QUERY =
+            "SELECT id, name, user_id, type, status\n" +
+                    "FROM playlists\n" +
+                    "WHERE user_id = ? AND type = 'album';\n";
+
     public boolean insert(Playlists entity) {
         Connection conn = JDBCUtil.getConnection();
         boolean result = true;
@@ -57,7 +69,60 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         return null;
     }
 
-    protected List<Playlists> selectBySql(String sql, Object... args) {
+    public  int getNumberofsongs(int playlist_id){
+        Connection conn = JDBCUtil.getConnection();
+        int numberofsongs = 0;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(SELECT_NUMBER_OF_SONGS_IN_PLAYLIST_QUERY)) {
+                ps.setInt(1, playlist_id);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    numberofsongs = rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return numberofsongs;
+    }
+
+    public List<Playlists> selectAllPlaylistByUserId(int userId) {
+        Connection conn = JDBCUtil.getConnection();
+        List<Playlists> lstPlaylist = new LinkedList<>();
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(SELECT_ALL_PLAYLIST_BY_USER_ID_QUERY)) {
+                ps.setInt(1, userId);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Playlists playlist = new Playlists();
+                    playlist.setId(rs.getInt("id"));
+                    playlist.setName(rs.getString("name"));
+                    playlist.setUser_id(rs.getInt("user_id"));
+                    playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
+                    playlist.setStatus(EnumStatus.valueOf(rs.getString("status").toUpperCase()));
+                    playlist.setNumber_of_songs(getNumberofsongs(playlist.getId()));
+                    lstPlaylist.add(playlist);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return  lstPlaylist;
+    }
+
+    public List<Playlists> selectBySql(String sql, Object... args) {
         List<Playlists> lstPlaylist = new LinkedList<>();
         Connection conn = JDBCUtil.getConnection();
         if(conn != null){
@@ -86,5 +151,22 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
             }
         }
         return lstPlaylist;
+    }
+
+    public int playlistCount(int idArtist){
+        int count = 0;
+        Connection conn = JDBCUtil.getConnection();
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(ALBUM_COUNT_BY_ID_ARTIST_QUERY)) {
+                ps.setInt(1, idArtist);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt("playlist_count");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return count;
     }
 }

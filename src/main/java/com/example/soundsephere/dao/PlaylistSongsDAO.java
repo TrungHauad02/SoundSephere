@@ -1,7 +1,5 @@
 package com.example.soundsephere.dao;
 
-import com.example.soundsephere.enumModel.EnumStatus;
-import com.example.soundsephere.enumModel.EnumTypePlaylist;
 import com.example.soundsephere.model.PlaylistSongs;
 import com.example.soundsephere.utils.JDBCUtil;
 
