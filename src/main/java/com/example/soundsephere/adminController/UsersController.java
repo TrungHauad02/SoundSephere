@@ -1,4 +1,4 @@
-package com.example.soundsephere.controller;
+package com.example.soundsephere.adminController;
 
 import com.example.soundsephere.dao.UsersDAO;
 import com.example.soundsephere.model.Users;
@@ -12,24 +12,25 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 
-@WebServlet("/User")
-public class UserController extends HttpServlet {
+@WebServlet("/Users")
+public class UsersController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     UsersDAO usersDAO;
 
     public void init(ServletConfig config) throws ServletException {
         usersDAO = new UsersDAO();
     }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getPathInfo();
         switch (action) {
-            case "/login":
-                login(request, response);
+            case "/ad_listUsers":
+                showListUsers(request, response);
                 break;
+            case "/ad_ArtistApproval":
+                showListApproval(request, response);
             default:
                 break;
         }
@@ -40,13 +41,22 @@ public class UserController extends HttpServlet {
         doGet(request, response);
     }
 
-    private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Users user = usersDAO.selectById(1);
-        request.setAttribute("user", user);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
+    private void showListApproval(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        List<Users> usersList = usersDAO.selectAllApproval();
+        request.setAttribute("usersList", usersList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_approvals.jsp");
+        dispatcher.forward(request, response);
+
+    }
+
+    private void showListUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        List<Users> usersList = usersDAO.selectAll();
+        request.setAttribute("usersList", usersList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_users.jsp");
         dispatcher.forward(request, response);
     }
 
-
-
 }
+

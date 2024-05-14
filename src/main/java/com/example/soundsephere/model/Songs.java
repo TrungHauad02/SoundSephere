@@ -3,10 +3,10 @@ package com.example.soundsephere.model;
 import com.example.soundsephere.enumModel.EnumStatus;
 
 public class Songs {
-    private int id;
+    private String id;
     private String title;
-    private int id_artist;
-    private int genre_id;
+    private String id_artist;
+    private String genre_id;
     private String description;
     private int time_play;
     private String song_data;
@@ -15,7 +15,30 @@ public class Songs {
     private float rating;
     private EnumStatus status;
 
-    public Songs(int id, String title, int id_artist, int genre_id, String description,
+
+    // get genre
+    private  Genre genre;
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+    // get artist
+    private Users users;
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
+    }
+    //
+
+    public Songs(String id, String title, String id_artist, String genre_id, String description,
                  int time_play, String song_data, String image, String lyric, float rating, EnumStatus status) {
         this.id = id;
         this.title = title;
@@ -30,11 +53,11 @@ public class Songs {
         this.status = status;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -46,19 +69,19 @@ public class Songs {
         this.title = title;
     }
 
-    public int getId_artist() {
+    public String getId_artist() {
         return id_artist;
     }
 
-    public void setId_artist(int id_artist) {
+    public void setId_artist(String id_artist) {
         this.id_artist = id_artist;
     }
 
-    public int getGenre_id() {
+    public String getGenre_id() {
         return genre_id;
     }
 
-    public void setGenre_id(int genre_id) {
+    public void setGenre_id(String genre_id) {
         this.genre_id = genre_id;
     }
 

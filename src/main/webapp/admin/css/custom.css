@@ -72,3 +72,45 @@
     text-align: center;
     vertical-align: middle;
 }
+.th, td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px; /* Điều chỉnh khoảng cách giữa nội dung và biên của ô */
+    border: 1px solid #ddd;
+}
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+.btn-secondary-modify {
+    background-color: #1c606a;
+    color: white;
+}
+
+.btn-secondary-modify:hover {
+    background-color: #5a6268;
+}
+.btn-hover {
+    transition: all 0.3s ease;
+}
+
+.btn-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-block-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.confirm-block-btn:hover {
+    background-color: #d32f2f;
+}

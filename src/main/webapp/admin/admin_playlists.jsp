@@ -1,8 +1,17 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
+
 <html lang="en">
 <link href="css/custom.css" rel="stylesheet">
+<style><%@include file="css/sb-admin-2.min.css"%></style>
+<style><%@include file="css/custom.css"%></style>
+<style><%@include file="vendor/jquery/jquery.min.js"%></style>
+<style><%@include file="vendor/bootstrap/js/bootstrap.bundle.min.js"%></style>
+<style><%@include file="vendor/jquery-easing/jquery.easing.min.js"%></style>
+<style><%@include file="js/sb-admin-2.min.js"%></style>
+<style><%@include file="vendor/chart.js/Chart.min.js"%></style>
 
 
 <head>
@@ -22,7 +31,7 @@
             rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <!--  <link href="css/sb-admin-2.min.css" rel="stylesheet"> !-->
 
 </head>
 
@@ -38,7 +47,8 @@
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
 
             <div class="sidebar-brand-icon rotate-n-15">
-                <img src="img/iconWeb.png" alt="Your Icon" style="width: 50px; height: 50px;">
+                <img src="${pageContext.request.contextPath}/admin/img/iconWeb.png"  alt="Your Icon" style="width: 50px; height: 50px;">
+
             </div>
 
             <div class="sidebar-brand-text mx-3">Administrator’s
@@ -57,19 +67,50 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <a class="nav-link collapsed" href="<%= request.getContextPath() %>/song/ad_listSong" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>Music</span>
+                <span>Songs</span>
             </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed"  href="<%= request.getContextPath() %>/playlist/ad_listPlaylists"  data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Playlists</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed"  href="<%= request.getContextPath() %>/album/ad_listAlbums"  data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Albums</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="<%= request.getContextPath() %>/Users/ad_listUsers"  data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Users</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="<%= request.getContextPath() %>/Users/ad_ArtistApproval"   data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Artist's Approval</span>
+            </a>
+        </li>
+            <!--
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Music Management</h6>
-                    <a class="collapse-item" href="buttons.html">Songs</a>
-                    <a class="collapse-item" href="cards.html">Albums</a>
+                    <a href="<%= request.getContextPath() %>/song/ad_listSong" class="collapse-item" >Songs</a>
+                    <a href="<%= request.getContextPath() %>/song/ad_listAlbums" class="collapse-item">Albums</a>
                 </div>
             </div>
         </li>
+
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
                aria-expanded="true" aria-controls="collapseThree">
@@ -83,8 +124,6 @@
                 </div>
             </div>
         </li>
-
-        <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                aria-expanded="true" aria-controls="collapseUtilities">
@@ -99,7 +138,7 @@
                 </div>
             </div>
         </li>
-
+        !-->
         <div class="sidebar-heading">
 
         </div>
@@ -158,7 +197,7 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline  text-gray-600 small">Admin</span>
                             <img class="img-profile rounded-circle"
-                                 src="img/undraw_profile.svg">
+                                 src="${pageContext.request.contextPath}/admin/img/undraw_profile.svg">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -206,7 +245,9 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            <a href="<%= request.getContextPath() %>/song/ad_listSong" class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                             Songs
+                                            </a>
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">1000</div>
                                     </div>
@@ -278,8 +319,64 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
-                <h1>hello</h1>
+                <script>
+                    function confirmBlock(songId) {
+                        var confirmAction = confirm("Bạn có chắc chắn muốn block bài hát này không?");
+                        if (confirmAction) {
+                            // Nếu người dùng xác nhận, gửi form
+                            document.getElementById('blockForm-' + songId).submit();
+                        } else {
+                            // Nếu người dùng không xác nhận, không làm gì cả
+                            console.log('Bài hát không được block.');
+                        }
+                    }
+                </script>
+                <script>
+                    function confirmDelete(event, songId) {
+                        event.preventDefault(); // Ngăn chặn sự kiện gửi form mặc định
+                        var confirmAction = confirm("Bạn có chắc chắn muốn xóa playlist này không?");
+                        if (confirmAction) {
+                            // Nếu người dùng xác nhận, gửi form
+                            document.getElementById('deleteForm-' + songId).submit();
+                        } else {
+                            // Nếu người dùng không xác nhận, không làm gì cả
+                            console.log('playlist không được xóa.');
+                        }
+                    }
+                </script>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable">
+                        <thead class = "table-header-color">
+                        <tr>
+                            <th>No</th>
+                            <th>Name playlist</th>
+                            <th>User </th>
+                            <th>Status</th>
+                            <!--
+                            <th>Block</th>
+                            -->
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <c:forEach var="playlist" items="${playlists}" varStatus="No">
+                        <tr>
+                            <td>${No.index + 1}</td>
+                            <td name = "name" value="${playlist.name}">${playlist.name}</td>
+                            <td>${playlist.users.name}</td>
+                            <td>${playlist.status}</td>
+                            <td>
+                                <form id="deleteForm-${playlist.id}" action="${pageContext.request.contextPath}/playlist/ad_deletePlaylist" method="post">
+                                    <input type="hidden" name="id" value="${playlist.id}" />
+                                    <button type="submit" onclick="confirmDelete(event, '${playlist.id}')" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                            </c:forEach>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
@@ -330,6 +427,8 @@
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+
+
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
@@ -338,6 +437,8 @@
 
 <!-- Page level plugins -->
 <script src="vendor/chart.js/Chart.min.js"></script>
+
+
 
 
 </body>
