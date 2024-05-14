@@ -70,6 +70,9 @@ public class UserController extends HttpServlet {
             case "/getListAlbumJson":
                 getListAlbumJson(request, response);
                 break;
+            case "/addNewAlbum":
+                addNewAlbum(request, response);
+                break;
             default:
                 System.out.println("default");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
@@ -231,5 +234,7 @@ public class UserController extends HttpServlet {
 
         response.getWriter().write(jsonPlaylist);
     }
+        private void addNewAlbum(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    }
 }

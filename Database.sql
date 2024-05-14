@@ -11,8 +11,7 @@ CREATE TABLE [users] (
     [id] int IDENTITY(1,1) NOT NULL,
     [name] nvarchar(255) NOT NULL,
     [sex] nvarchar(6) CHECK (sex IN ('male', 'female')) DEFAULT ('male'),
-    [birthday] date NULL, --bỏ đi
-    [description] nvarchar(255) NULL, --bỏ notNull
+    [description] nvarchar(255) NOT NULL,
     [username] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL UNIQUE,
     [email] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL UNIQUE,
     [password] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
