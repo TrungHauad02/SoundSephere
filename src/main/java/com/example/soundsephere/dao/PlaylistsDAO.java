@@ -92,7 +92,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         return numberofsongs;
     }
 
-    public List<Playlists> selectAllPlaylistByUserId(int userId) {
+    public List<Playlists> selectAllPlaylistByUserId(String userId) {
         Connection conn = JDBCUtil.getConnection();
         List<Playlists> lstPlaylist = new LinkedList<>();
         if (conn != null) {

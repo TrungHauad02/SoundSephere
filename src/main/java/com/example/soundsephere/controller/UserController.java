@@ -167,7 +167,7 @@ public class UserController extends HttpServlet {
 
     public void updateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Users user = new Users();
-        user.setId(Integer.parseInt(request.getParameter("idUser")));
+        user.setId(request.getParameter("idUser"));
         user.setName(request.getParameter("nameUser"));
         user.setEmail(request.getParameter("emailUser"));
         if (request.getParameter("descriptionUser") == null){
@@ -199,7 +199,7 @@ public class UserController extends HttpServlet {
         }
     }
     public  void artistLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Users curUser = usersDAO.selectById(6);
+        Users curUser = usersDAO.selectById("6");
         HttpSession session = request.getSession();
         session.setAttribute("currentUserLogin", curUser);
         int listensCount = usersDAO.listenCount(6);
