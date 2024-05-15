@@ -45,7 +45,7 @@ export function closePopupCreateAlbum() {
 }
 
 export function fetchDataAlbum(){
-    return  fetch('http://localhost:8080/SoundSephere/User/getListAlbumJson')
+    return  fetch('http://localhost:8080/SoundSephere/Playlist/getListAlbumJson')
         .then(response => {
             console.log(response)
             if (!response.ok) {

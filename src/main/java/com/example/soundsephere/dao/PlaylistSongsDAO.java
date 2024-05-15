@@ -11,8 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PlaylistSongsDAO extends SoundSysDAO<PlaylistSongs, Integer>{
-    private static final String INSERT_SONG_TO_PLAYLIST_QUERY = "INSERT INTO playlist_songs (playlist_id, song_id)" +
-            "VALUE (?,?)";
+    private static final String INSERT_SONG_TO_PLAYLIST_QUERY = "INSERT INTO playlist_songs (playlist_id, song_id) " +
+            "VALUES (?,?);";
     public static final String SELECT_ALL_SONG_IN_PLAYLIST_QUERY =
             "SELECT ps.playlist_id, ps.song_id " +
                     "FROM playlist_songs ps" +

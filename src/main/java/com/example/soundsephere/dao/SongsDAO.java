@@ -31,6 +31,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
             "SELECT TOP 1 id\n" +
                     "FROM songs\n" +
                     "ORDER BY id DESC;";
+
     public boolean insert(Songs entity) {
         Connection conn = JDBCUtil.getConnection();
         boolean result = true;

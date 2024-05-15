@@ -70,9 +70,6 @@ public class UserController extends HttpServlet {
             case "/getListSongJson":
                 getListSongJson(request, response);
                 break;
-            case "/getListAlbumJson":
-                getListAlbumJson(request, response);
-                break;
             default:
                 System.out.println("default");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
@@ -227,16 +224,5 @@ public class UserController extends HttpServlet {
         response.getWriter().write(jsonSongs);
     }
 
-    public void getListAlbumJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        Users curUser = (Users) session.getAttribute("user");
-        List<Playlists> lstPlaylist = playlistsDAO.selectBySql(PlaylistsDAO.SELECT_ALBUM_BY_ID_ARTIST_QUERY, curUser.getId());
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        response.getWriter().write(jsonPlaylist);
-    }
 }

@@ -1,5 +1,5 @@
 import {getImageFromFirebase, uploadFileToFirebase} from './firebaseModule.js';
-import {fetchDataAlbum, renderAlbumList} from "./albumModule";
+import {closePopupCreateAlbum, fetchDataAlbum} from "./albumModule.js";
 
 export function openAddSongPopup() {
     const addSongPopup = document.getElementById('addSongPopup');
@@ -52,6 +52,7 @@ export function addNewSong() {
                     uploadFileToFirebase(lyricFileInput, `lyric/${lyricFileInput.name}`);
                 }
                 window.alert('Song created successfully');
+                closeSongPopup();
             } else {
                 window.alert('Failed to create song');
             }
@@ -66,7 +67,7 @@ export function closeSongPopup() {
     addSongPopup.style.display = 'none';
 }
 
-export function openAddSongToAlbumPopup(song) {
+export function openAddSongToAlbumPopup(songId) {
     const addSongToAlbumPopUp = document.getElementById('addSongToAlbumPopUp');
     addSongToAlbumPopUp.style.display = 'flex';
 
@@ -78,6 +79,63 @@ export function openAddSongToAlbumPopup(song) {
     btnCloseAlbumPopupTop.addEventListener('click', function() {
         closeAddSongToAlbumPopup();
     });
+    const albumItems = document.getElementById('albumItems');
+    fetchDataAlbum()
+        .then(data=>{
+            albumItems.innerHTML = '';
+            data.forEach(album => {
+                const albumItem = document.createElement('li');
+                albumItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                albumItem.textContent = album.name;
+
+                const addButton = document.createElement('button');
+                addButton.className = 'btn btn-primary';
+                addButton.textContent = '+';
+                addButton.addEventListener('click', function() {
+                    addSongToAlbum(songId, album.id);
+                });
+
+                albumItem.appendChild(addButton);
+                albumItems.appendChild(albumItem);
+            });
+        })
+        .catch(error => {
+            console.error('Lỗi trong quá trình lấy dữ liệu:', error);
+        });
+
+}
+
+export function addSongToAlbum(songId, albumId){
+    console.log("Add song " + songId + " to album " + albumId);
+    const payload = {
+        songId: songId,
+        playlistId: albumId
+    };
+
+    fetch('http://localhost:8080/SoundSephere/Playlist/addSongToPlaylist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.result) {
+                window.alert('Add song to album successfully');
+                closeAddSongToAlbumPopup();
+            } else {
+                window.alert('Failed to add song to album because song already in album');
+            }
+        })
+        .catch(error => {
+            console.error('Error add song to album', error);
+        });
 }
 
 export function closeAddSongToAlbumPopup() {
@@ -158,7 +216,7 @@ export function createSongCard(song){
     addToPlaylistA.href = '#';
     addToPlaylistA.textContent = 'Add to Album';
     addToPlaylistA.addEventListener('click', function() {
-        openAddSongToAlbumPopup(song);
+        openAddSongToAlbumPopup(song.id);
     });
 
 
