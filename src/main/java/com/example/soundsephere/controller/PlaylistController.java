@@ -51,7 +51,9 @@ public class PlaylistController extends HttpServlet {
             case "/getListAlbumJson":
                 getListAlbumJson(request, response);
                 break;
-
+            case "/getListPlaylistJson" :
+                getListPlaylistJson(request, response);
+                break;
             default:
                 System.out.println("default");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
@@ -65,8 +67,9 @@ public class PlaylistController extends HttpServlet {
 
         if ("/addNewAlbum".equals(action)) {
             addNewAlbum(request, response);
-        }
-        else if("/addSongToPlaylist".equals(action)){
+        } else if ("/addNewPlaylist".equals(action)) {
+            addNewPlaylist(request, response);
+        } else if("/addSongToPlaylist".equals(action)){
             addSongToPlaylist(request, response);
         } else {
             doGet(request, response);
@@ -98,6 +101,32 @@ public class PlaylistController extends HttpServlet {
         Playlists playlist = new Playlists();
         playlist.setName(albumName);
         playlist.setType(EnumTypePlaylist.ALBUM);
+        playlist.setStatus(EnumStatus.AVAILABLE);
+        playlist.setUser_id(curUser.getId());
+
+        boolean result = playlistsDAO.insert(playlist);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{ \"result\": " + result + " }");
+    }
+    public void addNewPlaylist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
+        }
+        String data = buffer.toString();
+
+        JSONObject json = new JSONObject(data);
+        String playlistName = json.getString("playlistName");
+        System.out.println(playlistName);
+        Users curUser = (Users) request.getSession().getAttribute("user");
+
+        Playlists playlist = new Playlists();
+        playlist.setName(playlistName);
+        playlist.setType(EnumTypePlaylist.PLAYLIST);
         playlist.setStatus(EnumStatus.AVAILABLE);
         playlist.setUser_id(curUser.getId());
 
@@ -139,6 +168,23 @@ public class PlaylistController extends HttpServlet {
         Users curUser = (Users) session.getAttribute("user");
         List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getId());
         lstPlaylist.removeIf(playlist -> playlist.getType().equals(EnumTypePlaylist.PLAYLIST));
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        response.getWriter().write(jsonPlaylist);
+    }
+
+    public void getListPlaylistJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Users curUser = (Users) session.getAttribute("user");
+        List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getId());
+        lstPlaylist.removeIf(playlist -> playlist.getType().equals(EnumTypePlaylist.ALBUM));
+        for (Playlists playlist: lstPlaylist) {
+            playlist.setNumber_of_songs(playlistsDAO.getNumberofsongs(playlist.getId()));
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
 

@@ -1,5 +1,6 @@
 import {getImageFromFirebase, uploadFileToFirebase} from './firebaseModule.js';
-import {closePopupCreateAlbum, fetchDataAlbum} from "./albumModule.js";
+import {fetchDataAlbum} from "./albumModule.js";
+import {loadSong} from "./artist_main.js";
 
 export function openAddSongPopup() {
     const addSongPopup = document.getElementById('addSongPopup');
@@ -53,6 +54,7 @@ export function addNewSong() {
                 }
                 window.alert('Song created successfully');
                 closeSongPopup();
+                loadSong();
             } else {
                 window.alert('Failed to create song');
             }
