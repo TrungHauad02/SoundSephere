@@ -86,6 +86,12 @@ export function createPlaylistCard(playlist){
     deletePlaylistA.className = 'dropdown-item playlist';
     deletePlaylistA.href = '#';
     deletePlaylistA.textContent = 'Delete playlist';
+
+    deletePlaylistA.addEventListener('click', () => {
+        const playlistId = playlist.id;
+        deletePlaylist(playlistId);
+    });
+
     const showDetailA = document.createElement('a');
     showDetailA.className = 'dropdown-item addToPlaylist';
     showDetailA.href = '#';
@@ -132,7 +138,7 @@ export function closeCreatePlaylistPopup(){
     playlistPopup.style.display = 'none';
 }
 
-export function createNewPlaylist(){
+export function createNewPlaylist() {
     const playlistNameInput = document.getElementById('playlistName');
 
     const playlistName = playlistNameInput.value;
@@ -166,5 +172,36 @@ export function createNewPlaylist(){
         })
         .catch(error => {
             console.error('Error creating playlist:', error);
+        });
+}
+
+export function deletePlaylist(playlistId){
+    const payload = {
+        playlistId: playlistId
+    };
+
+    fetch('http://localhost:8080/SoundSephere/Playlist/deletePlaylist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.result) {
+                window.alert('Playlist delete successfully');
+                loadPlaylist();
+            } else {
+                window.alert('Failed to delete playlist');
+            }
+        })
+        .catch(error => {
+            console.error('Error delete playlist:', error);
         });
 }

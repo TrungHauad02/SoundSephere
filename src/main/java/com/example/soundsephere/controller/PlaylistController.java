@@ -71,6 +71,8 @@ public class PlaylistController extends HttpServlet {
             addNewPlaylist(request, response);
         } else if("/addSongToPlaylist".equals(action)){
             addSongToPlaylist(request, response);
+        } else if ("/deletePlaylist".equals(action)) {
+            deletePlaylist(request, response);
         } else {
             doGet(request, response);
         }
@@ -192,5 +194,30 @@ public class PlaylistController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         response.getWriter().write(jsonPlaylist);
+    }
+
+    public void deletePlaylist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
+        }
+        String data = buffer.toString();
+
+        JSONObject json = new JSONObject(data);
+        int playlistId = json.getInt("playlistId");
+
+        int numberOfSongs = playlistsDAO.getNumberofsongs(playlistId);
+        boolean result = true;
+        if(numberOfSongs != 0){
+            PlaylistSongsDAO playlistSongsDAO = new PlaylistSongsDAO();
+            result = playlistSongsDAO.delete(playlistId);
+        }
+        if (result)
+            result = playlistsDAO.delete(playlistId);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{ \"result\": " + result + " }");
     }
 }
