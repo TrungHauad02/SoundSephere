@@ -1,4 +1,5 @@
-import {getImageFromFirebase} from './firebaseModule.js';
+import {getImageFromFirebase, uploadFileToFirebase} from './firebaseModule.js';
+import {closePopupCreateAlbum, fetchDataAlbum} from "./albumModule.js";
 
 export function openAddSongPopup() {
     const addSongPopup = document.getElementById('addSongPopup');
@@ -6,7 +7,59 @@ export function openAddSongPopup() {
 }
 
 export function addNewSong() {
-    console.log('Add new song');
+    const songNameInput = document.getElementById('songName').value;
+    const descriptionSongInput = document.getElementById('descriptionSong').value;
+    const writtenByInput = document.getElementById('writtenBy').value;
+    const producedByInput = document.getElementById('producedBy').value;
+    const imageInput = document.getElementById('imageInput').files[0];
+    const mp3FileInput = document.getElementById('mp3File').files[0];
+    const lyricFileInput = document.getElementById('lyricFile').files[0];
+    const timePlayInput = document.getElementById('timePlay').value;
+
+    const songData = {
+        songName: songNameInput,
+        description: descriptionSongInput,
+        writtenBy: writtenByInput,
+        producedBy: producedByInput,
+        timePlay: timePlayInput,
+        imageFileName: imageInput ? imageInput.name : null,
+        mp3FileName: mp3FileInput ? mp3FileInput.name : null,
+        lyricFileName: lyricFileInput ? lyricFileInput.name : null
+    };
+    console.log(JSON.stringify(songData));
+    fetch('http://localhost:8080/SoundSephere/Song/addNewSong', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(songData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.result) {
+                if (imageInput) {
+                    uploadFileToFirebase(imageInput, `image/${imageInput.name}`);
+                }
+                if (mp3FileInput) {
+                    uploadFileToFirebase(mp3FileInput, `songdata/${mp3FileInput.name}`);
+                }
+                if (lyricFileInput) {
+                    uploadFileToFirebase(lyricFileInput, `lyric/${lyricFileInput.name}`);
+                }
+                window.alert('Song created successfully');
+                closeSongPopup();
+            } else {
+                window.alert('Failed to create song');
+            }
+        })
+        .catch(error => {
+            console.error('Error creating song:', error);
+        });
 }
 
 export function closeSongPopup() {
@@ -14,23 +67,80 @@ export function closeSongPopup() {
     addSongPopup.style.display = 'none';
 }
 
-export function openAddSongToPlaylistPopup(song) {
-    const addSongToPlaylistPopUp = document.getElementById('addSongToPlaylistPopUp');
-    addSongToPlaylistPopUp.style.display = 'flex';
+export function openAddSongToAlbumPopup(songId) {
+    const addSongToAlbumPopUp = document.getElementById('addSongToAlbumPopUp');
+    addSongToAlbumPopUp.style.display = 'flex';
 
-    const btnClosePlaylistPopup = document.getElementById('btnClosePlaylistPopup');
-    const btnClosePlaylistPopupTop = document.getElementById('btnClosePlaylistPopupTop');
-    btnClosePlaylistPopup.addEventListener('click', function() {
-        closeAddSongToPlaylistPopup();
+    const btnCloseAlbumPopup = document.getElementById('btnCloseAlbumPopup');
+    const btnCloseAlbumPopupTop = document.getElementById('btnCloseAlbumPopupTop');
+    btnCloseAlbumPopup.addEventListener('click', function() {
+        closeAddSongToAlbumPopup();
     });
-    btnClosePlaylistPopupTop.addEventListener('click', function() {
-        closeAddSongToPlaylistPopup();
+    btnCloseAlbumPopupTop.addEventListener('click', function() {
+        closeAddSongToAlbumPopup();
     });
+    const albumItems = document.getElementById('albumItems');
+    fetchDataAlbum()
+        .then(data=>{
+            albumItems.innerHTML = '';
+            data.forEach(album => {
+                const albumItem = document.createElement('li');
+                albumItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                albumItem.textContent = album.name;
+
+                const addButton = document.createElement('button');
+                addButton.className = 'btn btn-primary';
+                addButton.textContent = '+';
+                addButton.addEventListener('click', function() {
+                    addSongToAlbum(songId, album.id);
+                });
+
+                albumItem.appendChild(addButton);
+                albumItems.appendChild(albumItem);
+            });
+        })
+        .catch(error => {
+            console.error('Lỗi trong quá trình lấy dữ liệu:', error);
+        });
+
 }
 
-export function closeAddSongToPlaylistPopup() {
-    const addSongToPlaylistPopUp = document.getElementById('addSongToPlaylistPopUp');
-    addSongToPlaylistPopUp.style.display = 'none';
+export function addSongToAlbum(songId, albumId){
+    console.log("Add song " + songId + " to album " + albumId);
+    const payload = {
+        songId: songId,
+        playlistId: albumId
+    };
+
+    fetch('http://localhost:8080/SoundSephere/Playlist/addSongToPlaylist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.result) {
+                window.alert('Add song to album successfully');
+                closeAddSongToAlbumPopup();
+            } else {
+                window.alert('Failed to add song to album because song already in album');
+            }
+        })
+        .catch(error => {
+            console.error('Error add song to album', error);
+        });
+}
+
+export function closeAddSongToAlbumPopup() {
+    const addSongToAlbumPopUp = document.getElementById('addSongToAlbumPopUp');
+    addSongToAlbumPopUp.style.display = 'none';
 }
 
 export function createSongCard(song){
@@ -102,11 +212,11 @@ export function createSongCard(song){
     playSongA.textContent = 'Play';
 
     const addToPlaylistA = document.createElement('a');
-    addToPlaylistA.className = 'dropdown-item addToPlaylist';
+    addToPlaylistA.className = 'dropdown-item addToAlbum';
     addToPlaylistA.href = '#';
-    addToPlaylistA.textContent = 'Add to Playlist';
+    addToPlaylistA.textContent = 'Add to Album';
     addToPlaylistA.addEventListener('click', function() {
-        openAddSongToPlaylistPopup(song);
+        openAddSongToAlbumPopup(song.id);
     });
 
 
