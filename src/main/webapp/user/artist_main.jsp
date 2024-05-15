@@ -56,6 +56,9 @@
         .list-group-item{
             color: #000000;
         }
+        label{
+            color: #000000;
+        }
     </style>
 </head>
 <body style="background-color: black;">
@@ -149,15 +152,15 @@
     </div>
 
     <!-- Thêm div để hiển thị danh sách playlist -->
-    <!-- Popup Add Song To Playlist -->
-    <div id="addSongToPlaylistPopUp" class="popup" style="display: none;">
+    <!-- Popup Add Song To Album -->
+    <div id="addSongToAlbumPopUp" class="popup" style="display: none;">
         <div class="popup-content" style="min-width: 500px; max-height:90vh; overflow-y: auto; " >
-            <span class="close" id="btnClosePlaylistPopupTop">&times;</span>
-            <h5 class="mb-4">Add Song to Playlist</h5>
-            <ul id="playlistItems" class="list-group">
+            <span class="close" id="btnCloseAlbumPopupTop">&times;</span>
+            <h5 class="mb-4">Add Song to Album</h5>
+            <ul id="albumItems" class="list-group">
 
             </ul>
-            <button type="button" class="btn btn-secondary mt-2" id="btnClosePlaylistPopup">Cancel</button>
+            <button type="button" class="btn btn-secondary mt-2" id="btnCloseAlbumPopup">Cancel</button>
         </div>
     </div>
 
@@ -186,6 +189,10 @@
                     <input type="text" class="form-control" id="songName" name="songName">
                 </div>
                 <div class="form-group">
+                    <label for="descriptionSong">Description:</label>
+                    <input type="text" class="form-control" id="descriptionSong" name="descriptionSong">
+                </div>
+                <div class="form-group">
                     <label for="writtenBy">Written By:</label>
                     <input type="text" class="form-control" id="writtenBy" name="writtenBy">
                 </div>
@@ -204,6 +211,14 @@
                 <div class="form-group">
                     <label for="mp3File">MP3 File:</label>
                     <input type="file" class="form-control-file" id="mp3File" name="mp3File">
+                </div>
+                <div class="form-group">
+                    <label for="lyricFile">Lyric File:</label>
+                    <input type="file" class="form-control-file" id="lyricFile" name="lyricFile" accept=".txt">
+                </div>
+                <div class="form-group">
+                    <label for="timePlay">Time Play (seconds):</label>
+                    <input type="number" class="form-control" id="timePlay" name="timePlay">
                 </div>
                 <button id="btnAddSong" type="button" class="btn btn-success">Create</button>
                 <button id="btnCloseSongPopup" type="button" class="btn btn-secondary">Cancel</button>

@@ -14,8 +14,8 @@ import java.util.List;
 
 public class SongsDAO extends SoundSysDAO<Songs, Integer> {
     private static final String INSERT_SONG_QUERY =
-            "INSERT INTO [songs] ([title], [id_artist], [genre_id], [description], [time_play], [song_data], [image], [lyric], [rating], [status]) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO [songs] ([title], [id_artist], [description], [time_play], [song_data], [image], [lyric], [rating], [status]) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String SELECT_ALL_SONG_BY_ID_USER_QUERY = "SELECT * FROM user_listened join songs on user_listened.song_id = songs.id  WHERE user_id = ?";
     private static final String SONGS_COUNT_BY_ID_ARTIST_QUERY =
@@ -24,10 +24,13 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
                 "WHERE id_artist = ?;\n";
 
     public static final String SELECT_SONGS_BY_ID_ARTIST_QUERY =
-            "SELECT id, title,id_artist, genre_id, description, time_play, song_data, image, lyric, rating, status\n" +
+            "SELECT id, title,id_artist, description, time_play, song_data, image, lyric, rating, status\n" +
                     "FROM songs\n" +
                     "WHERE id_artist = ?;\n";
-
+    public static final String SELECT_LASTED_ID_QUERY =
+            "SELECT TOP 1 id\n" +
+                    "FROM songs\n" +
+                    "ORDER BY id DESC;";
     public boolean insert(Songs entity) {
         Connection conn = JDBCUtil.getConnection();
         boolean result = true;
@@ -35,14 +38,13 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
             try (PreparedStatement ps = conn.prepareStatement(INSERT_SONG_QUERY)) {
                 ps.setString(1, entity.getTitle());
                 ps.setString(2, entity.getId_artist());
-                ps.setInt(3, entity.getGenre_id());
-                ps.setString(4, entity.getDescription());
-                ps.setInt(5, entity.getTime_play());
-                ps.setString(6, entity.getSong_data());
-                ps.setString(7, entity.getImage());
-                ps.setString(8, entity.getLyric());
-                ps.setFloat(9, entity.getRating());
-                ps.setString(10, entity.getStatus().name().toLowerCase());
+                ps.setString(3, entity.getDescription());
+                ps.setInt(4, entity.getTime_play());
+                ps.setString(5, entity.getSong_data());
+                ps.setString(6, entity.getImage());
+                ps.setString(7, entity.getLyric());
+                ps.setFloat(8, entity.getRating());
+                ps.setString(9, entity.getStatus().name().toLowerCase());
 
                 int rowsAffected = ps.executeUpdate();
                 result = rowsAffected > 0;
@@ -77,7 +79,6 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
                     Users artistName = usersDAO.selectById(rs.getString("id_artist"));
 
                     song.setArtistName(artistName.getName());
-                    song.setGenre_id(rs.getInt("genre_id"));
                     song.setDescription(rs.getString("description"));
                     song.setTime_play(rs.getInt("time_play"));
                     song.setSong_data(rs.getString("song_data"));
@@ -118,7 +119,6 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
                     song.setArtistName(artistName.getName());
 
                     song.setId_artist(rs.getString("id_artist"));
-                    song.setGenre_id(rs.getInt("genre_id"));
                     song.setDescription(rs.getString("description"));
                     song.setTime_play(rs.getInt("time_play"));
                     song.setSong_data(rs.getString("song_data"));
@@ -170,7 +170,6 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
                     song.setId(resultSet.getInt("id"));
                     song.setTitle(resultSet.getString("title"));
                     song.setId_artist(resultSet.getString("id_artist"));
-                    song.setGenre_id(resultSet.getInt("genre_id"));
                     song.setDescription(resultSet.getString("description"));
                     song.setTime_play(resultSet.getInt("time_play"));
                     song.setSong_data(resultSet.getString("song_data"));
@@ -209,5 +208,27 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
             }
         }
         return count;
+    }
+
+    public int getLastestID(){
+        int result = 1;
+        Connection connection = JDBCUtil.getConnection();
+        if (connection != null) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_LASTED_ID_QUERY)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    result = resultSet.getInt("id");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
     }
 }

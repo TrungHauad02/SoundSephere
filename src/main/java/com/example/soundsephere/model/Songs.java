@@ -6,7 +6,6 @@ public class Songs {
     private int id;
     private String title;
     private String id_artist;
-    private int genre_id;
     private String description;
     private int time_play;
     private String song_data;
@@ -25,7 +24,6 @@ public class Songs {
         this.id = id;
         this.title = title;
         this.id_artist = id_artist;
-        this.genre_id = genre_id;
         this.description = description;
         this.time_play = time_play;
         this.song_data = song_data;
@@ -65,14 +63,6 @@ public class Songs {
 
     public void setId_artist(String id_artist) {
         this.id_artist = id_artist;
-    }
-
-    public int getGenre_id() {
-        return genre_id;
-    }
-
-    public void setGenre_id(int genre_id) {
-        this.genre_id = genre_id;
     }
 
     public String getDescription() {
