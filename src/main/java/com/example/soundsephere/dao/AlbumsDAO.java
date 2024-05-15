@@ -20,27 +20,6 @@ public class AlbumsDAO extends SoundSysDAO<Albums, Integer> {
             "JOIN users u ON p.user_id = u.username " +
             "WHERE p.type = 'album'";
     private static final String DELETE_ALBUM_BY_ID = "DELETE FROM playlists WHERE id = ?" ;
-
-    @Override
-    public boolean insert( Albums entity) {
-        return false;
-    }
-
-    @Override
-    public boolean update(Albums entity) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Integer id) {
-        return false;
-    }
-
-    @Override
-    public Albums selectById(Integer id) {
-        return null;
-    }
-
     @Override
     public List<Albums> selectAll() {
         Connection connection = MyUtils.getConnection();
@@ -84,6 +63,27 @@ public class AlbumsDAO extends SoundSysDAO<Albums, Integer> {
         }
 
     }
+
+    @Override
+    public boolean insert( Albums entity) {
+        return false;
+    }
+
+    @Override
+    public boolean update(Albums entity) {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        return false;
+    }
+
+    @Override
+    public Albums selectById(Integer id) {
+        return null;
+    }
+
 
 
 

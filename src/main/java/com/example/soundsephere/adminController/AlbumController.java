@@ -23,14 +23,10 @@ public class AlbumController  extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private AlbumsDAO albumsDAO;
     public void init() {
-        albumsDAO  = new AlbumsDAO();
-
-    }
+        albumsDAO  = new AlbumsDAO();}
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
-    }
-
+        doGet(request, response);}
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getPathInfo();
@@ -46,24 +42,12 @@ public class AlbumController  extends HttpServlet {
             default:
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_songs.jsp");
                 dispatcher.forward(request, response);
-                break;
-        }
+                break;}
         }catch (SQLException ex) {
-            throw new ServletException(ex);
-        }
-
-    }
-
+            throw new ServletException(ex);}}
     private void deleteAlbum(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         HttpSession session = request.getSession();
         String albumId = request.getParameter("id");
-        if (albumId == null || albumId.isEmpty()) {
-            request.setAttribute("error", "No song ID provided.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_albums.jsp");
-            dispatcher.forward(request, response);
-            return;
-        }
-
         boolean isDeleted = albumsDAO.deleteAlbumById(albumId);
         if (isDeleted) {
             request.setAttribute("message", "album with ID " + albumId + " has been successfully deleted.");

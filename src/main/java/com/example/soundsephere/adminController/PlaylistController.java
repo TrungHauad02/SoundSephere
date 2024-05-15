@@ -60,12 +60,6 @@ public class PlaylistController extends HttpServlet {
 
         HttpSession session = request.getSession();
         String playlistId = request.getParameter("id");
-        if (playlistId == null || playlistId.isEmpty()) {
-            request.setAttribute("error", "No song ID provided.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_playlists.jsp");
-            dispatcher.forward(request, response);
-            return;
-        }
 
         boolean isDeleted = playlistsDAO.deletePlaylistById(playlistId);
         if (isDeleted) {

@@ -352,9 +352,6 @@
                             <th>Name playlist</th>
                             <th>User </th>
                             <th>Status</th>
-                            <!--
-                            <th>Block</th>
-                            -->
                             <th>Delete</th>
                         </tr>
                         </thead>
