@@ -17,6 +17,8 @@ public class PlaylistSongsDAO extends SoundSysDAO<PlaylistSongs, Integer>{
             "SELECT ps.playlist_id, ps.song_id " +
                     "FROM playlist_songs ps" +
                     "WHERE playlist_id = ?";
+    private static final String DELETE_PLAYLIST_SONG_QUERY =
+            "DELETE FROM playlist_songs WHERE playlist_id = ?";
     public boolean insert(PlaylistSongs entity) {
         Connection conn = JDBCUtil.getConnection();
         boolean result = true;
@@ -45,7 +47,25 @@ public class PlaylistSongsDAO extends SoundSysDAO<PlaylistSongs, Integer>{
     }
 
     public boolean delete(Integer id) {
-        return false;
+        Connection conn = JDBCUtil.getConnection();
+        boolean result = true;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(DELETE_PLAYLIST_SONG_QUERY)) {
+                ps.setInt(1, id);
+
+                int rowsAffected = ps.executeUpdate();
+                result = rowsAffected > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return result;
     }
 
     public PlaylistSongs selectById(Integer id) {

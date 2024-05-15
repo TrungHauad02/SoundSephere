@@ -16,6 +16,8 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     private static final String INSERT_PLAYLIST_QUERY =
             "INSERT INTO playlists (name, user_id, type, status) " +
                     "VALUES (?, ?, ?, ?)";
+    private static final String DELETE_PLAYLIST_QUERY =
+            "DELETE FROM playlists WHERE id = ?";
     private static final String SELECT_ALL_PLAYLIST_BY_USER_ID_QUERY ="SELECT * FROM playlists WHERE user_id = ?";
     private static final String SELECT_NUMBER_OF_SONGS_IN_PLAYLIST_QUERY = "SELECT COUNT(*) FROM playlist_songs WHERE playlist_id = ?";
     private static final String ALBUM_COUNT_BY_ID_ARTIST_QUERY =
@@ -58,7 +60,25 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     }
 
     public boolean delete(Integer id) {
-        return false;
+        Connection conn = JDBCUtil.getConnection();
+        boolean result = true;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(DELETE_PLAYLIST_QUERY)) {
+                ps.setInt(1, id);
+
+                int rowsAffected = ps.executeUpdate();
+                result = rowsAffected > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return result;
     }
 
     public Playlists selectById(Integer id) {
