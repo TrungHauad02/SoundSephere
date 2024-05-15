@@ -17,7 +17,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
             "INSERT INTO [songs] ([title], [id_artist], [genre_id], [description], [time_play], [song_data], [image], [lyric], [rating], [status]) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String SELECT_ALL_SONG_BY_ID_QUERY = "SELECT * FROM user_listened join songs on user_listened.song_id = songs.id  WHERE user_id = ?";
+    private static final String SELECT_ALL_SONG_BY_ID_USER_QUERY = "SELECT * FROM user_listened join songs on user_listened.song_id = songs.id  WHERE user_id = ?";
     private static final String SONGS_COUNT_BY_ID_ARTIST_QUERY =
         "SELECT COUNT(*) AS song_count\n" +
                 "FROM songs\n" +
@@ -34,7 +34,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(INSERT_SONG_QUERY)) {
                 ps.setString(1, entity.getTitle());
-                ps.setInt(2, entity.getId_artist());
+                ps.setString(2, entity.getId_artist());
                 ps.setInt(3, entity.getGenre_id());
                 ps.setString(4, entity.getDescription());
                 ps.setInt(5, entity.getTime_play());
@@ -59,12 +59,12 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
         return result;
     }
 
-    public List<Songs> selectAllSongById(int id) {
+    public List<Songs> selectAllSongById(String id) {
         Connection conn = JDBCUtil.getConnection();
         List<Songs> songs = null;
         if (conn != null) {
-            try (PreparedStatement ps = conn.prepareStatement(SELECT_ALL_SONG_BY_ID_QUERY)) {
-                ps.setInt(1, id);
+            try (PreparedStatement ps = conn.prepareStatement(SELECT_ALL_SONG_BY_ID_USER_QUERY)) {
+                ps.setString(1, id);
                 ResultSet rs = ps.executeQuery();
                 songs = new LinkedList<>();
                 while (rs.next()) {
@@ -74,7 +74,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
 
                     //lấy tên nghệ sĩ
                     UsersDAO usersDAO = new UsersDAO();
-                    Users artistName = usersDAO.selectById(rs.getInt("id_artist"));
+                    Users artistName = usersDAO.selectById(rs.getString("id_artist"));
 
                     song.setArtistName(artistName.getName());
                     song.setGenre_id(rs.getInt("genre_id"));
@@ -114,10 +114,10 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
 
                     //lấy tên nghệ sĩ
                     UsersDAO usersDAO = new UsersDAO();
-                    Users artistName = usersDAO.selectById(rs.getInt("id_artist"));
+                    Users artistName = usersDAO.selectById(rs.getString("id_artist"));
                     song.setArtistName(artistName.getName());
 
-                    song.setId_artist(rs.getInt("id_artist"));
+                    song.setId_artist(rs.getString("id_artist"));
                     song.setGenre_id(rs.getInt("genre_id"));
                     song.setDescription(rs.getString("description"));
                     song.setTime_play(rs.getInt("time_play"));
@@ -169,7 +169,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
                     Songs song = new Songs();
                     song.setId(resultSet.getInt("id"));
                     song.setTitle(resultSet.getString("title"));
-                    song.setId_artist(resultSet.getInt("id_artist"));
+                    song.setId_artist(resultSet.getString("id_artist"));
                     song.setGenre_id(resultSet.getInt("genre_id"));
                     song.setDescription(resultSet.getString("description"));
                     song.setTime_play(resultSet.getInt("time_play"));
@@ -194,12 +194,12 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
         return lstSong;
     }
 
-    public int songsCount(int idArtist){
+    public int songsCount(String idArtist){
         int count = 0;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(SONGS_COUNT_BY_ID_ARTIST_QUERY)) {
-                ps.setInt(1, idArtist);
+                ps.setString(1, idArtist);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt("song_count");
