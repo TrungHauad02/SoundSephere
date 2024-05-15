@@ -152,12 +152,12 @@ public class UsersDAO extends SoundSysDAO<Users, String> {
         return null;
     }
 
-    public int listenCount(int idArtist){
+    public int listenCount(String idArtist){
         int count = 0;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(LISTEN_COUNT_BY_ID_ARTIST_QUERY)) {
-                ps.setInt(1, idArtist);
+                ps.setString(1, idArtist);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt("total_listens_count");

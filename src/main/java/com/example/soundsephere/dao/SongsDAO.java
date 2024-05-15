@@ -194,12 +194,12 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
         return lstSong;
     }
 
-    public int songsCount(int idArtist){
+    public int songsCount(String idArtist){
         int count = 0;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(SONGS_COUNT_BY_ID_ARTIST_QUERY)) {
-                ps.setInt(1, idArtist);
+                ps.setString(1, idArtist);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt("song_count");

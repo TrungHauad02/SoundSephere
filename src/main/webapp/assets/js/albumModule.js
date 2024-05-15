@@ -5,7 +5,38 @@ export function openCreateAlbumPopup() {
 }
 
 export function createAlbum() {
+    const albumNameInput = document.getElementById('albumName');
 
+    const albumName = albumNameInput.value;
+    console.log(albumName);
+
+    const payload = {
+        albumName: albumName
+    };
+    fetch('http://localhost:8080/SoundSephere/Playlist/addNewAlbum', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.result) {
+                window.alert('Album created successfully');
+                closePopupCreateAlbum();
+            } else {
+                window.alert('Failed to create album');
+            }
+        })
+        .catch(error => {
+            console.error('Error creating album:', error);
+        });
 }
 
 export function closePopupCreateAlbum() {

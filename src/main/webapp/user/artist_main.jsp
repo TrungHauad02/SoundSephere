@@ -53,27 +53,17 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            min-width: 150px;
-            background-color: #ffffff;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .dropdown-menu.show {
-            display: block;
+        .list-group-item{
+            color: #000000;
         }
     </style>
 </head>
 <body style="background-color: black;">
     <jsp:include page="../header.jsp"/>
     <%
-        Users currentUserLogin = (Users) session.getAttribute("currentUserLogin");%>
+        Users user = (Users) session.getAttribute("user");%>
         <%
-            if (currentUserLogin == null) {
+            if (user == null) {
         %>
         <%
             response.sendRedirect(request.getContextPath()+"/index.jsp");
@@ -93,8 +83,8 @@
                             <div class="col-md-4">
                                 <ul class="list-group">
                                     <li class="list-group-item">Artist details</li>
-                                    <li class="list-group-item">${currentUserLogin.name}</li>
-                                    <li class="list-group-item">${currentUserLogin.description}</li>
+                                    <li class="list-group-item">${user.name}</li>
+                                    <li class="list-group-item">${user.description}</li>
                                 </ul>
                             </div>
                             <div class="col-md-1"></div>
@@ -179,10 +169,6 @@
                 <div class="form-group">
                     <label for="albumName">Album Name:</label>
                     <input type="text" class="form-control" id="albumName" name="albumName">
-                </div>
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea class="form-control" id="description" name="description"></textarea>
                 </div>
                 <button id="btnCreateAlbum" type="button" class="btn btn-success" >Create</button>
                 <button id="btnCloseCreateAlbumPopup" type="button" class="btn btn-secondary">Cancel</button>

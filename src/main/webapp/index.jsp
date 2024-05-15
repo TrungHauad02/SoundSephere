@@ -11,8 +11,6 @@
     <jsp:include page="link_css.jsp"/>
 </head>
 <body>
-    <jsp:include page="header.jsp"/>
-
     <%
         Users user = null;
         if (session.getAttribute("user") == null) {
