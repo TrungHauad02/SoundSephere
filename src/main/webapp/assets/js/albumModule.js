@@ -1,3 +1,4 @@
+import {loadAlbum} from "./artist_main.js";
 
 export function openCreateAlbumPopup() {
     const albumPopup = document.getElementById('albumPopup');
@@ -30,6 +31,7 @@ export function createAlbum() {
             if (data.result) {
                 window.alert('Album created successfully');
                 closePopupCreateAlbum();
+                loadAlbum();
             } else {
                 window.alert('Failed to create album');
             }

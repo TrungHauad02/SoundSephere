@@ -43,14 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.readAsDataURL(file);
         }
     });
-    fetchDataSong()
-        .then(data => {
-            renderSongList(data, 'songListContainer');
-        })
-        .catch(error => {
-            console.error('Lỗi trong quá trình lấy dữ liệu:', error);
-         });
 
+    loadSong();
+    loadAlbum();
+});
+
+export function loadAlbum(){
     fetchDataAlbum()
         .then(data=>{
             renderAlbumList(data,'albumContainer');
@@ -58,4 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Lỗi trong quá trình lấy dữ liệu:', error);
         });
-});
+}
+
+export function loadSong(){
+    fetchDataSong()
+        .then(data => {
+            renderSongList(data, 'songListContainer');
+        })
+        .catch(error => {
+            console.error('Lỗi trong quá trình lấy dữ liệu:', error);
+        });
+}
