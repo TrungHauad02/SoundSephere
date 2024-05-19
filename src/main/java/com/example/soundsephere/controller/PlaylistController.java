@@ -8,6 +8,7 @@ import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.enumModel.EnumTypePlaylist;
 import com.example.soundsephere.model.PlaylistSongs;
 import com.example.soundsephere.model.Playlists;
+import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.model.Users;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.RequestDispatcher;
@@ -17,10 +18,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet("/Playlist")
@@ -73,6 +76,8 @@ public class PlaylistController extends HttpServlet {
             addSongToPlaylist(request, response);
         } else if ("/deletePlaylist".equals(action)) {
             deletePlaylist(request, response);
+        } else if ("/getPlaylistDetail".equals(action)) {
+            getPlaylistDetail(request, response);
         } else {
             doGet(request, response);
         }
@@ -184,9 +189,6 @@ public class PlaylistController extends HttpServlet {
         Users curUser = (Users) session.getAttribute("user");
         List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getId());
         lstPlaylist.removeIf(playlist -> playlist.getType().equals(EnumTypePlaylist.ALBUM));
-        for (Playlists playlist: lstPlaylist) {
-            playlist.setNumber_of_songs(playlistsDAO.getNumberofsongs(playlist.getId()));
-        }
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
 
@@ -219,5 +221,51 @@ public class PlaylistController extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{ \"result\": " + result + " }");
+    }
+    public void getPlaylistDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
+        }
+        String data = buffer.toString();
+
+        JSONObject json = new JSONObject(data);
+        int playlistId = json.getInt("playlistId");
+
+        Playlists playlist = playlistsDAO.selectById(playlistId);
+        List<Songs> lstSong = songsDAO.selectBySql(SongsDAO.SELECT_SONGS_IN_PLAYLIST_QUERY, playlistId);
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("playlist", convertPlaylistToJson(playlist));
+        responseJson.put("songs", convertSongsToJson(lstSong));
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(responseJson.toString());
+        out.flush();
+    }
+
+    private JSONObject convertPlaylistToJson(Playlists playlist) {
+        JSONObject json = new JSONObject();
+        json.put("id", playlist.getId());
+        json.put("name", playlist.getName());
+        json.put("number_of_songs", playlist.getNumber_of_songs());
+        return json;
+    }
+
+    private JSONArray convertSongsToJson(List<Songs> songs) {
+        JSONArray jsonArray = new JSONArray();
+        for (Songs song : songs) {
+            JSONObject json = new JSONObject();
+            json.put("id", song.getId());
+            json.put("title", song.getTitle());
+            json.put("artist", song.getId_artist());
+            json.put("image", song.getImage());
+            json.put("description", song.getDescription());
+            jsonArray.put(json);
+        }
+        return jsonArray;
     }
 }

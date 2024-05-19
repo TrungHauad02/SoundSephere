@@ -27,10 +27,16 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
             "SELECT id, title,id_artist, description, time_play, song_data, image, lyric, rating, status\n" +
                     "FROM songs\n" +
                     "WHERE id_artist = ?;\n";
-    public static final String SELECT_LASTED_ID_QUERY =
+    private static final String SELECT_LASTED_ID_QUERY =
             "SELECT TOP 1 id\n" +
                     "FROM songs\n" +
                     "ORDER BY id DESC;";
+
+    public static final String SELECT_SONGS_IN_PLAYLIST_QUERY =
+            "SELECT songs.*\n" +
+                    "FROM playlist_songs\n" +
+                    "JOIN songs ON playlist_songs.song_id = songs.id\n" +
+                    "WHERE playlist_id = ?;\n";
 
     public boolean insert(Songs entity) {
         Connection conn = JDBCUtil.getConnection();
@@ -62,7 +68,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
         return result;
     }
 
-    public List<Songs> selectAllSongById(String id) {
+    public List<Songs> selectAllSongByUserId(String id) {
         Connection conn = JDBCUtil.getConnection();
         List<Songs> songs = null;
         if (conn != null) {
