@@ -1,4 +1,5 @@
 import {loadPlaylist} from "./playlist_main.js";
+import {goToPlaylistDetail} from "./playlistDetail.js";
 
 export function fetchDataPlaylist(){
     return fetch('http://localhost:8080/SoundSephere/Playlist/getListPlaylistJson')
@@ -96,6 +97,11 @@ export function createPlaylistCard(playlist){
     showDetailA.className = 'dropdown-item addToPlaylist';
     showDetailA.href = '#';
     showDetailA.textContent = 'Show detail';
+
+    showDetailA.addEventListener('click', ()=>{
+        goToPlaylistDetail(playlist.id);
+    });
+
     dropdownMenuDiv.appendChild(deletePlaylistA);
     dropdownMenuDiv.appendChild(showDetailA);
     dropdownDiv.appendChild(dropdownButton);

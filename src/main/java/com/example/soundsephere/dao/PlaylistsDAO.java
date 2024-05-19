@@ -18,6 +18,8 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                     "VALUES (?, ?, ?, ?)";
     private static final String DELETE_PLAYLIST_QUERY =
             "DELETE FROM playlists WHERE id = ?";
+
+    private static final String SELECT_PLAYLIST_BY_ID_QUERY = "SELECT * FROM playlists WHERE id = ?";
     private static final String SELECT_ALL_PLAYLIST_BY_USER_ID_QUERY ="SELECT * FROM playlists WHERE user_id = ?";
     private static final String SELECT_NUMBER_OF_SONGS_IN_PLAYLIST_QUERY = "SELECT COUNT(*) FROM playlist_songs WHERE playlist_id = ?";
     private static final String ALBUM_COUNT_BY_ID_ARTIST_QUERY =
@@ -82,7 +84,32 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     }
 
     public Playlists selectById(Integer id) {
-        return null;
+        Connection conn = JDBCUtil.getConnection();
+        Playlists playlist = null;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(SELECT_PLAYLIST_BY_ID_QUERY)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    playlist = new Playlists();
+                    playlist.setId(rs.getInt("id"));
+                    playlist.setName(rs.getString("name"));
+                    playlist.setUser_id(rs.getString("user_id"));
+                    playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
+                    playlist.setStatus(EnumStatus.valueOf(rs.getString("status").toUpperCase()));
+                    playlist.setNumber_of_songs(getNumberofsongs(playlist.getId()));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return  playlist;
     }
 
     public List<Playlists> selectAll() {

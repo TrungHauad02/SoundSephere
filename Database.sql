@@ -159,4 +159,3 @@ SELECT COUNT(*) AS playlist_count
 UPDATE [songs]
 SET song_data = 'songdata/BENNETT_Lullaby.mp3', image = 'image/Lullaby_bennett.png', lyric = 'lyric/Lullaby_bennett_lyric.txt'
 WHERE id = 1;
-
