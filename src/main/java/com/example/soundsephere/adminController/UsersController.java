@@ -1,6 +1,7 @@
 package com.example.soundsephere.adminController;
 
 import com.example.soundsephere.dao.UsersDAO;
+import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.model.Users;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/Users")
@@ -25,23 +27,51 @@ public class UsersController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getPathInfo();
-        switch (action) {
-            case "/ad_listUsers":
-                showListUsers(request, response);
-                break;
-            case "/ad_ArtistApproval":
-                showListApproval(request, response);
-            default:
-                break;
+        try {
+            switch (action) {
+                case "/ad_listUsers":
+                    showListUsers(request, response);
+                    break;
+                case "/ad_ArtistApproval":
+                    showListApproval(request, response);
+                    break;
+                case "/ad_blockUsers":
+                    blockUser(request, response);
+                    break;
+                case "/ad_approveArtist":
+                    approveArtist(request, response);
+                    break;
+
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
         }
+
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void approveArtist(HttpServletRequest request, HttpServletResponse response) throws
+            SQLException, ServletException, IOException {
+        HttpSession session = request.getSession();
+        String userId = request.getParameter("id");
+        if (userId == null || userId.isEmpty()) {
+            throw new ServletException("user ID is missing.");
+        }
+        usersDAO.approveArtistById(userId);
+        List<Users> usersList = usersDAO.selectAllApproval();
+        request.setAttribute("usersList", usersList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_approvals.jsp");
+        dispatcher.forward(request, response);
+
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
         // TODO Auto-generated method stub
         doGet(request, response);
     }
 
-    private void showListApproval(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void showListApproval(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
         HttpSession session = request.getSession();
         List<Users> usersList = usersDAO.selectAllApproval();
         request.setAttribute("usersList", usersList);
@@ -50,7 +80,31 @@ public class UsersController extends HttpServlet {
 
     }
 
-    private void showListUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
+    private void blockUser(HttpServletRequest request, HttpServletResponse response) throws
+            SQLException, ServletException, IOException {
+        HttpSession session = request.getSession();
+        String userId = request.getParameter("id");
+        if (userId == null || userId.isEmpty()) {
+            throw new ServletException("user ID is missing.");
+        }
+
+        boolean isBlocked = usersDAO.blockUserById(userId);
+        if (isBlocked) {
+            request.setAttribute("message", "User with ID " + userId + " is successfully blocked.");
+        } else {
+            request.setAttribute("message", "Failed to block the user with ID " + userId + ".");
+        }
+        List<Users> usersList = usersDAO.selectAll();
+        request.setAttribute("usersList", usersList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_users.jsp");
+        dispatcher.forward(request, response);
+
+    }
+
+    private void showListUsers(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
         HttpSession session = request.getSession();
         List<Users> usersList = usersDAO.selectAll();
         request.setAttribute("usersList", usersList);

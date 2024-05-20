@@ -321,6 +321,19 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    function confirmApprove(event, userId) {
+                        event.preventDefault(); // Ngăn chặn sự kiện gửi form mặc định
+                        var confirmAction = confirm("Bạn có chắc chắn muốn chứng thực nghệ sĩ này không?");
+                        if (confirmAction) {
+                            // Nếu người dùng xác nhận, gửi form
+                            document.getElementById('deleteForm-' + userId).submit();
+                        } else {
+                            // Nếu người dùng không xác nhận, không làm gì cả
+                            console.log('Chứng thực nghệ sĩ không thành công !');
+                        }
+                    }
+                </script>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable">
                         <thead class = "table-header-color">
@@ -345,10 +358,10 @@
                             <td>${user.email}</td>
                             <td>${user.status}</td>
                             <td>
-                                <a href="Xemchitietdetai?MaDT=<c:out value='${user.id}' />"
-                                   class="btn btn-secondary-modify">
-                                    <i class="fas fa-angle-double-right"></i> Approve
-                                </a>
+                                <form id="deleteForm-${user.id}" action="${pageContext.request.contextPath}/Users/ad_approveArtist" method="post">
+                                    <input type="hidden" name="id" value="${user.id}" />
+                                    <button type="submit" onclick="confirmApprove(event, '${user.id}')" class="btn btn-secondary-modify">Approve</button>
+                                </form>
                             </td>
                             </c:forEach>
                         </tr>

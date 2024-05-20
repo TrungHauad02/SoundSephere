@@ -325,7 +325,7 @@
                 <script>
                     function confirmDelete(event, songId) {
                         event.preventDefault(); // Ngăn chặn sự kiện gửi form mặc định
-                        var confirmAction = confirm("Bạn có chắc chắn muốn xóa playlist này không?");
+                        var confirmAction = confirm("Bạn có chắc chắn muốn xóa album này không?");
                         if (confirmAction) {
                             // Nếu người dùng xác nhận, gửi form
                             document.getElementById('deleteForm-' + songId).submit();

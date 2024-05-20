@@ -321,6 +321,18 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    function confirmBlock(songId) {
+                        var confirmAction = confirm("Bạn có chắc chắn muốn block người dùng này không?");
+                        if (confirmAction) {
+                            // Nếu người dùng xác nhận, gửi form
+                            document.getElementById('blockForm-' + songId).submit();
+                        } else {
+                            // Nếu người dùng không xác nhận, không làm gì cả
+                            console.log('Người dùng không được block.');
+                        }
+                    }
+                </script>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable">
                         <thead class = "table-header-color">
@@ -345,10 +357,10 @@
                             <td>${user.email}</td>
                             <td>${user.status}</td>
                             <td>
-                                <a href="Xemchitietdetai?MaDT=<c:out value='${user.id}' />"
-                                   class="btn btn-danger">
-                                    <i class="fas fa-angle-double-right"></i> block
-                                </a>
+                                <form id="blockForm-${user.id}" action="${pageContext.request.contextPath}/Users/ad_blockUsers" method="post">
+                                    <input type="hidden" name="id" value="${user.id}" />
+                                    <button type="button" onclick="confirmBlock('${user.id}')" class="btn btn-warning">Block</button>
+                                </form>
                             </td>
                             </c:forEach>
                         </tr>

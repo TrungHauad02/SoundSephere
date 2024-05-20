@@ -19,7 +19,10 @@ import java.util.List;
 public class UsersDAO extends SoundSysDAO<Users, Integer> {
     private static final String SELECT_USER_BY_ID_QUERY = "";
     private static final String SELECT_ALL_USERS_QUERY = "select * from users ;";
-    private static final String SELECT_ALL_APPROVALS_QUERY = "select * from users where users.role = 'listener' and users.status = 'pending'; " ;
+    //
+    private static final String SELECT_ALL_APPROVALS_QUERY = "select * from users where users.role = 'artist' and users.status = 'pending'; ";
+    private static final String BLOCK_USER_BY_ID = "UPDATE  users SET status = 'block' WHERE id = ?";
+    private static final String APPROVE_ARTIST_BY_ID =  "UPDATE  users SET status = 'normal' WHERE id = ?";
 
     public boolean insert(Users entity) {
         return false;
@@ -94,6 +97,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         }
         return usersList;
     }
+
     public List<Users> selectAllApproval() {
         Connection connection = MyUtils.getConnection();
         List<Users> usersList = new ArrayList<>();
@@ -130,8 +134,32 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return usersList;
     }
 
+    public boolean blockUserById(String userId) throws SQLException {
+
+        try (
+                Connection connection = MyUtils.getConnection();
+                PreparedStatement statement = connection.prepareStatement(BLOCK_USER_BY_ID)) {
+            statement.setString(1, userId);
+
+            int rowsUpdated = statement.executeUpdate();
+            return rowsUpdated > 0;
+        }
+    }
 
     protected List<Users> selectBySql(String sql, Object... args) {
         return null;
+    }
+
+    public boolean approveArtistById(String userId) throws SQLException {
+        try (
+                Connection connection = MyUtils.getConnection();
+                PreparedStatement statement = connection.prepareStatement(APPROVE_ARTIST_BY_ID)) {
+                statement.setString(1, userId);
+
+                int rowsUpdated = statement.executeUpdate();
+                return rowsUpdated > 0;
+        }
+
+
     }
 }
