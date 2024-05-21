@@ -49,7 +49,7 @@ function getImageUrl(imagePath) {
 }
 
 const app = {
-    currentIndex: 1,
+    currentIndex: 0,
     isPlaying: false,
     timeout: 1200,
     songs: [],
@@ -375,8 +375,8 @@ buttonVote.addEventListener("click", function () {
     }
 });
 
-
 var buttonDetailSong  = document.getElementById("btnSongDetail");
+
 buttonDetailSong.addEventListener("click", function () {
     var layoutInfoDetailSong = document.getElementById("infoDetail");
      $.ajax({
