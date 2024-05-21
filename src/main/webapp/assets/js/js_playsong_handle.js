@@ -393,4 +393,3 @@ buttonDetailSong.addEventListener("click", function () {
             }
         });
 });
-
