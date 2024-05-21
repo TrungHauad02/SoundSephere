@@ -210,7 +210,7 @@ export function createSongCard(song){
 
     const playSongA = document.createElement('a');
     playSongA.className = 'dropdown-item playSong';
-    playSongA.href = '#';
+    playSongA.href = '/SoundSephere/Song/getSong?idSong=' + song.id;
     playSongA.textContent = 'Play';
 
     const addToPlaylistA = document.createElement('a');
