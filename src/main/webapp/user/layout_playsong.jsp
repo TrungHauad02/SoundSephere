@@ -307,22 +307,22 @@
         </div>
     </div>
 
-    <!--Progress-->
-    <div class="row">
-        <div class="col-3 text-end">Time Now</div>
-        <div class="col-6">
-            <input
-                    id="progress"
-                    class="progress"
-                    type="range"
-                    value="0"
-                    step="1"
-                    min="0"
-                    max="100"
-            />
+        <!--Progress-->
+        <div class="row">
+            <div class="col-3 text-end" id = "timeNow">Time Now</div>
+            <div class="col-6">
+                <input
+                        id="progress"
+                        class="progress"
+                        type="range"
+                        value="0"
+                        step="1"
+                        min="0"
+                        max="100"
+                />
+            </div>
+            <div class="col-3 text-start" id="timeDuration">Time Duration</div>
         </div>
-        <div class="col-3 text-start">Time Duration</div>
-    </div>
     <!-- Aduio src-->
     <audio id="audio" src=""></audio>
 </div>

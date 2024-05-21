@@ -49,7 +49,7 @@ function getImageUrl(imagePath) {
 }
 
 const app = {
-    currentIndex: 1,
+    currentIndex: 0,
     isPlaying: false,
     timeout: 1200,
     songs: [],
@@ -92,20 +92,42 @@ const app = {
             cdThumb.style.backgroundImage = `url('${urlCurrentImg}')`;
         } catch (error) {
             console.error("Lỗi khi lấy URL hình ảnh:", error);
-            // Xử lý lỗi nếu có
         }
         nameAuthor.textContent = this.currentSong.singer;
-        const mp3Ref = ref(storage, this.currentSong.path);
-        this.loadSongFromFirebase(mp3Ref);
+        this.loadSongFromFirebase();
+
+        const timeDuration = document.getElementById('timeDuration');
+        timeDuration.textContent = this.formatTime(audio.duration);
     },
 
-    loadSongFromFirebase: async function (mp3Ref) {
+    loadSongFromFirebase: async function () {
         try {
+            const mp3Ref = ref(storage, this.currentSong.path);
             let url = await getDownloadURL(mp3Ref);
             audio.src = url;
+
+            // Tải văn bản từ Firebase Storage
+            const lyricsRef = ref(storage, this.currentSong.lyric);
+            let response = await getDownloadURL(lyricsRef);
+            let lyricText = await fetch(response);
+            lyricText = await lyricText.text();
+
+            const windowLyric = document.getElementById('windowLyric');
+            if (lyricText.trim() !== "") {
+                windowLyric.innerHTML = '<pre>' + lyricText.replace(/\n/g, '<br>') + '</pre>';
+            } else {
+                windowLyric.innerHTML = '<h1> Không tìm thấy lời bài hát  </h1>';
+            }
+
         } catch (error) {
-            // Xử lý lỗi nếu có
+
         }
+    },
+
+    formatTime: function (seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     },
 
     defineProperties: function () {
@@ -176,10 +198,12 @@ const app = {
         //Khi play prgress được chạy theo
         audio.ontimeupdate = function () {
             if (audio.duration) {
-                const progressPercent = Math.floor(
-                    (audio.currentTime / audio.duration) * 100
-                );
+                const progressPercent = Math.floor((audio.currentTime / audio.duration) * 100);
                 progress.value = progressPercent;
+
+                // Update timeNow
+                const timeNow = document.getElementById('timeNow');
+                timeNow.textContent = _this.formatTime(audio.currentTime);
             }
         };
 

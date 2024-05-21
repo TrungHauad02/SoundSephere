@@ -313,3 +313,25 @@
     color: #000; /* Set text color to black */
 }
 
+#windowLyric {
+    text-align: center; /* Căn giữa nội dung */
+    font-size: 15px; /* Kích thước chữ lớn hơn */
+    line-height: 1.6;
+    color: #333; /* Màu chữ */
+    padding: 20px;
+    overflow-y: auto; /* Thêm thanh cuộn dọc */
+}
+
+#windowLyric::-webkit-scrollbar {
+    width: 10px; /* Đặt độ rộng của thanh cuộn */
+}
+
+#windowLyric::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Đặt màu nền của thanh cuộn */
+    border-radius: 10px;
+}
+
+#windowLyric::-webkit-scrollbar-thumb {
+    background-color: #4caf50; /* Đặt màu của thanh cuộn */
+    border-radius: 10px; /* Bo góc của thanh cuộn */
+}
