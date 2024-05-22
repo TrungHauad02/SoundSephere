@@ -5,6 +5,11 @@ public class Rating {
     private int song_id;
     private float rating;
 
+    public Rating(String username, int idSong, int point) {
+        this.user_id = username;
+        this.song_id = idSong;
+        this.rating = point;
+    }
     public String getUser_id() {
         return user_id;
     }

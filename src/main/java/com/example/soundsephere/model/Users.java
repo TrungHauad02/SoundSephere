@@ -20,7 +20,6 @@ public class Users {
 
     public Users() {
     }
-
     public Users(String id, String name, EnumSex sex,
                  String description, String username, String email, String password, EnumRole role, EnumUserStatus status) {
         super();

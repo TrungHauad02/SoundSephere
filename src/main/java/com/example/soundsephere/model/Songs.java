@@ -16,7 +16,6 @@ public class Songs {
     private String artistName;
     private EnumStatus status;
 
-
     public Songs() {
     }
     public Songs(int id, String title, String id_artist, int genre_id, String description,
@@ -32,7 +31,6 @@ public class Songs {
         this.rating = rating;
         this.status = status;
     }
-
 
     public Songs(int id, String title, String artistName, String img) {
         this.id = id;
