@@ -1,3 +1,4 @@
+import {loadAlbum} from "./artist_main.js";
 
 export function openCreateAlbumPopup() {
     const albumPopup = document.getElementById('albumPopup');
@@ -5,7 +6,39 @@ export function openCreateAlbumPopup() {
 }
 
 export function createAlbum() {
-    console.log("Add new album");
+    const albumNameInput = document.getElementById('albumName');
+
+    const albumName = albumNameInput.value;
+    console.log(albumName);
+
+    const payload = {
+        albumName: albumName
+    };
+    fetch('http://localhost:8080/SoundSephere/Playlist/addNewAlbum', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.result) {
+                window.alert('Album created successfully');
+                closePopupCreateAlbum();
+                loadAlbum();
+            } else {
+                window.alert('Failed to create album');
+            }
+        })
+        .catch(error => {
+            console.error('Error creating album:', error);
+        });
 }
 
 export function closePopupCreateAlbum() {
@@ -14,7 +47,7 @@ export function closePopupCreateAlbum() {
 }
 
 export function fetchDataAlbum(){
-    return  fetch('http://localhost:8080/SoundSephere/User/getListAlbumJson')
+    return  fetch('http://localhost:8080/SoundSephere/Playlist/getListAlbumJson')
         .then(response => {
             console.log(response)
             if (!response.ok) {

@@ -35,6 +35,14 @@
     <servlet-mapping>
         <servlet-name>RateController</servlet-name>
         <url-pattern>/Rate</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>  
 
+        <servlet-name>PlaylistController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.PlaylistController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PlaylistController</servlet-name>
+        <url-pattern>/Playlist/*</url-pattern>
+    </servlet-mapping>
 </web-app>

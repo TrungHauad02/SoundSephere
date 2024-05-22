@@ -6,7 +6,7 @@ import com.example.soundsephere.enumModel.EnumTypePlaylist;
 public class Playlists {
     private int id;
     private String name;
-    private int user_id;
+    private String user_id;
 
     private int number_of_songs;
     private EnumTypePlaylist type = EnumTypePlaylist.PLAYLIST;
@@ -27,11 +27,11 @@ public class Playlists {
         this.name = name;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 

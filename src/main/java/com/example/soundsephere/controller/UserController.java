@@ -37,6 +37,9 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        if(action == null){
+            action = request.getPathInfo();
+        }
         switch (action) {
             case "login":
                 login(request, response);
@@ -67,9 +70,6 @@ public class UserController extends HttpServlet {
             case "/getListSongJson":
                 getListSongJson(request, response);
                 break;
-            case "/getListAlbumJson":
-                getListAlbumJson(request, response);
-                break;
             default:
                 System.out.println("default");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
@@ -93,16 +93,17 @@ public class UserController extends HttpServlet {
             request.getSession().setAttribute("user", user);
 
             //lấy danh sách playlist của user
-            List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getId());
-            request.getSession().setAttribute("playlists", playlists);
+            //List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getId());
+            //request.getSession().setAttribute("playlists", playlists);
             // lấy danh sách bài hát của user vừa nghe
-            List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getId());
-            request.getSession().setAttribute("recentPlayed", recentlyPlayed);
+            //List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getId());
+            //request.getSession().setAttribute("recentPlayed", recentlyPlayed);
 
             if (user.getRole() == EnumRole.ARTIST) {
                 System.out.println("Artist");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
-                dispatcher.forward(request, response);
+                //RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
+                //dispatcher.forward(request, response);
+                artistLogin(request, response);
             } else {
                 System.out.println("user");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("user/dang/home_main.jsp");
@@ -164,7 +165,7 @@ public class UserController extends HttpServlet {
 
     public void updateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Users user = new Users();
-        user.setId(Integer.parseInt(request.getParameter("idUser")));
+        user.setId(request.getParameter("idUser"));
         user.setName(request.getParameter("nameUser"));
         user.setEmail(request.getParameter("emailUser"));
         if (request.getParameter("descriptionUser") == null){
@@ -196,12 +197,12 @@ public class UserController extends HttpServlet {
         }
     }
     public  void artistLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Users curUser = usersDAO.selectById("");
         HttpSession session = request.getSession();
-        session.setAttribute("currentUserLogin", curUser);
-        int listensCount = usersDAO.listenCount(6);
-        int songCount = songsDAO.songsCount(6);
-        int albumCount = playlistsDAO.playlistCount(6);
+        Users curUser = (Users) session.getAttribute("user");
+        request.setAttribute("user",curUser);
+        int listensCount = usersDAO.listenCount(curUser.getId());
+        int songCount = songsDAO.songsCount(curUser.getId());
+        int albumCount = playlistsDAO.playlistCount(curUser.getId());
         request.setAttribute("listensCount", listensCount);
         request.setAttribute("songCount", songCount);
         request.setAttribute("albumCount", albumCount);
@@ -211,7 +212,9 @@ public class UserController extends HttpServlet {
     }
 
     public void getListSongJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Songs> lstSong = songsDAO.selectBySql(SongsDAO.SELECT_SONGS_BY_ID_ARTIST_QUERY, 6);
+        HttpSession session = request.getSession();
+        Users curUser = (Users) session.getAttribute("user");
+        List<Songs> lstSong = songsDAO.selectBySql(SongsDAO.SELECT_SONGS_BY_ID_ARTIST_QUERY, curUser.getId());
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonSongs = objectMapper.writeValueAsString(lstSong);
 
@@ -221,15 +224,5 @@ public class UserController extends HttpServlet {
         response.getWriter().write(jsonSongs);
     }
 
-    public void getListAlbumJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Playlists> lstPlaylist = playlistsDAO.selectBySql(PlaylistsDAO.SELECT_ALBUM_BY_ID_ARTIST_QUERY, 6);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        response.getWriter().write(jsonPlaylist);
-    }
 
 }

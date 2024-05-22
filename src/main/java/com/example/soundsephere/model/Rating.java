@@ -10,7 +10,6 @@ public class Rating {
         this.song_id = idSong;
         this.rating = point;
     }
-
     public String getUser_id() {
         return user_id;
     }

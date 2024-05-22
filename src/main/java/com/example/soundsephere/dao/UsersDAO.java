@@ -58,7 +58,7 @@ public class UsersDAO {
                 ps.setString(3, user.getPassword());
                 ps.setString(4, user.getDescription());
                 ps.setString(5, user.getSex().toString());
-                ps.setInt(6, user.getId());
+                ps.setString(6, user.getId());
                 System.out.println(ps);
                 ps.executeUpdate();
                 return true;
@@ -95,7 +95,7 @@ public class UsersDAO {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getInt("id"));
+                    user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setUsername(rs.getString("username"));
@@ -113,7 +113,7 @@ public class UsersDAO {
         return user;
     }
 
-    public boolean delete(Integer id) {
+    public boolean delete(String id) {
         return false;
     }
 
@@ -126,7 +126,7 @@ public class UsersDAO {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getInt("id"));
+                    user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
@@ -153,12 +153,12 @@ public class UsersDAO {
         return null;
     }
 
-    public int listenCount(int idArtist){
+    public int listenCount(String idArtist){
         int count = 0;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(LISTEN_COUNT_BY_ID_ARTIST_QUERY)) {
-                ps.setInt(1, idArtist);
+                ps.setString(1, idArtist);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt("total_listens_count");

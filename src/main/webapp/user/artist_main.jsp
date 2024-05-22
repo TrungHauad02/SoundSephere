@@ -53,27 +53,20 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            min-width: 150px;
-            background-color: #ffffff;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        .list-group-item{
+            color: #000000;
         }
-
-        .dropdown-menu.show {
-            display: block;
+        label{
+            color: #000000;
         }
     </style>
 </head>
 <body style="background-color: black;">
     <jsp:include page="../header.jsp"/>
     <%
-        Users currentUserLogin = (Users) session.getAttribute("currentUserLogin");%>
+        Users user = (Users) session.getAttribute("user");%>
         <%
-            if (currentUserLogin == null) {
+            if (user == null) {
         %>
         <%
             response.sendRedirect(request.getContextPath()+"/index.jsp");
@@ -93,8 +86,8 @@
                             <div class="col-md-4">
                                 <ul class="list-group">
                                     <li class="list-group-item">Artist details</li>
-                                    <li class="list-group-item">${currentUserLogin.name}</li>
-                                    <li class="list-group-item">${currentUserLogin.description}</li>
+                                    <li class="list-group-item">${user.name}</li>
+                                    <li class="list-group-item">${user.description}</li>
                                 </ul>
                             </div>
                             <div class="col-md-1"></div>
@@ -159,15 +152,15 @@
     </div>
 
     <!-- Thêm div để hiển thị danh sách playlist -->
-    <!-- Popup Add Song To Playlist -->
-    <div id="addSongToPlaylistPopUp" class="popup" style="display: none;">
+    <!-- Popup Add Song To Album -->
+    <div id="addSongToAlbumPopUp" class="popup" style="display: none;">
         <div class="popup-content" style="min-width: 500px; max-height:90vh; overflow-y: auto; " >
-            <span class="close" id="btnClosePlaylistPopupTop">&times;</span>
-            <h5 class="mb-4">Add Song to Playlist</h5>
-            <ul id="playlistItems" class="list-group">
+            <span class="close" id="btnCloseAlbumPopupTop">&times;</span>
+            <h5 class="mb-4">Add Song to Album</h5>
+            <ul id="albumItems" class="list-group">
 
             </ul>
-            <button type="button" class="btn btn-secondary mt-2" id="btnClosePlaylistPopup">Cancel</button>
+            <button type="button" class="btn btn-secondary mt-2" id="btnCloseAlbumPopup">Cancel</button>
         </div>
     </div>
 
@@ -179,10 +172,6 @@
                 <div class="form-group">
                     <label for="albumName">Album Name:</label>
                     <input type="text" class="form-control" id="albumName" name="albumName">
-                </div>
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea class="form-control" id="description" name="description"></textarea>
                 </div>
                 <button id="btnCreateAlbum" type="button" class="btn btn-success" >Create</button>
                 <button id="btnCloseCreateAlbumPopup" type="button" class="btn btn-secondary">Cancel</button>
@@ -198,6 +187,10 @@
                 <div class="form-group">
                     <label for="songName">Song Name:</label>
                     <input type="text" class="form-control" id="songName" name="songName">
+                </div>
+                <div class="form-group">
+                    <label for="descriptionSong">Description:</label>
+                    <input type="text" class="form-control" id="descriptionSong" name="descriptionSong">
                 </div>
                 <div class="form-group">
                     <label for="writtenBy">Written By:</label>
@@ -218,6 +211,14 @@
                 <div class="form-group">
                     <label for="mp3File">MP3 File:</label>
                     <input type="file" class="form-control-file" id="mp3File" name="mp3File">
+                </div>
+                <div class="form-group">
+                    <label for="lyricFile">Lyric File:</label>
+                    <input type="file" class="form-control-file" id="lyricFile" name="lyricFile" accept=".txt">
+                </div>
+                <div class="form-group">
+                    <label for="timePlay">Time Play (seconds):</label>
+                    <input type="number" class="form-control" id="timePlay" name="timePlay">
                 </div>
                 <button id="btnAddSong" type="button" class="btn btn-success">Create</button>
                 <button id="btnCloseSongPopup" type="button" class="btn btn-secondary">Cancel</button>

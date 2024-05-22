@@ -10,7 +10,7 @@
 <body>
     <header class="header-section clearfix">
         <a href="<%=url%>/User?action=goToHome" class="site-logo">
-            <img src="./assets/img/logo.png" alt="">
+            <img src="<%= request.getContextPath() %>/assets/img/logo.png" alt="">
         </a>
         <div class="header-right">
             <div class="user-panel">
@@ -19,12 +19,9 @@
         </div>
         <ul class="main-menu">
             <li><a href="<%=url%>/User?action=goToHome">Home</a></li>
-            <li><a href="#">Artist</a></li>
+            <li><a href="<%= request.getContextPath() %>/User/artist_login" class="nav-link">Artist</a></li>
             <li><a href="<%=url%>/Search?action=goToSearch">Search</a></li>
-            <li><a href="index.jsp">Home</a></li>
-            <li><a href="<%= request.getContextPath() %>/User/login" class="nav-link">Artist</a></li>
-            <li><a href="#">Search</a></li>
-            <li><a href="#">Playlist</a></li>
+            <li><a href="./user/playlist_main.jsp">Playlist</a></li>
             <li><a href="<%=url%>/User?action=showAccount">Profile</a></li>
         </ul>
     </header>
