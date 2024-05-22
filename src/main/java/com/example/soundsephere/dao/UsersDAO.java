@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UsersDAO {
     private static final String SELECT_USER_BY_ID_QUERY = "select * from users where username = ?";
-    private static final String INSERT_USER = "INSERT INTO users (name,username, email, password, role,status) VALUES (? ,?, ?, ?, ?, ?)" ;
+    private static final String INSERT_USER = "INSERT INTO users (name,username, email, password, role,status, id) VALUES (? ,?, ?, ?, ?, ?,?)" ;
     private static final String LISTEN_COUNT_BY_ID_ARTIST_QUERY =
             "SELECT s.id_artist, SUM(ul.count) AS total_listens_count\n" +
                     "FROM songs s\n" +
@@ -38,6 +38,7 @@ public class UsersDAO {
                 ps.setString(4, user.getPassword());
                 ps.setString(5, user.getRole().toString());
                 ps.setString(6, user.getRole() == EnumRole.LISTENER ? "normal" : "pending");
+                ps.setString(7, user.getUsername());
 
                 System.out.println(ps);
                 ps.executeUpdate();

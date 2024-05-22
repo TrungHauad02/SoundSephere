@@ -101,7 +101,7 @@ public class SongController extends HttpServlet {
 
         request.setAttribute("listSongCurrentPlay", listSongCurrentPlay);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/layout_playsong.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/user/layout_playsong.jsp");
         dispatcher.forward(request, response);
     }
 

@@ -76,7 +76,7 @@ public class SongsDAO{
         return result;
     }
 
-    public List<Songs> selectAllSongByUserId(String id) {
+    public List<Songs> selectAllSongById(String id) {
         Connection conn = JDBCUtil.getConnection();
         List<Songs> songs = null;
         if (conn != null) {

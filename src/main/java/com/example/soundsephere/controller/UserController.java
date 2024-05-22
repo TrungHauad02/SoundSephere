@@ -92,12 +92,12 @@ public class UserController extends HttpServlet {
             Users user = usersDAO.getUserByUsername(username);
             request.getSession().setAttribute("user", user);
 
-            //lấy danh sách playlist của user
-            //List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getId());
-            //request.getSession().setAttribute("playlists", playlists);
-            // lấy danh sách bài hát của user vừa nghe
-            //List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getId());
-            //request.getSession().setAttribute("recentPlayed", recentlyPlayed);
+//            lấy danh sách playlist của user
+            List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getId());
+            request.getSession().setAttribute("playlists", playlists);
+//             lấy danh sách bài hát của user vừa nghe
+            List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getId());
+            request.getSession().setAttribute("recentPlayed", recentlyPlayed);
 
             if (user.getRole() == EnumRole.ARTIST) {
                 System.out.println("Artist");
