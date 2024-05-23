@@ -26,13 +26,12 @@ public class PlaylistSongsDAO extends SoundSysDAO<PlaylistSongs, Integer>{
     public static final String SELECT_SONG_BY_ID_PLAYLIST =
             "SELECT s.*\n" +
                     "FROM (\n" +
-                    "    SELECT song_id\n" +
+                    "    SELECT TOP 5 song_id\n" +
                     "    FROM playlist_songs\n" +
                     "    WHERE playlist_id = ?\n" +
-                    "    ORDER BY RAND()\n" +
-                    "    LIMIT 5\n" +
+                    "    ORDER BY NEWID()\n" +
                     ") AS ps\n" +
-                    "JOIN songs AS s ON ps.song_id = s.id;";
+                    "JOIN songs AS s ON ps.song_id = s.id;\n";
 
     public static final String SELECT_STATUS_ID_PLAYLIST = "Select status from playlists where id = ?;";
 
