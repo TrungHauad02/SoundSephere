@@ -36,9 +36,6 @@
         <dependency>
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
-        </dependency>
-
-        <dependency>
             <version>2.0.0</version>
             <scope>provided</scope>
         </dependency>

@@ -118,7 +118,7 @@ export function createPlaylistCard(playlist){
 
     const playButtonColDiv = document.createElement('div');
     playButtonColDiv.className = 'col-auto';
-    const playButton = document.createElement('button');
+    const playButton = document.createElement('a');
     playButton.className = 'btn btn-primary';
     playButton.textContent = 'Play';
     playButtonColDiv.appendChild(playButton);

@@ -44,13 +44,13 @@ export function addNewSong() {
         .then(data => {
             if (data.result) {
                 if (imageInput) {
-                    uploadFileToFirebase(imageInput, `image/${imageInput.name}`);
+                    uploadFileToFirebase(imageInput, `myimages/${imageInput.name}`);
                 }
                 if (mp3FileInput) {
-                    uploadFileToFirebase(mp3FileInput, `songdata/${mp3FileInput.name}`);
+                    uploadFileToFirebase(mp3FileInput, `audioSongs/${mp3FileInput.name}`);
                 }
                 if (lyricFileInput) {
-                    uploadFileToFirebase(lyricFileInput, `lyric/${lyricFileInput.name}`);
+                    uploadFileToFirebase(lyricFileInput, `lyricsSongs/${lyricFileInput.name}`);
                 }
                 window.alert('Song created successfully');
                 closeSongPopup();

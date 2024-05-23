@@ -8,11 +8,11 @@ public class JDBCUtil {
     public static Connection getConnection() {
         Connection conn = null;
         try {
-            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/musicweb?";
-            String username = "root";
-            String password = "";
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String url = "jdbc:sqlserver://soundsphere.database.windows.net:1433;database=soundsphere;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30";
+            String username = "soundsphere@soundsphere";
+            String password = "^Y5O6/p`5>q<)uFG(Jg8";
+
 
             conn = DriverManager.getConnection(url, username, password);
             System.out.println("Connection Successfully!");

@@ -109,7 +109,7 @@ public class PlaylistController extends HttpServlet {
         playlist.setName(albumName);
         playlist.setType(EnumTypePlaylist.ALBUM);
         playlist.setStatus(EnumStatus.AVAILABLE);
-        playlist.setUser_id(curUser.getId());
+        playlist.setUser_id(curUser.getUsername());
 
         boolean result = playlistsDAO.insert(playlist);
 
@@ -135,7 +135,7 @@ public class PlaylistController extends HttpServlet {
         playlist.setName(playlistName);
         playlist.setType(EnumTypePlaylist.PLAYLIST);
         playlist.setStatus(EnumStatus.AVAILABLE);
-        playlist.setUser_id(curUser.getId());
+        playlist.setUser_id(curUser.getUsername());
 
         boolean result = playlistsDAO.insert(playlist);
 
@@ -173,7 +173,7 @@ public class PlaylistController extends HttpServlet {
     public void getListAlbumJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         Users curUser = (Users) session.getAttribute("user");
-        List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getId());
+        List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getUsername());
         lstPlaylist.removeIf(playlist -> playlist.getType().equals(EnumTypePlaylist.PLAYLIST));
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
@@ -187,7 +187,7 @@ public class PlaylistController extends HttpServlet {
     public void getListPlaylistJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         Users curUser = (Users) session.getAttribute("user");
-        List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getId());
+        List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getUsername());
         lstPlaylist.removeIf(playlist -> playlist.getType().equals(EnumTypePlaylist.ALBUM));
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
