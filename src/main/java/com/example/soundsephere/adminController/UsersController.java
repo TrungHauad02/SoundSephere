@@ -52,11 +52,11 @@ public class UsersController extends HttpServlet {
     private void approveArtist(HttpServletRequest request, HttpServletResponse response) throws
             SQLException, ServletException, IOException {
         HttpSession session = request.getSession();
-        String userId = request.getParameter("id");
-        if (userId == null || userId.isEmpty()) {
-            throw new ServletException("user ID is missing.");
+        String username= request.getParameter("username");
+        if (username == null || username.isEmpty()) {
+            throw new ServletException("username is missing.");
         }
-        usersDAO.approveArtistById(userId);
+        usersDAO.approveArtistById(username);
         List<Users> usersList = usersDAO.selectAllApproval();
         request.setAttribute("usersList", usersList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_approvals.jsp");
@@ -85,16 +85,16 @@ public class UsersController extends HttpServlet {
     private void blockUser(HttpServletRequest request, HttpServletResponse response) throws
             SQLException, ServletException, IOException {
         HttpSession session = request.getSession();
-        String userId = request.getParameter("id");
-        if (userId == null || userId.isEmpty()) {
-            throw new ServletException("user ID is missing.");
+        String username = request.getParameter("username");
+        if (username == null || username.isEmpty()) {
+            throw new ServletException("username is missing.");
         }
 
-        boolean isBlocked = usersDAO.blockUserById(userId);
+        boolean isBlocked = usersDAO.blockUserById(username);
         if (isBlocked) {
-            request.setAttribute("message", "User with ID " + userId + " is successfully blocked.");
+            request.setAttribute("message", "User with username " + username + " is successfully blocked.");
         } else {
-            request.setAttribute("message", "Failed to block the user with ID " + userId + ".");
+            request.setAttribute("message", "Failed to block the user with ID " + username + ".");
         }
         List<Users> usersList = usersDAO.selectAll();
         request.setAttribute("usersList", usersList);

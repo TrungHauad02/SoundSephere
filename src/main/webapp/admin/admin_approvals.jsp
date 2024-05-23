@@ -358,9 +358,9 @@
                             <td>${user.email}</td>
                             <td>${user.status}</td>
                             <td>
-                                <form id="deleteForm-${user.id}" action="${pageContext.request.contextPath}/Users/ad_approveArtist" method="post">
-                                    <input type="hidden" name="id" value="${user.id}" />
-                                    <button type="submit" onclick="confirmApprove(event, '${user.id}')" class="btn btn-secondary-modify">Approve</button>
+                                <form id="deleteForm-${user.username}" action="${pageContext.request.contextPath}/Users/ad_approveArtist" method="post">
+                                    <input type="hidden" name="username" value="${user.username}" />
+                                    <button type="submit" onclick="confirmApprove(event, '${user.username}')" class="btn btn-secondary-modify">Approve</button>
                                 </form>
                             </td>
                             </c:forEach>

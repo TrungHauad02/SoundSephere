@@ -21,8 +21,8 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     private static final String SELECT_ALL_USERS_QUERY = "select * from users ;";
     //
     private static final String SELECT_ALL_APPROVALS_QUERY = "select * from users where users.role = 'artist' and users.status = 'pending'; ";
-    private static final String BLOCK_USER_BY_ID = "UPDATE  users SET status = 'block' WHERE id = ?";
-    private static final String APPROVE_ARTIST_BY_ID =  "UPDATE  users SET status = 'normal' WHERE id = ?";
+    private static final String BLOCK_USER_BY_ID = "UPDATE  users SET status = 'block' WHERE username = ?";
+    private static final String APPROVE_ARTIST_BY_ID =  "UPDATE  users SET status = 'normal' WHERE username = ?";
 
     public boolean insert(Users entity) {
         return false;

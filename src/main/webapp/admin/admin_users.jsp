@@ -357,9 +357,9 @@
                             <td>${user.email}</td>
                             <td>${user.status}</td>
                             <td>
-                                <form id="blockForm-${user.id}" action="${pageContext.request.contextPath}/Users/ad_blockUsers" method="post">
-                                    <input type="hidden" name="id" value="${user.id}" />
-                                    <button type="button" onclick="confirmBlock('${user.id}')" class="btn btn-warning">Block</button>
+                                <form id="blockForm-${user.username}" action="${pageContext.request.contextPath}/Users/ad_blockUsers" method="post">
+                                    <input type="hidden" name="username" value="${user.username}" />
+                                    <button type="button" onclick="confirmBlock('${user.username}')" class="btn btn-warning">Block</button>
                                 </form>
                             </td>
                             </c:forEach>
