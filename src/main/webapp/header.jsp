@@ -21,7 +21,7 @@
             <li><a href="<%=url%>/User?action=goToHome">Home</a></li>
             <li><a href="<%= request.getContextPath() %>/User/artist_login" class="nav-link">Artist</a></li>
             <li><a href="<%=url%>/Search?action=goToSearch">Search</a></li>
-            <li><a href="./user/playlist_main.jsp">Playlist</a></li>
+            <li><a href="<%= request.getContextPath() %>/user/playlist_main.jsp">Playlist</a></li>
             <li><a href="<%=url%>/User?action=showAccount">Profile</a></li>
         </ul>
     </header>

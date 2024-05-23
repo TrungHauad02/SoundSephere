@@ -175,7 +175,6 @@ public class SongsDAO{
             while (rs.next()) {
                 String title = rs.getString("title");
                 String artist = rs.getString("id_artist");
-                int genre_id = rs.getInt("genre_id");
                 String description = rs.getString("description");
                 int time_play = rs.getInt("time_play");
                 String song_data = rs.getString("song_data");
@@ -184,7 +183,7 @@ public class SongsDAO{
                 Float rating = rs.getFloat("rating");
                 EnumStatus status = EnumStatus.valueOf(rs.getString("status").toUpperCase());
 
-                song = new Songs(idSong, title, artist, genre_id, description,
+                song = new Songs(idSong, title, artist, description,
                         time_play, song_data, image, lyric, rating, status);
             }
 
@@ -217,7 +216,6 @@ public class SongsDAO{
                 int id_song = rs.getInt("id");
                 String title = rs.getString("title");
                 String artist = rs.getString("id_artist");
-                int genre_id = rs.getInt("genre_id");
                 String description = rs.getString("description");
                 int time_play  = rs.getInt("time_play");
                 String song_data = rs.getString("song_data");
@@ -226,7 +224,7 @@ public class SongsDAO{
                 Float rating = rs.getFloat("rating");
                 EnumStatus status = EnumStatus.valueOf(rs.getString("status").toUpperCase());
 
-                listSong.add(new Songs(id_song, title, artist,genre_id, description,
+                listSong.add(new Songs(id_song, title, artist, description,
                         time_play, song_data, image,  lyric,  rating, status));
             }
 

@@ -37,9 +37,14 @@ public class SongController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         try {
+            if(action == null)
+                action = request.getPathInfo();
             if (action != null) {
                 switch (action) {
                     case "getSong":
+                        getListSongHaveCurrentSong(request, response);
+                        break;
+                    case "/getSong":
                         getListSongHaveCurrentSong(request, response);
                         break;
                     case "getDetailSong":
@@ -130,9 +135,9 @@ public class SongController extends HttpServlet {
         Songs song = new Songs();
         song.setTitle(songName);
         song.setDescription(description);
-        song.setImage("image/" + imageFileName);
-        song.setSong_data("songdata/" + mp3FileName);
-        song.setLyric("lyric/" + lyricFileName);
+        song.setImage("myimages/" + imageFileName);
+        song.setSong_data("audioSongs/" + mp3FileName);
+        song.setLyric("lyricsSongs/" + lyricFileName);
         song.setStatus(EnumStatus.AVAILABLE);
         song.setTime_play(timePlay);
         song.setRating(0);

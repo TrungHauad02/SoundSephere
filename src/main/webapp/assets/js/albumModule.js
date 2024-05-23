@@ -111,7 +111,7 @@ export function createAlbumCard(album) {
 
     const buttonColDiv = document.createElement('div');
     buttonColDiv.className = 'col-auto';
-    const playButton = document.createElement('button');
+    const playButton = document.createElement('a');
     playButton.className = 'btn btn-primary';
     playButton.textContent = 'Play';
     buttonColDiv.appendChild(playButton);

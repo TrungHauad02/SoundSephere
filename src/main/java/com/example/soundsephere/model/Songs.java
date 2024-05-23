@@ -18,7 +18,7 @@ public class Songs {
 
     public Songs() {
     }
-    public Songs(int id, String title, String id_artist, int genre_id, String description,
+    public Songs(int id, String title, String id_artist, String description,
                  int time_play, String song_data, String image, String lyric, float rating, EnumStatus status) {
         this.id = id;
         this.title = title;

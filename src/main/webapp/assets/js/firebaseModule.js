@@ -3,12 +3,13 @@ import {getDownloadURL, getStorage, ref, uploadBytes } from "https://www.gstatic
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCfY68Y0ovhi1TN-GDNgjSg2fTKKX050TA",
-    authDomain: "soundsphere-16b0b.firebaseapp.com",
-    projectId: "soundsphere-16b0b",
-    storageBucket: "soundsphere-16b0b.appspot.com",
-    messagingSenderId: "10122020658",
-    appId: "1:10122020658:web:da439c45bc0312f12cf92b"
+    apiKey: "AIzaSyAujB-WRTuVQ3abGStWa7oz0RyxN7vmmBQ",
+    authDomain: "image-mp3.firebaseapp.com",
+    projectId: "image-mp3",
+    storageBucket: "image-mp3.appspot.com",
+    messagingSenderId: "218542874710",
+    appId: "1:218542874710:web:8911549200e5b75fbd5bf7",
+    measurementId: "G-R3V5FVGKCC"
 };
 let appInitialized = false;
 export function initializeFirebase() {

@@ -8,7 +8,6 @@ import com.example.soundsephere.enumModel.EnumUserStatus;
 import java.util.Date;
 
 public class Users {
-    private String id;
     private String name;
     private EnumSex sex;
     private String description;
@@ -20,10 +19,9 @@ public class Users {
 
     public Users() {
     }
-    public Users(String id, String name, EnumSex sex,
+    public Users(String name, EnumSex sex,
                  String description, String username, String email, String password, EnumRole role, EnumUserStatus status) {
         super();
-        this.id = id;
         this.name = name;
         this.sex = sex;
         this.description = description;
@@ -33,15 +31,6 @@ public class Users {
         this.role = role;
         this.status = status;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
