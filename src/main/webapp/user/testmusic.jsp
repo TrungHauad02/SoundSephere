@@ -9,8 +9,8 @@
 </head>
 <body>
     <form action = "<%=path%>/Song" method="get">
-        <input type = "hidden" name = "action" value="getSong">
-        <input type="text" name="idSong" value="12">
+        <input type = "hidden" name = "action" value="getListSongFromList">
+        <input type="text" name="idSong" value="1">
         <button> Select Music </button>
     </form>
 </body>

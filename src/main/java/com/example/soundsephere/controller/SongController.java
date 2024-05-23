@@ -1,5 +1,6 @@
 package com.example.soundsephere.controller;
 
+import com.example.soundsephere.dao.PlaylistSongsDAO;
 import com.example.soundsephere.dao.SongDetailDAO;
 import com.example.soundsephere.dao.SongsDAO;
 import com.example.soundsephere.enumModel.EnumStatus;
@@ -26,11 +27,13 @@ import java.util.List;
 public class SongController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private SongsDAO songDAO;
+    private PlaylistSongsDAO playListSongsDAO;
     private SongDetailDAO songDetailDAO;
 
     public void init() {
         songDAO = new SongsDAO();
         songDetailDAO = new SongDetailDAO();
+        playListSongsDAO = new PlaylistSongsDAO();
     }
 
     @Override
@@ -49,6 +52,9 @@ public class SongController extends HttpServlet {
                         break;
                     case "getDetailSong":
                         getDetailSong(request, response);
+                        break;
+                    case "getListSongFromList":
+                        getListSongFromList(request,response);
                         break;
                     default:
                         break;
@@ -72,10 +78,36 @@ public class SongController extends HttpServlet {
         }
     }
 
+    private void getListSongFromList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Songs> listSongCurrentPlay = new ArrayList<>();
+
+        //int idPlayList
+
+        String status = getStatusOfPlayList(1);
+        if(status.equals("available")) { // Sử dụng equals() để so sánh chuỗi
+
+            List<Songs> listSongRandomByIDPlayList = getListSongFromByIDList(1);
+
+            listSongCurrentPlay.addAll(listSongRandomByIDPlayList);
+
+            request.setAttribute("listSongCurrentPlay", listSongCurrentPlay);
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/user/layout_playsong.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            // Nếu playlist không có sẵn, chuyển hướng sang trang báo lỗi
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<html><head><title>Error</title></head><body>");
+            out.println("<h1>List nhạc không có sẵn hoặc bị khóa!</h1>");
+            out.println("</body></html>");
+        }
+    }
+
+
     private void getDetailSong(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             int idSongCurrent = Integer.parseInt(request.getParameter("id_song"));
-
             SongDetail songDetail = getSongDetail(idSongCurrent);
             Songs currentSong = getSongByID(idSongCurrent);
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -168,5 +200,14 @@ public class SongController extends HttpServlet {
 
     protected List<Songs> getListSongsRandomExceptionID(int idSongCurrent) {
         return songDAO.selectRandomSong(idSongCurrent, 9);
+    }
+
+    protected List<Songs> getListSongFromByIDList(int id) {
+        return playListSongsDAO.selectRandomSongByID(id);
+    }
+
+    protected String getStatusOfPlayList(int id)
+    {
+        return playListSongsDAO.getStatusById(id);
     }
 }
