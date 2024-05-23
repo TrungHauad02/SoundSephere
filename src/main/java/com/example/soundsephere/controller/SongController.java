@@ -56,6 +56,9 @@ public class SongController extends HttpServlet {
                     case "getListSongFromList":
                         getListSongFromList(request,response);
                         break;
+                    case "/getListSongFromList":
+                        getListSongFromList(request,response);
+                        break;
                     default:
                         break;
                 }
@@ -81,12 +84,12 @@ public class SongController extends HttpServlet {
     private void getListSongFromList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Songs> listSongCurrentPlay = new ArrayList<>();
 
-        //int idPlayList
+        int idPlaylist = Integer.parseInt(request.getParameter("idPlaylist"));
 
-        String status = getStatusOfPlayList(1);
+        String status = getStatusOfPlayList(idPlaylist);
         if(status.equals("available")) { // Sử dụng equals() để so sánh chuỗi
 
-            List<Songs> listSongRandomByIDPlayList = getListSongFromByIDList(1);
+            List<Songs> listSongRandomByIDPlayList = getListSongFromByIDList(idPlaylist);
 
             listSongCurrentPlay.addAll(listSongRandomByIDPlayList);
 
