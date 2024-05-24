@@ -56,7 +56,7 @@ public class UsersController extends HttpServlet {
         if (username == null || username.isEmpty()) {
             throw new ServletException("username is missing.");
         }
-        usersDAO.approveArtistById(username);
+        usersDAO.approveArtistByUsername(username);
         List<Users> usersList = usersDAO.selectAllApproval();
         request.setAttribute("usersList", usersList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/admin_approvals.jsp");
@@ -79,9 +79,6 @@ public class UsersController extends HttpServlet {
         dispatcher.forward(request, response);
 
     }
-
-
-
     private void blockUser(HttpServletRequest request, HttpServletResponse response) throws
             SQLException, ServletException, IOException {
         HttpSession session = request.getSession();
@@ -90,7 +87,7 @@ public class UsersController extends HttpServlet {
             throw new ServletException("username is missing.");
         }
 
-        boolean isBlocked = usersDAO.blockUserById(username);
+        boolean isBlocked = usersDAO.blockUserByUsername(username);
         if (isBlocked) {
             request.setAttribute("message", "User with username " + username + " is successfully blocked.");
         } else {

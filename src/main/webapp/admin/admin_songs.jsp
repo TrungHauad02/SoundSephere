@@ -333,7 +333,7 @@
                 </script>
                 <script>
                     function confirmDelete(event, songId) {
-                        event.preventDefault(); // Ngăn chặn sự kiện gửi form mặc định
+                        //event.preventDefault(); // Ngăn chặn sự kiện gửi form mặc định
                         var confirmAction = confirm("Bạn có chắc chắn muốn xóa bài hát này không?");
                         if (confirmAction) {
                             // Nếu người dùng xác nhận, gửi form
@@ -375,7 +375,7 @@
                             <td>
                                 <form id="deleteForm-${song.id}" action="${pageContext.request.contextPath}/song/ad_deleteSong" method="post">
                                     <input type="hidden" name="id" value="${song.id}" />
-                                    <button type="submit" onclick="confirmDelete(event, '${song.id}')" class="btn btn-danger">Delete</button>
+                                    <button type="submit" onclick="confirmDelete( '${song.id}')" class="btn btn-danger">Delete</button>
                                 </form>
                             </td>
                         </tr>

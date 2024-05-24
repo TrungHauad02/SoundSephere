@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersDAO extends SoundSysDAO<Users, Integer> {
+public class UsersDAO  {
     private static final String SELECT_USER_BY_ID_QUERY = "";
     private static final String SELECT_ALL_USERS_QUERY = "select * from users ;";
     //
@@ -44,7 +44,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getString("id"));
+                   // user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
@@ -69,7 +69,6 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_QUERY);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String id = rs.getString("id");
                 String name = rs.getString("name");
                 EnumSex sex = EnumSex.valueOf(rs.getString("sex").toUpperCase());
                 String description = rs.getString("description");
@@ -80,7 +79,6 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                 EnumUserStatus status = EnumUserStatus.valueOf(rs.getString("status").toUpperCase());
 
                 Users user = new Users();
-                user.setId(id);
                 user.setName(name);
                 user.setSex(sex);
                 user.setDescription(description);
@@ -105,7 +103,6 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_APPROVALS_QUERY);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String id = rs.getString("id");
                 String name = rs.getString("name");
                 EnumSex sex = EnumSex.valueOf(rs.getString("sex").toUpperCase());
                 String description = rs.getString("description");
@@ -116,7 +113,6 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                 EnumUserStatus status = EnumUserStatus.valueOf(rs.getString("status").toUpperCase());
 
                 Users user = new Users();
-                user.setId(id);
                 user.setName(name);
                 user.setSex(sex);
                 user.setDescription(description);
@@ -134,12 +130,12 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return usersList;
     }
 
-    public boolean blockUserById(String userId) throws SQLException {
+    public boolean blockUserByUsername(String username) throws SQLException {
 
         try (
                 Connection connection = MyUtils.getConnection();
                 PreparedStatement statement = connection.prepareStatement(BLOCK_USER_BY_ID)) {
-            statement.setString(1, userId);
+            statement.setString(1, username);
 
             int rowsUpdated = statement.executeUpdate();
             return rowsUpdated > 0;
@@ -150,11 +146,11 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return null;
     }
 
-    public boolean approveArtistById(String userId) throws SQLException {
+    public boolean approveArtistByUsername(String username) throws SQLException {
         try (
                 Connection connection = MyUtils.getConnection();
                 PreparedStatement statement = connection.prepareStatement(APPROVE_ARTIST_BY_ID)) {
-                statement.setString(1, userId);
+                statement.setString(1, username);
 
                 int rowsUpdated = statement.executeUpdate();
                 return rowsUpdated > 0;

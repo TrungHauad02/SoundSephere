@@ -24,7 +24,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
             "FROM playlists p " +
             "JOIN users u ON p.user_id = u.username " +
             "WHERE p.type = 'playlist'";
-    private static final String DELETE_PLAYLIST_BY_ID =  "DELETE FROM playlists WHERE id = ? " ;
+    private static final String DELETE_PLAYLIST_BY_ID =  " UPDATE playlists SET status = 'deleted' WHERE id = ?" ;
 
     public boolean insert(Playlists entity) {
         Connection conn = JDBCUtil.getConnection();

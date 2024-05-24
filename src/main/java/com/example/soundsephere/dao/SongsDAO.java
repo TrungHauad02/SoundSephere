@@ -23,9 +23,9 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
             "FROM songs s\n" +
             "JOIN users a ON s.id_artist = a.username\n" +
             "JOIN genre g ON s.genre_id = g.name\n" +
-            "WHERE s.status IN ('available', 'unavailable');";
+            "WHERE s.status IN ('available', 'unavailable', 'deleted');";
     private static final String BLOCK_SONG_BY_ID = "UPDATE songs SET status = 'unavailable' WHERE id = ?";
-    private static final String DELETE_SONG_BY_ID ="DELETE FROM songs WHERE id = ?" ;
+    private static final String DELETE_SONG_BY_ID ="UPDATE songs SET status = 'deleted' WHERE id = ?" ;
 
     public boolean insert(Songs entity) {
         Connection conn = JDBCUtil.getConnection();

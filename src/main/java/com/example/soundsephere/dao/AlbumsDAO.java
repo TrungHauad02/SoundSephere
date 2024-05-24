@@ -19,7 +19,7 @@ public class AlbumsDAO extends SoundSysDAO<Albums, Integer> {
             "FROM playlists p " +
             "JOIN users u ON p.user_id = u.username " +
             "WHERE p.type = 'album'";
-    private static final String DELETE_ALBUM_BY_ID = "DELETE FROM playlists WHERE id = ?" ;
+    private static final String DELETE_ALBUM_BY_ID =  " UPDATE playlists SET status = 'deleted' WHERE id = ?" ;
     @Override
     public List<Albums> selectAll() {
         Connection connection = MyUtils.getConnection();
