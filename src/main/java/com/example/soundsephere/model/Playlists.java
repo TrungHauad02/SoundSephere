@@ -4,18 +4,29 @@ import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.enumModel.EnumTypePlaylist;
 
 public class Playlists {
-    private int id;
+    private String id;
     private String name;
-    private int user_id;
-
     private int number_of_songs;
+    private String user_id;
     private EnumTypePlaylist type = EnumTypePlaylist.PLAYLIST;
     private EnumStatus status = EnumStatus.AVAILABLE;
-    public int getId() {
+
+    private Users users;
+
+    // get artist name
+    public void setUsers(Users users) {
+        this.users = users;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -27,11 +38,11 @@ public class Playlists {
         this.name = name;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 

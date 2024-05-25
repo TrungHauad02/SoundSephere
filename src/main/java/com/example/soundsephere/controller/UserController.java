@@ -20,6 +20,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.List;
 
 @WebServlet("/User")
 public class UserController extends HttpServlet {
@@ -103,11 +106,17 @@ public class UserController extends HttpServlet {
                 System.out.println("Artist");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
                 dispatcher.forward(request, response);
-            } else {
+            } else if(user.getRole() == EnumRole.LISTENER) {
                 System.out.println("user");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("user/dang/home_main.jsp");
                 dispatcher.forward(request, response);
+            } else if (user.getRole() == EnumRole.MANAGER) {
+                System.out.println("admin");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("admin/admin_songs.jsp");
+                dispatcher.forward(request, response);
             }
+
+
         } else {
             request.setAttribute("errorInvalid", "Username or Password is incorrect");
             RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
@@ -164,7 +173,7 @@ public class UserController extends HttpServlet {
 
     public void updateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Users user = new Users();
-        user.setId(Integer.parseInt(request.getParameter("idUser")));
+        user.setId(String.valueOf(Integer.parseInt(request.getParameter("idUser"))));
         user.setName(request.getParameter("nameUser"));
         user.setEmail(request.getParameter("emailUser"));
         if (request.getParameter("descriptionUser") == null){

@@ -1,7 +1,11 @@
 package com.example.soundsephere.dao;
 
+import com.example.soundsephere.MyUtils;
 import com.example.soundsephere.enumModel.EnumRole;
 import com.example.soundsephere.enumModel.EnumSex;
+import com.example.soundsephere.enumModel.EnumStatus;
+import com.example.soundsephere.enumModel.EnumUserStatus;
+import com.example.soundsephere.model.Albums;
 import com.example.soundsephere.enumModel.EnumUserStatus;
 import com.example.soundsephere.model.Users;
 import com.example.soundsephere.utils.JDBCUtil;
@@ -10,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsersDAO extends SoundSysDAO<Users, Integer> {
@@ -21,6 +26,11 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                     "INNER JOIN user_listened ul ON s.id = ul.song_id\n" +
                     "WHERE s.id_artist = ?  \n" +
                     "GROUP BY s.id_artist;\n";
+    private static final String SELECT_ALL_USERS_QUERY = "select * from users ;";
+    //
+    private static final String SELECT_ALL_APPROVALS_QUERY = "select * from users where users.role = 'artist' and users.status = 'pending'; ";
+    private static final String BLOCK_USER_BY_ID = "UPDATE  users SET status = 'block' WHERE username = ?";
+    private static final String APPROVE_ARTIST_BY_ID =  "UPDATE  users SET status = 'normal' WHERE username = ?";
 
 
     public boolean checkConfirmPassword(String password, String confirmPassword) {
@@ -58,7 +68,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                 ps.setString(3, user.getPassword());
                 ps.setString(4, user.getDescription());
                 ps.setString(5, user.getSex().toString());
-                ps.setInt(6, user.getId());
+                ps.setString(6, user.getId());
                 System.out.println(ps);
                 ps.executeUpdate();
                 return true;
@@ -95,7 +105,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getInt("id"));
+                    user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setUsername(rs.getString("username"));
@@ -129,7 +139,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getInt("id"));
+                    user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
@@ -151,11 +161,100 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     }
 
     public List<Users> selectAll() {
-        return null;
+        Connection connection = MyUtils.getConnection();
+        List<Users> usersList = new ArrayList<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_QUERY);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                EnumSex sex = EnumSex.valueOf(rs.getString("sex").toUpperCase());
+                String description = rs.getString("description");
+                String username = rs.getString("username");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                EnumRole role = EnumRole.valueOf(rs.getString("role").toUpperCase());
+                EnumUserStatus status = EnumUserStatus.valueOf(rs.getString("status").toUpperCase());
+
+                Users user = new Users();
+                user.setName(name);
+                user.setSex(sex);
+                user.setDescription(description);
+                user.setEmail(email);
+                user.setPassword(password);
+                user.setRole(role);
+                user.setStatus(status);
+                user.setUsername(username);
+                usersList.add(user);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return usersList;
+    }
+
+    public List<Users> selectAllApproval() {
+        Connection connection = MyUtils.getConnection();
+        List<Users> usersList = new ArrayList<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement(SELECT_ALL_APPROVALS_QUERY);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                EnumSex sex = EnumSex.valueOf(rs.getString("sex").toUpperCase());
+                String description = rs.getString("description");
+                String username = rs.getString("username");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                EnumRole role = EnumRole.valueOf(rs.getString("role").toUpperCase());
+                EnumUserStatus status = EnumUserStatus.valueOf(rs.getString("status").toUpperCase());
+
+                Users user = new Users();
+                user.setName(name);
+                user.setSex(sex);
+                user.setDescription(description);
+                user.setEmail(email);
+                user.setPassword(password);
+                user.setRole(role);
+                user.setStatus(status);
+                user.setUsername(username);
+                usersList.add(user);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return usersList;
+    }
+
+    public boolean blockUserByUsername(String username) throws SQLException {
+
+        try (
+                Connection connection = MyUtils.getConnection();
+                PreparedStatement statement = connection.prepareStatement(BLOCK_USER_BY_ID)) {
+            statement.setString(1, username);
+
+            int rowsUpdated = statement.executeUpdate();
+            return rowsUpdated > 0;
+        }
     }
 
     protected List<Users> selectBySql(String sql, Object... args) {
         return null;
+    }
+
+    public boolean approveArtistByUsername(String username) throws SQLException {
+        try (
+                Connection connection = MyUtils.getConnection();
+                PreparedStatement statement = connection.prepareStatement(APPROVE_ARTIST_BY_ID)) {
+                statement.setString(1, username);
+
+                int rowsUpdated = statement.executeUpdate();
+                return rowsUpdated > 0;
+        }
+
+
     }
 
     public int listenCount(int idArtist){
@@ -175,4 +274,3 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return count;
     }
 }
-

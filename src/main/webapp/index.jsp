@@ -1,4 +1,4 @@
-        <%@ page import="com.example.soundsephere.model.Users" %>
+<%@ page import="com.example.soundsephere.model.Users" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -6,12 +6,11 @@
 %>
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Sound Sphere</title>
-    <jsp:include page="link_css.jsp"/>
-</head>
+
 <body>
-    <jsp:include page="header.jsp"/>
+<a href="${pageContext.request.contextPath}/song/ad_listSong">
+    INTO ADMIN TEST
+</a>
 
     <%
         Users user = null;

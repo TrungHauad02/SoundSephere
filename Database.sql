@@ -11,7 +11,6 @@ CREATE TABLE [users] (
     [id] int IDENTITY(1,1) NOT NULL,
     [name] nvarchar(255) NOT NULL,
     [sex] nvarchar(6) CHECK (sex IN ('male', 'female')) DEFAULT ('male'),
-    [birthday] date NULL, --bỏ đi
     [description] nvarchar(255) NULL, --bỏ notNull
     [username] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL UNIQUE,
     [email] varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL UNIQUE,
@@ -27,7 +26,7 @@ ALTER COLUMN [name] nvarchar(255) COLLATE Vietnamese_CI_AS;
 CREATE TABLE [songs] (
     [id] int IDENTITY(1,1) NOT NULL,
     [title] nvarchar(255) NOT NULL,
-    [id_artist] int NOT NULL,
+    [id_artist] nvarchar(255) NOT NULL,
     [genre_id] int NOT NULL,
     [description] nvarchar(255) NOT NULL,
     [time_play] int NOT NULL DEFAULT 0,

@@ -10,10 +10,43 @@
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.example.soundsephere.controller.UserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UsersController</servlet-name>
+        <servlet-class>com.example.soundsephere.adminController.UsersController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SongController</servlet-name>
+        <servlet-class>com.example.soundsephere.adminController.SongController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AlbumController</servlet-name>
+        <servlet-class>com.example.soundsephere.adminController.AlbumController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlaylistController</servlet-name>
+        <servlet-class>com.example.soundsephere.adminController.PlaylistController</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/User/*</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsersController</servlet-name>
+        <url-pattern>/Users/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SongController</servlet-name>
+        <url-pattern>/song/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AlbumController</servlet-name>
+        <url-pattern>/album/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlaylistController</servlet-name>
+        <url-pattern>/playlist/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

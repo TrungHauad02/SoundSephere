@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Asus ROG
+  Date: 20/04/2024
+  Time: 1:28 PM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -9,7 +16,7 @@
 </head>
 <body>
     <header class="header-section clearfix">
-        <a href="<%=url%>/User?action=goToHome" class="site-logo">
+        <a href="./index.jsp" class="site-logo">
             <img src="./assets/img/logo.png" alt="">
         </a>
         <div class="header-right">
@@ -18,7 +25,7 @@
             </div>
         </div>
         <ul class="main-menu">
-            <li><a href="<%=url%>/User?action=goToHome">Home</a></li>
+            <li><a href="index.jsp">Home</a></li>
             <li><a href="#">Artist</a></li>
             <li><a href="<%=url%>/Search?action=goToSearch">Search</a></li>
             <li><a href="index.jsp">Home</a></li>
