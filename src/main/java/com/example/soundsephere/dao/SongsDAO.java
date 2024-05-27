@@ -1,13 +1,10 @@
 package com.example.soundsephere.dao;
 
-import com.example.soundsephere.MyUtils;
 import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.model.Genre;
-import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.model.Users;
 import com.example.soundsephere.utils.HandleExeption;
-import com.example.soundsephere.model.Users;
 import com.example.soundsephere.utils.JDBCUtil;
 
 import java.sql.Connection;
@@ -25,7 +22,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
     private static final String SELECT_ALL_SONGS_QUERY = "SELECT s.*, a.name AS artist_name, g.name AS genre_name\n" +
             "FROM songs s\n" +
             "JOIN users a ON s.id_artist = a.username\n" +
-            "JOIN genre g ON s.genre_id = g.name\n" +
+            "JOIN genre g ON s.genre_id = g.id\n" +
             "WHERE s.status IN ('available', 'unavailable', 'deleted');";
     private static final String BLOCK_SONG_BY_ID = "UPDATE songs SET status = 'unavailable' WHERE id = ?";
     private static final String DELETE_SONG_BY_ID ="UPDATE songs SET status = 'deleted' WHERE id = ?" ;
@@ -87,6 +84,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
 
                     //lấy tên nghệ sĩ
                     UsersDAO usersDAO = new UsersDAO();
+
                     Users artistName = usersDAO.selectById(rs.getInt("id_artist"));
 
                     song.setArtistName(artistName.getName());
@@ -205,7 +203,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
 
     public boolean deleteSongById(String songId) throws SQLException {
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_SONG_BY_ID)) {
             statement.setString(1, songId);
 
@@ -218,7 +216,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
     public boolean blockSongById(String songId) throws SQLException {
 
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(BLOCK_SONG_BY_ID)) {
             statement.setString(1, songId);
 

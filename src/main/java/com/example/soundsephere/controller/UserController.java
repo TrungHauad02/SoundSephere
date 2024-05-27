@@ -20,9 +20,6 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.List;
 
 @WebServlet("/User")
 public class UserController extends HttpServlet {
@@ -96,12 +93,17 @@ public class UserController extends HttpServlet {
             request.getSession().setAttribute("user", user);
 
             //lấy danh sách playlist của user
-            List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getId());
+            List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserID(user.getUsername());//
             request.getSession().setAttribute("playlists", playlists);
             // lấy danh sách bài hát của user vừa nghe
-            List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getId());
+            List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getUsername());//
             request.getSession().setAttribute("recentPlayed", recentlyPlayed);
 
+            // lấy danh sách bài hát cho phía admin :
+            List<Songs> songsList = songsDAO.selectAll();
+            request.setAttribute("songsList", songsList);
+
+            //
             if (user.getRole() == EnumRole.ARTIST) {
                 System.out.println("Artist");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");

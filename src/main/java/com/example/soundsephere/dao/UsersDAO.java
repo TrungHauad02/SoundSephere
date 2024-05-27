@@ -1,11 +1,7 @@
 package com.example.soundsephere.dao;
 
-import com.example.soundsephere.MyUtils;
 import com.example.soundsephere.enumModel.EnumRole;
 import com.example.soundsephere.enumModel.EnumSex;
-import com.example.soundsephere.enumModel.EnumStatus;
-import com.example.soundsephere.enumModel.EnumUserStatus;
-import com.example.soundsephere.model.Albums;
 import com.example.soundsephere.enumModel.EnumUserStatus;
 import com.example.soundsephere.model.Users;
 import com.example.soundsephere.utils.JDBCUtil;
@@ -18,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsersDAO extends SoundSysDAO<Users, Integer> {
-    private static final String SELECT_USER_BY_ID_QUERY = "select * from users where username = ?";
+    private static final String SELECT_USER_BY_USERNAME_QUERY = "select * from users where username = ?";
     private static final String INSERT_USER = "INSERT INTO users (name,username, email, password, role,status) VALUES (? ,?, ?, ?, ?, ?)" ;
     private static final String LISTEN_COUNT_BY_ID_ARTIST_QUERY =
             "SELECT s.id_artist, SUM(ul.count) AS total_listens_count\n" +
@@ -31,6 +27,8 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     private static final String SELECT_ALL_APPROVALS_QUERY = "select * from users where users.role = 'artist' and users.status = 'pending'; ";
     private static final String BLOCK_USER_BY_ID = "UPDATE  users SET status = 'block' WHERE username = ?";
     private static final String APPROVE_ARTIST_BY_ID =  "UPDATE  users SET status = 'normal' WHERE username = ?";
+    private static final String SELECT_USER_BY_ID_QUERY = "select * from users where id = ?";
+    // hàm getUserByID gây lỗi do ko còn id nên t để tạm dòng trên này tránh lỗi th, xí nhớ chỉnh lại thay vì gọi hàm này thì gọi getUserByUsername nha
 
 
     public boolean checkConfirmPassword(String password, String confirmPassword) {
@@ -100,21 +98,25 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
 
-            try (PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_ID_QUERY)) {
+            try (PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_USERNAME_QUERY)) {
                 ps.setString(1, username);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getString("id"));
+                    //user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
                     user.setRole(EnumRole.valueOf(rs.getString("role").toUpperCase()));
                     user.setDescription(rs.getString("description"));
+
+                    /*
                     user.setBirthday(
                             rs.getDate("birthday") != null ? new java.util.Date(rs.getDate("birthday").getTime())
                                     : null);
+
+                     */
                     user.setSex(EnumSex.valueOf(rs.getString("sex").toUpperCase()));
 
                     return user;
@@ -161,7 +163,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     }
 
     public List<Users> selectAll() {
-        Connection connection = MyUtils.getConnection();
+        Connection connection = JDBCUtil.getConnection();
         List<Users> usersList = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_QUERY);
@@ -195,7 +197,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     }
 
     public List<Users> selectAllApproval() {
-        Connection connection = MyUtils.getConnection();
+        Connection connection = JDBCUtil.getConnection();
         List<Users> usersList = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_APPROVALS_QUERY);
@@ -231,7 +233,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     public boolean blockUserByUsername(String username) throws SQLException {
 
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(BLOCK_USER_BY_ID)) {
             statement.setString(1, username);
 
@@ -246,7 +248,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
 
     public boolean approveArtistByUsername(String username) throws SQLException {
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(APPROVE_ARTIST_BY_ID)) {
                 statement.setString(1, username);
 

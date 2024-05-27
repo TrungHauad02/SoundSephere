@@ -1,9 +1,7 @@
 package com.example.soundsephere.dao;
 
-import com.example.soundsephere.MyUtils;
 import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.enumModel.EnumTypePlaylist;
-import com.example.soundsephere.model.Albums;
 import com.example.soundsephere.model.Playlists;
 import com.example.soundsephere.model.Users;
 import com.example.soundsephere.utils.JDBCUtil;
@@ -77,7 +75,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
 
     public List<Playlists> selectAll() {
 
-        Connection connection = MyUtils.getConnection();
+        Connection connection = JDBCUtil.getConnection();
         List<Playlists> playlists  = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_PLAYLISTS_QUERY);
@@ -133,7 +131,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         return numberofsongs;
     }
 
-    public List<Playlists> selectAllPlaylistByUserId(String userId) {
+    public List<Playlists> selectAllPlaylistByUserID(String userId) {
         Connection conn = JDBCUtil.getConnection();
         List<Playlists> lstPlaylist = new LinkedList<>();
         if (conn != null) {
@@ -195,7 +193,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     }
     public boolean deletePlaylistById(String playlistId) throws SQLException {
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_PLAYLIST_BY_ID)) {
             statement.setString(1, playlistId);
 

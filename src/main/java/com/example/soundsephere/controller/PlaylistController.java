@@ -53,7 +53,7 @@ public class PlaylistController extends HttpServlet {
 
     public void getPlaylistByUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String user_id = String.valueOf(Integer.parseInt(request.getParameter("user_id")));
-        List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user_id);
+        List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserID(user_id);
 
         request.getSession().setAttribute("playlists", playlists);
 

@@ -1,78 +1,136 @@
-CREATE
-DATABASE IF NOT EXISTS `soundsphere` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE
-`soundsphere`;
+-- MySQL Workbench Forward Engineering
 
-CREATE TABLE `users`
-(
-    `id`          varchar(50)  NOT NULL ,
-    `name`        varchar(255) NOT NULL,
-    `sex`         enum('male', 'female') NOT NULL DEFAULT 'male',
-    `description` varchar(255) NULL,
-    `username`    varchar(255) NULL UNIQUE,
-    `email`       varchar(255) NULL UNIQUE,
-    `password`    varchar(255) NULL,
-    `role`        enum('listener', 'artist', 'manager') NOT NULL DEFAULT 'listener',
-    `status`      enum('normal', 'block', 'pending') NOT NULL DEFAULT 'normal',
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-CREATE TABLE `songs`
-(
-    `id`         varchar(50)   NOT NULL ,
-    `title`       varchar(255) NOT NULL,
-    `id_artist`   varchar(50) NOT NULL,
-    `genre_id`    varchar(50)         NOT NULL,
-    `description` varchar(255)  NULL,
-    `time_play`   int           NULL DEFAULT 0,
-    `song_data`   longblob      NULL,
-    `release_day` date          NULL,
-    `lyric`       varchar(255)  NULL,
-    `rating`      float         NULL DEFAULT 0,
-    CHECK (rating >= 0 AND rating <= 10),
-    `status`      enum('unavailable', 'available', 'deleted') NOT NULL DEFAULT 'available',
-    FOREIGN KEY (`id_artist`) REFERENCES `users` (`id`),
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema musicweb
+-- -----------------------------------------------------
 
-CREATE TABLE `genre`
-(
-    `id`     varchar(50) NOT NULL ,
-    `name`   varchar(255) NOT NULL,
-    `status` enum('unavailable', 'available', 'deleted') NOT NULL DEFAULT 'available',
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- -----------------------------------------------------
+-- Schema musicweb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `musicweb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `musicweb` ;
 
-CREATE TABLE `playlists`
-(
-    `id`      varchar(50) NOT NULL ,
-    `name`    varchar(255) NOT NULL,
-    `user_id` varchar(50)        NOT NULL,
-    `type`    enum('playlist', 'album') NOT NULL DEFAULT 'playlist',
-    `status`  enum('unavailable', 'available', 'deleted') NOT NULL DEFAULT 'available',
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- -----------------------------------------------------
+-- Table `musicweb`.`genre`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `musicweb`.`genre` (
+                                                  `id` INT NOT NULL,
+                                                  `name` VARCHAR(255) NOT NULL,
+    `status` ENUM('unavailable', 'available', 'deleted') NOT NULL DEFAULT 'available',
+    PRIMARY KEY (`id`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb3;
 
-CREATE TABLE `playlist_songs`
-(
-    `playlist_id` varchar(50) NOT NULL,
-    `song_id`    varchar(50) NOT NULL,
-    PRIMARY KEY (`playlist_id`, `song_id`),
-    FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`),
-    FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `user_listened`
-(
-    `id`      varchar(50) NOT NULL ,
-    `user_id` varchar(50) NOT NULL,
-    `song_id` varchar(50) NOT NULL,
-    `count`   int NOT NULL DEFAULT 0,
+-- -----------------------------------------------------
+-- Table `musicweb`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `musicweb`.`users` (
+    `name` VARCHAR(255) CHARACTER SET 'utf8mb3' NOT NULL,
+    `sex` ENUM('male', 'female') NULL DEFAULT 'male',
+    `description` VARCHAR(255) NULL DEFAULT NULL,
+    `username` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `role` ENUM('listener', 'artist', 'manager') NULL DEFAULT 'listener',
+    `status` ENUM('normal', 'block', 'pending') NULL DEFAULT 'normal',
+    PRIMARY KEY (`username`),
+    UNIQUE INDEX `username` (`username` ASC) VISIBLE,
+    UNIQUE INDEX `email` (`email` ASC) VISIBLE)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `musicweb`.`playlists`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `musicweb`.`playlists` (
+                                                      `id` INT NOT NULL AUTO_INCREMENT,
+                                                      `name` VARCHAR(255) NULL DEFAULT NULL,
+    `user_id` VARCHAR(255) NULL DEFAULT NULL,
+    `type` ENUM('playlist', 'album') NULL DEFAULT 'playlist',
+    `status` ENUM('unavailable', 'available', 'deleted') NULL DEFAULT 'available',
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-    FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    INDEX `user_id` (`user_id` ASC) VISIBLE,
+    CONSTRAINT `playlists_ibfk_1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `musicweb`.`users` (`username`))
+    ENGINE = InnoDB
+    AUTO_INCREMENT = 21
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
-ALTER TABLE `soundsphere`.`songs`
-    ADD COLUMN `image` LONGBLOB NULL AFTER `status`;
+
+-- -----------------------------------------------------
+-- Table `musicweb`.`rating`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `musicweb`.`rating` (
+    `user_id` VARCHAR(255) CHARACTER SET 'utf8mb3' NULL DEFAULT NULL,
+    `song_id` INT NULL DEFAULT NULL,
+    `rating` FLOAT NULL DEFAULT NULL)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `musicweb`.`song_detail`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `musicweb`.`song_detail` (
+                                                        `song_id` INT NULL DEFAULT NULL,
+                                                        `written_by` VARCHAR(255) CHARACTER SET 'utf8mb3' NULL DEFAULT NULL,
+    `produced_by` VARCHAR(255) CHARACTER SET 'utf8mb3' NULL DEFAULT NULL,
+    `date_release` DATE NULL DEFAULT NULL)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `musicweb`.`songs`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `musicweb`.`songs` (
+                                                  `id` INT NULL DEFAULT NULL,
+                                                  `title` VARCHAR(255) CHARACTER SET 'utf8mb3' NULL DEFAULT NULL,
+    `id_artist` VARCHAR(255) NULL DEFAULT NULL,
+    `genre_id` INT NULL DEFAULT NULL,
+    `description` VARCHAR(255) CHARACTER SET 'utf8mb3' NULL DEFAULT NULL,
+    `time_play` INT NULL DEFAULT '0',
+    `song_data` TEXT NULL DEFAULT NULL,
+    `image` TEXT NULL DEFAULT NULL,
+    `lyric` VARCHAR(255) NULL DEFAULT NULL,
+    `rating` FLOAT NULL DEFAULT '0',
+    `status` VARCHAR(255) CHARACTER SET 'utf8mb3' NULL DEFAULT NULL)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `musicweb`.`user_listened`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `musicweb`.`user_listened` (
+                                                          `id` INT NOT NULL AUTO_INCREMENT,
+                                                          `user_id` VARCHAR(255) NOT NULL,
+    `song_id` INT NOT NULL,
+    `count` INT NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
