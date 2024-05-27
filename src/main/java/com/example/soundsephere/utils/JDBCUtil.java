@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class JDBCUtil {
-    private static String jdbcURL = "jdbc:mysql://localhost:3306/soundsphere?";
+    private static String jdbcURL = "jdbc:mysql://localhost:3306/musicweb?";
     private static String jdbcUsername = "root";
     private static String jdbcPassword = "826479113";
 

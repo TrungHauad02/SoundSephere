@@ -5,6 +5,8 @@ import com.example.soundsephere.dao.SongsDAO;
 import com.example.soundsephere.dao.UsersDAO;
 import com.example.soundsephere.enumModel.EnumRole;
 import com.example.soundsephere.enumModel.EnumSex;
+import com.example.soundsephere.enumModel.EnumStatus;
+import com.example.soundsephere.enumModel.EnumUserStatus;
 import com.example.soundsephere.model.Playlists;
 import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.model.Users;
@@ -20,9 +22,6 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.List;
 
 @WebServlet("/User")
 public class UserController extends HttpServlet {
@@ -52,6 +51,10 @@ public class UserController extends HttpServlet {
             case "goToHome":
                 RequestDispatcher dispatcherHome = request.getRequestDispatcher("user/dang/home_main.jsp");
                 dispatcherHome.forward(request, response);
+                break;
+            case "goToArtist":
+                RequestDispatcher dispatcherArtist = request.getRequestDispatcher("user/artist_main.jsp");
+                dispatcherArtist.forward(request, response);
                 break;
             case "register":
                 register(request, response);
@@ -92,21 +95,22 @@ public class UserController extends HttpServlet {
 
         if (usersDAO.checkLogin(username, password)) {
             System.out.println("login success");
+
             Users user = usersDAO.getUserByUsername(username);
             request.getSession().setAttribute("user", user);
 
             //lấy danh sách playlist của user
-            List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getId());
+            List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getUsername());
             request.getSession().setAttribute("playlists", playlists);
             // lấy danh sách bài hát của user vừa nghe
-            List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getId());
+            List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getUsername());
             request.getSession().setAttribute("recentPlayed", recentlyPlayed);
 
-            if (user.getRole() == EnumRole.ARTIST) {
+            if ((user.getRole() == EnumRole.ARTIST) && ((user.getRole() == EnumRole.ARTIST) && (user.getStatus().equals(EnumUserStatus.NORMAL)))) {
                 System.out.println("Artist");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("user/artist_main.jsp");
                 dispatcher.forward(request, response);
-            } else if(user.getRole() == EnumRole.LISTENER) {
+            } else if((user.getRole() == EnumRole.LISTENER) || ((user.getRole() == EnumRole.ARTIST) && (user.getStatus().equals(EnumUserStatus.PENDING)))) {
                 System.out.println("user");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("user/dang/home_main.jsp");
                 dispatcher.forward(request, response);
@@ -173,7 +177,6 @@ public class UserController extends HttpServlet {
 
     public void updateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Users user = new Users();
-        user.setId(String.valueOf(Integer.parseInt(request.getParameter("idUser"))));
         user.setName(request.getParameter("nameUser"));
         user.setEmail(request.getParameter("emailUser"));
         if (request.getParameter("descriptionUser") == null){

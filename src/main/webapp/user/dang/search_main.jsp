@@ -32,10 +32,10 @@
 
     <%
         ArrayList<Songs> list = new ArrayList<Songs>();
-        list.add(new Songs(1, "Chúng ta của hiện tại", "Sơn Tùng MTP", "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg"));
-        list.add(new Songs(2, "Em là", "Mono", "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSjd2pF7NsSqlUKOnZkl234AZ5O82nWOiptrUC4VEvug3JEz4gK"));
-        list.add(new Songs(3, "Có chắc yêu là đây", "Sơn Tùng MTP", "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg"));
-        list.add(new Songs(4, "Chúng ta của tương lai", "Sơn Tùng MTP", "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg"));
+        list.add(new Songs("1", "Chúng ta của hiện tại", "Sơn Tùng MTP", "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg"));
+        list.add(new Songs("2", "Em là", "Mono", "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSjd2pF7NsSqlUKOnZkl234AZ5O82nWOiptrUC4VEvug3JEz4gK"));
+        list.add(new Songs("3", "Có chắc yêu là đây", "Sơn Tùng MTP", "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg"));
+        list.add(new Songs("4", "Chúng ta của tương lai", "Sơn Tùng MTP", "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg"));
     %>
 
     <div class="container-fluid justify-content-center" style="height: 100%;">

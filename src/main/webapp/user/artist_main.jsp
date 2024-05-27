@@ -66,21 +66,18 @@
         .dropdown-menu.show {
             display: block;
         }
+
+        .text {
+            color: black;
+        }
     </style>
 </head>
-<body style="background-color: black;">
-    <jsp:include page="../header.jsp"/>
+<body style="background-color: black; ">
     <%
-        Users currentUserLogin = (Users) session.getAttribute("currentUserLogin");%>
-        <%
-            if (currentUserLogin == null) {
-        %>
-        <%
-            response.sendRedirect(request.getContextPath()+"/index.jsp");
-        %>
-        <%
-        }
+        Users currentUserLogin = (Users) session.getAttribute("user");
     %>
+        <jsp:include page="../header.jsp"/>
+
     <div class="container">
         <div class="row" style="padding-bottom: 20px;padding-top: 10px;">
             <div class="col-md-12">
@@ -92,17 +89,17 @@
                             </div>
                             <div class="col-md-4">
                                 <ul class="list-group">
-                                    <li class="list-group-item">Artist details</li>
-                                    <li class="list-group-item">${currentUserLogin.name}</li>
-                                    <li class="list-group-item">${currentUserLogin.description}</li>
+                                    <li style="color: black" class="list-group-item">Artist details</li>
+                                    <li style="color: black" class="list-group-item"><%= currentUserLogin.getName()%></li>
+                                    <li style="color: black" class="list-group-item"><%= currentUserLogin.getDescription()%></li>
                                 </ul>
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-4">
                                 <ul class="list-group">
-                                    <li class="list-group-item">Số lượng lượt nghe: ${requestScope.listensCount}</li>
-                                    <li class="list-group-item">Số lượng bài hát: ${requestScope.songCount}</li>
-                                    <li class="list-group-item">Số lượng album: ${requestScope.albumCount}</li>
+                                    <li style="color: black;font-size: 15px" class="list-group-item">Số lượng lượt nghe: ${requestScope.listensCount}</li>
+                                    <li style="color: black ;font-size: 15px" class="list-group-item">Số lượng bài hát: ${requestScope.songCount}</li>
+                                    <li style="color: black;font-size: 15px" class="list-group-item">Số lượng album: ${requestScope.albumCount}</li>
                                 </ul>
                             </div>
                         </div>

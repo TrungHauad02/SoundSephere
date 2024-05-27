@@ -72,12 +72,12 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
         return result;
     }
 
-    public List<Songs> selectAllSongById(String id) {
+    public List<Songs> selectAllSongById(String username) {
         Connection conn = JDBCUtil.getConnection();
         List<Songs> songs = null;
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(SELECT_ALL_SONG_BY_ID_QUERY)) {
-                ps.setString(1, id);
+                ps.setString(1, username);
                 ResultSet rs = ps.executeQuery();
                 songs = new LinkedList<>();
                 while (rs.next()) {
@@ -87,7 +87,7 @@ public class SongsDAO extends SoundSysDAO<Songs, Integer> {
 
                     //lấy tên nghệ sĩ
                     UsersDAO usersDAO = new UsersDAO();
-                    Users artistName = usersDAO.selectById(rs.getInt("id_artist"));
+                    Users artistName = usersDAO.selectById(rs.getString("id_artist"));
 
                     song.setArtistName(artistName.getName());
                     song.setGenre_id(rs.getString("genre_id"));

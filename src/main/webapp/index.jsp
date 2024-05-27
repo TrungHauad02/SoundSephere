@@ -8,10 +8,6 @@
 <html>
 
 <body>
-<a href="${pageContext.request.contextPath}/song/ad_listSong">
-    INTO ADMIN TEST
-</a>
-
     <%
         Users user = null;
         if (session.getAttribute("user") == null) {

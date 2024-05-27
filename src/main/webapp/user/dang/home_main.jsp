@@ -49,7 +49,9 @@
                             </div>
                             <div class="col-6 title_item"  style="justify-content:flex-end ">
                                 <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <img class="image_card" src="<%=request.getContextPath()%>/assets/img/icons/add.png" alt="">
+                                    <a href="<%=request.getContextPath()%>/User?action=goToAddPlaylist">
+                                        <img class="image_card" src="<%=request.getContextPath()%>/assets/img/icons/add.png" alt="">
+                                    </a>
                                 </button>
                             </div>
                         </div>

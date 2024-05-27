@@ -16,10 +16,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class UsersDAO extends SoundSysDAO<Users, Integer> {
     private static final String SELECT_USER_BY_ID_QUERY = "select * from users where username = ?";
-    private static final String INSERT_USER = "INSERT INTO users (name,username, email, password, role,status) VALUES (? ,?, ?, ?, ?, ?)" ;
+    private static final String INSERT_USER = "INSERT INTO users (name,username, email, password, role,status) VALUES ( ? ,?, ?, ?, ?, ?)" ;
     private static final String LISTEN_COUNT_BY_ID_ARTIST_QUERY =
             "SELECT s.id_artist, SUM(ul.count) AS total_listens_count\n" +
                     "FROM songs s\n" +
@@ -36,19 +37,20 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     public boolean checkConfirmPassword(String password, String confirmPassword) {
         return password.equals(confirmPassword);
     }
+    public static String generateRandomId() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 3);
+    }
     public boolean insert(Users user) {
         Connection conn = JDBCUtil.getConnection();
 
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(INSERT_USER)) {
-
                 ps.setString(1, user.getName());
                 ps.setString(2, user.getUsername());
                 ps.setString(3, user.getEmail());
                 ps.setString(4, user.getPassword());
                 ps.setString(5, user.getRole().toString());
                 ps.setString(6, user.getRole() == EnumRole.LISTENER ? "normal" : "pending");
-
                 System.out.println(ps);
                 ps.executeUpdate();
                 return true;
@@ -62,13 +64,13 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     public boolean update(Users user) {
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
-            try (PreparedStatement ps = conn.prepareStatement("UPDATE users SET name = ?, email = ?, password = ?, description = ?,sex = ? WHERE id = ?")) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE users SET name = ?, email = ?, password = ?, description = ?,sex = ? WHERE username = ?")) {
                 ps.setString(1, user.getName());
                 ps.setString(2, user.getEmail());
                 ps.setString(3, user.getPassword());
                 ps.setString(4, user.getDescription());
                 ps.setString(5, user.getSex().toString());
-                ps.setString(6, user.getId());
+                ps.setString(6, user.getUsername());
                 System.out.println(ps);
                 ps.executeUpdate();
                 return true;
@@ -105,17 +107,14 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
                     user.setRole(EnumRole.valueOf(rs.getString("role").toUpperCase()));
                     user.setDescription(rs.getString("description"));
-                    user.setBirthday(
-                            rs.getDate("birthday") != null ? new java.util.Date(rs.getDate("birthday").getTime())
-                                    : null);
                     user.setSex(EnumSex.valueOf(rs.getString("sex").toUpperCase()));
+                    user.setStatus(EnumUserStatus.valueOf(rs.getString("status").toUpperCase()));
 
                     return user;
                 }
@@ -130,24 +129,26 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return false;
     }
 
+    @Override
     public Users selectById(Integer id) {
+        return null;
+    }
+
+
+    public Users selectById(String username) {
         Users user = null;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_ID_QUERY)) {
-                ps.setInt(1, id);
+                ps.setString(1, username);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
                     user.setRole(EnumRole.valueOf(rs.getString("role").toUpperCase()));
                     user.setDescription(rs.getString("description"));
-                    user.setBirthday(
-                            rs.getDate("birthday") != null ? new java.util.Date(rs.getDate("birthday").getTime())
-                                    : null);
                     user.setSex(EnumSex.valueOf(rs.getString("sex").toUpperCase()));
                     user.setStatus(EnumUserStatus.valueOf(rs.getString("status").toUpperCase()));
                     return user;

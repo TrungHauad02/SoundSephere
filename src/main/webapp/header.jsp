@@ -1,10 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Asus ROG
-  Date: 20/04/2024
-  Time: 1:28 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.example.soundsephere.model.Users" %>
+<%@ page import="com.example.soundsephere.enumModel.EnumRole" %>
+<%@ page import="com.example.soundsephere.enumModel.EnumUserStatus" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -15,6 +11,10 @@
     <jsp:include page="link_css.jsp"/>
 </head>
 <body>
+    <%
+        Users user = (Users) session.getAttribute("user");
+        System.out.println(user.getRole());
+    %>
     <header class="header-section clearfix">
         <a href="./index.jsp" class="site-logo">
             <img src="./assets/img/logo.png" alt="">
@@ -26,12 +26,17 @@
         </div>
         <ul class="main-menu">
             <li><a href="index.jsp">Home</a></li>
-            <li><a href="#">Artist</a></li>
             <li><a href="<%=url%>/Search?action=goToSearch">Search</a></li>
-            <li><a href="index.jsp">Home</a></li>
-            <li><a href="<%= request.getContextPath() %>/User/login" class="nav-link">Artist</a></li>
-            <li><a href="#">Search</a></li>
-            <li><a href="#">Playlist</a></li>
+
+            <%
+                if ((user.getRole() == EnumRole.ARTIST) && (user.getStatus().equals(EnumUserStatus.NORMAL))) {
+            %>
+                <li><a href="<%= request.getContextPath() %>/User?action=goToArtist" class="nav-link">Artist</a></li>
+            <%
+                }
+            %>
+
+            <li><a href="<%=url%>/Playlist?action=goToAddPlaylist">Playlist</a></li>
             <li><a href="<%=url%>/User?action=showAccount">Profile</a></li>
         </ul>
     </header>

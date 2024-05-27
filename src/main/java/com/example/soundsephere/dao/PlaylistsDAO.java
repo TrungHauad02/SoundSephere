@@ -133,12 +133,12 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         return numberofsongs;
     }
 
-    public List<Playlists> selectAllPlaylistByUserId(String userId) {
+    public List<Playlists> selectAllPlaylistByUserId(String username) {
         Connection conn = JDBCUtil.getConnection();
         List<Playlists> lstPlaylist = new LinkedList<>();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(SELECT_ALL_PLAYLIST_BY_USER_ID_QUERY)) {
-                ps.setString(1, userId);
+                ps.setString(1, username);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     Playlists playlist = new Playlists();
@@ -147,7 +147,6 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                     playlist.setUser_id(rs.getString("user_id"));
                     playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
                     playlist.setStatus(EnumStatus.valueOf(rs.getString("status").toUpperCase()));
-                    playlist.setNumber_of_songs(getNumberofsongs(playlist.getId()));
                     lstPlaylist.add(playlist);
                 }
             } catch (SQLException e) {

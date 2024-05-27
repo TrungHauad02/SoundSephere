@@ -37,10 +37,11 @@ public class PlaylistController extends HttpServlet {
             case "getbyuser":
                 getPlaylistByUser(request, response);
                 break;
-
+            case "goToAddPlaylist":
+                goToPlayListMain(request, response);
+                break;
             default:
-                System.out.println("default");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("user/playlist_main.jsp");
                 dispatcher.forward(request, response);
                 break;
         }
@@ -49,6 +50,10 @@ public class PlaylistController extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
         doGet(request, response);
+    }
+    public void goToPlayListMain(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/playlist_main.jsp");
+        dispatcher.forward(request, response);
     }
 
     public void getPlaylistByUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
