@@ -4,6 +4,7 @@ import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.enumModel.EnumTypePlaylist;
 import com.example.soundsephere.model.Albums;
 import com.example.soundsephere.model.Users;
+import com.example.soundsephere.utils.JDBCUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +21,7 @@ public class AlbumsDAO extends SoundSysDAO<Albums, Integer> {
     private static final String DELETE_ALBUM_BY_ID =  " UPDATE playlists SET status = 'deleted' WHERE id = ?" ;
     @Override
     public List<Albums> selectAll() {
-        Connection connection = MyUtils.getConnection();
+        Connection connection = JDBCUtil.getConnection();
         List<Albums> albums = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_ALBUMS_QUERY);
@@ -52,7 +53,7 @@ public class AlbumsDAO extends SoundSysDAO<Albums, Integer> {
     }
     public boolean deleteAlbumById(String albumId) throws SQLException {
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_ALBUM_BY_ID)) {
             statement.setString(1, albumId);
 
