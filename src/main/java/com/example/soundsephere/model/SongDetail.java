@@ -8,7 +8,7 @@ public class SongDetail {
     private String produced_by;
     private Date date_release;
 
-    public SongDetail(int song_id, String written_by, String produced_by, java.sql.Date date_release) {
+    public SongDetail(int song_id, String written_by, String produced_by,Date date_release) {
         this.song_id = song_id;
         this.written_by = written_by;
         this.produced_by = produced_by;

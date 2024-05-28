@@ -16,16 +16,18 @@
         System.out.println(user.getRole());
     %>
     <header class="header-section clearfix">
-        <a href="./index.jsp" class="site-logo">
-            <img src="./assets/img/logo.png" alt="">
+
+        <a href="<%=url%>/User?action=goToHome" class="site-logo">
+            <img src="<%= request.getContextPath() %>/assets/img/logo.png" alt="">
         </a>
+
         <div class="header-right">
             <div class="user-panel">
                 <a href="<%=url%>/User?action=logout" class="logout">Logout</a>
             </div>
         </div>
         <ul class="main-menu">
-            <li><a href="index.jsp">Home</a></li>
+            <li><a href="<%=url%>/User?action=goToHome">Home</a></li>
             <li><a href="<%=url%>/Search?action=goToSearch">Search</a></li>
 
             <%

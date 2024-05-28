@@ -18,6 +18,10 @@
     <jsp:include page="../../link_css.jsp"/>
     <title>Document</title>
 </head>
+<%
+    String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+            + request.getContextPath();
+%>
 <body style="height: 80vh">
     <jsp:include page="../../header.jsp"/>
     <%
@@ -70,7 +74,8 @@
                 %>
                     <div class="card mb-3 card-hover" style="width:80%; border-radius: 40px; background-color: black;">
                         <div class="card-body card_song_body">
-                            <img src="<%= song.getImage() %>"
+                            <img
+                                 id="song-image-<%= count %>"
                                  class="card-img-left image_card"
                                  alt="..."
                             >
@@ -79,11 +84,36 @@
                                 <p class="card-text"><%= song.getArtistName()%></p>
                             </div>
 
-                            <a href="#" class="btn btn-primary card-button">
+                            ///////////////////////////// chuển hướng sang trang play nhạc
+                            <a href="<%=url%>/SongPlay?action=getSong&idSong=<%= song.getId() %>" class="btn btn-primary card-button">
                                 <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">
                             </a>
+                            /////////////////////////////
+
+<%--                            <form action="<%=path%>/Song" method="get">--%>
+<%--                                <button class="btn btn-primary card-button">--%>
+<%--                                    <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">--%>
+<%--                                </button>--%>
+<%--                                <input type="hidden" name="action" value="getSong">--%>
+<%--                                <input type="hidden" name="idSong" value="<%= song.getId() %>">--%>
+<%--                            </form>--%>
+
+
                         </div>
                     </div>
+                    <script type="module">
+                        import { getImage } from '<%=url%>/assets/js/getImage.js';
+                        document.addEventListener('DOMContentLoaded', () => {
+                            getImage("<%= song.getImage() %>").then(
+                                (url) => {
+                                    console.log(url);
+                                    document.getElementById("song-image-<%= count %>").src = url;
+                                }
+                            ).catch((error) => {
+                                console.error("Error fetching image:", error);
+                            });
+                        });
+                    </script>
                 <%
                         }
                     }

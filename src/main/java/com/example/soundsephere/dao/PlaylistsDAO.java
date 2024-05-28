@@ -20,12 +20,15 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     private static final String INSERT_PLAYLIST_QUERY =
             "INSERT INTO playlists (name, user_id, type, status) " +
                     "VALUES (?, ?, ?, ?)";
+    private static final String DELETE_PLAYLIST_QUERY =
+            "DELETE FROM playlists WHERE id = ?";
     private static final String SELECT_ALL_PLAYLISTS_QUERY = "SELECT p.*, u.name as user_name " +
             "FROM playlists p " +
             "JOIN users u ON p.user_id = u.username " +
             "WHERE p.type = 'playlist'";
     private static final String DELETE_PLAYLIST_BY_ID =  " UPDATE playlists SET status = 'deleted' WHERE id = ?" ;
 
+    private static final String SELECT_PLAYLIST_BY_ID_QUERY = "SELECT * FROM playlists WHERE id = ?";
     private static final String SELECT_ALL_PLAYLIST_BY_USER_ID_QUERY ="SELECT * FROM playlists WHERE user_id = ?";
     private static final String SELECT_NUMBER_OF_SONGS_IN_PLAYLIST_QUERY = "SELECT COUNT(*) FROM playlist_songs WHERE playlist_id = ?";
     private static final String ALBUM_COUNT_BY_ID_ARTIST_QUERY =
@@ -44,9 +47,9 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(INSERT_PLAYLIST_QUERY)) {
                 ps.setString(1, entity.getName());
-                ps.setString(2, entity.getId());
-                ps.setString(3,entity.getType().name().toLowerCase());
-                ps.setString(4,entity.getStatus().name().toLowerCase());
+                ps.setInt(2, entity.getId());
+                ps.setString(3, entity.getType().name().toLowerCase());
+                ps.setString(4, entity.getStatus().name().toLowerCase());
 
                 int rowsAffected = ps.executeUpdate();
                 result = rowsAffected > 0;
@@ -83,7 +86,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_PLAYLISTS_QUERY);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String id = rs.getString("id");
+                int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String user_id = rs.getString("user_id");
                 EnumTypePlaylist type = EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase());
@@ -110,12 +113,12 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
 
     }
 
-    public  int getNumberofsongs(String playlist_id){
+    public  int getNumberofsongs(int playlist_id){
         Connection conn = JDBCUtil.getConnection();
         int numberofsongs = 0;
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(SELECT_NUMBER_OF_SONGS_IN_PLAYLIST_QUERY)) {
-                ps.setString(1, playlist_id);
+                ps.setInt(1, playlist_id);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     numberofsongs = rs.getInt(1);
@@ -142,7 +145,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     Playlists playlist = new Playlists();
-                    playlist.setId(rs.getString("id"));
+                    playlist.setId(rs.getInt("id"));
                     playlist.setName(rs.getString("name"));
                     playlist.setUser_id(rs.getString("user_id"));
                     playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
@@ -173,7 +176,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()){
                     Playlists playlist = new Playlists();
-                    playlist.setId(rs.getString("id"));
+                    playlist.setId(rs.getInt("id"));
                     playlist.setName(rs.getString("name"));
                     playlist.setUser_id(rs.getString("user_id"));
                     playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
@@ -205,12 +208,12 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     }
 
 
-    public int playlistCount(int idArtist){
+    public int playlistCount(String idArtist){
         int count = 0;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(ALBUM_COUNT_BY_ID_ARTIST_QUERY)) {
-                ps.setInt(1, idArtist);
+                ps.setString(1, idArtist);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt("playlist_count");

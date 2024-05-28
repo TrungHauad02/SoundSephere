@@ -1,4 +1,4 @@
-//import { initializeFirebase } from './firebaseModule.js';
+import { initializeFirebase } from './firebaseModule.js';
 import {
     openCreateAlbumPopup,
     createAlbum,
@@ -9,7 +9,8 @@ import {
 import {fetchDataSong, renderSongList, openAddSongPopup, closeSongPopup, addNewSong} from './songModule.js';
 
 document.addEventListener('DOMContentLoaded', function() {
-    //initializeFirebase();
+    initializeFirebase();
+
     // Handle Create Album Popup
     const openCreateAlbumPopupButton = document.getElementById('openCreateAlbumPopup');
     openCreateAlbumPopupButton.addEventListener('click', openCreateAlbumPopup);
@@ -42,14 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.readAsDataURL(file);
         }
     });
-    fetchDataSong()
-        .then(data => {
-            renderSongList(data, 'songListContainer');
-        })
-        .catch(error => {
-            console.error('Lỗi trong quá trình lấy dữ liệu:', error);
-         });
 
+    loadSong();
+    loadAlbum();
+});
+
+export function loadAlbum(){
     fetchDataAlbum()
         .then(data=>{
             renderAlbumList(data,'albumContainer');
@@ -57,4 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Lỗi trong quá trình lấy dữ liệu:', error);
         });
-});
+}
+
+export function loadSong(){
+    fetchDataSong()
+        .then(data => {
+            renderSongList(data, 'songListContainer');
+        })
+        .catch(error => {
+            console.error('Lỗi trong quá trình lấy dữ liệu:', error);
+        });
+}

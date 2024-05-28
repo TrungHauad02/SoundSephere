@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class UsersDAO extends SoundSysDAO<Users, Integer> {
+public class UsersDAO{
     private static final String SELECT_USER_BY_ID_QUERY = "select * from users where username = ?";
     private static final String INSERT_USER = "INSERT INTO users (name,username, email, password, role,status) VALUES ( ? ,?, ?, ?, ?, ?)" ;
     private static final String LISTEN_COUNT_BY_ID_ARTIST_QUERY =
@@ -37,20 +37,19 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     public boolean checkConfirmPassword(String password, String confirmPassword) {
         return password.equals(confirmPassword);
     }
-    public static String generateRandomId() {
-        return UUID.randomUUID().toString().replace("-", "").substring(0, 3);
-    }
     public boolean insert(Users user) {
         Connection conn = JDBCUtil.getConnection();
 
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(INSERT_USER)) {
+
                 ps.setString(1, user.getName());
                 ps.setString(2, user.getUsername());
                 ps.setString(3, user.getEmail());
                 ps.setString(4, user.getPassword());
                 ps.setString(5, user.getRole().toString());
                 ps.setString(6, user.getRole() == EnumRole.LISTENER ? "normal" : "pending");
+
                 System.out.println(ps);
                 ps.executeUpdate();
                 return true;
@@ -125,15 +124,9 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return user;
     }
 
-    public boolean delete(Integer id) {
+    public boolean delete(String id) {
         return false;
     }
-
-    @Override
-    public Users selectById(Integer id) {
-        return null;
-    }
-
 
     public Users selectById(String username) {
         Users user = null;
@@ -147,6 +140,7 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
+                    user.setUsername(rs.getString("username"));
                     user.setRole(EnumRole.valueOf(rs.getString("role").toUpperCase()));
                     user.setDescription(rs.getString("description"));
                     user.setSex(EnumSex.valueOf(rs.getString("sex").toUpperCase()));
@@ -241,10 +235,6 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         }
     }
 
-    protected List<Users> selectBySql(String sql, Object... args) {
-        return null;
-    }
-
     public boolean approveArtistByUsername(String username) throws SQLException {
         try (
                 Connection connection = MyUtils.getConnection();
@@ -258,12 +248,12 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
 
     }
 
-    public int listenCount(int idArtist){
+    public int listenCount(String idArtist){
         int count = 0;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(LISTEN_COUNT_BY_ID_ARTIST_QUERY)) {
-                ps.setInt(1, idArtist);
+                ps.setString(1, idArtist);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt("total_listens_count");
@@ -275,3 +265,4 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return count;
     }
 }
+

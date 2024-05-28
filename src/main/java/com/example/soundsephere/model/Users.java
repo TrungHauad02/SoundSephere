@@ -11,7 +11,6 @@ import java.util.Date;
 public class Users {
     private String name;
     private EnumSex sex;
-    private Date birthday;
     private String description;
     private String username;
     private String email;
@@ -27,7 +26,6 @@ public class Users {
         super();
         this.name = name;
         this.sex = sex;
-        this.birthday = birthday;
         this.description = description;
         this.username = username;
         this.email = email;
@@ -50,14 +48,6 @@ public class Users {
 
     public void setSex(EnumSex sex) {
         this.sex = sex;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
     public String getDescription() {
