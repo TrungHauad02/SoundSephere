@@ -1,11 +1,7 @@
 package com.example.soundsephere.dao;
 
-import com.example.soundsephere.MyUtils;
 import com.example.soundsephere.enumModel.EnumRole;
 import com.example.soundsephere.enumModel.EnumSex;
-import com.example.soundsephere.enumModel.EnumStatus;
-import com.example.soundsephere.enumModel.EnumUserStatus;
-import com.example.soundsephere.model.Albums;
 import com.example.soundsephere.enumModel.EnumUserStatus;
 import com.example.soundsephere.model.Users;
 import com.example.soundsephere.utils.JDBCUtil;
@@ -16,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class UsersDAO{
     private static final String SELECT_USER_BY_ID_QUERY = "select * from users where username = ?";
