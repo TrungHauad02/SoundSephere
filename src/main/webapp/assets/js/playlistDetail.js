@@ -113,7 +113,7 @@ export function createSongCardForPlaylist(song){
 
     const playSongA = document.createElement('a');
     playSongA.className = 'playSong nav-link';
-    playSongA.href = '/SoundSephere/Song/getSong?idSong=' + song.id;
+    playSongA.href = '/SoundSephere/SongPlay/getSong?idSong=' + song.id;
     playSongA.textContent = 'Play';
 
     contentDiv.appendChild(badgeDiv);

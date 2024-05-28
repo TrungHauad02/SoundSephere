@@ -43,7 +43,9 @@ public class PlaylistController extends HttpServlet {
         String action = request.getParameter("action");
 
         System.out.println(action);
-
+        if (action == null){
+            action = request.getPathInfo();
+        }
         switch (action) {
             case "getbyuser":
                 getPlaylistByUser(request, response);

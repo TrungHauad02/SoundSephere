@@ -121,7 +121,7 @@ export function createPlaylistCard(playlist){
     const playButton = document.createElement('a');
     playButton.className = 'btn btn-primary';
     playButton.textContent = 'Play';
-    playButton.href = '/SoundSephere/Song/getListSongFromList?idPlaylist=' + playlist.id;
+    playButton.href = '/SoundSephere/SongPlay/getListSongFromList?idPlaylist=' + playlist.id;
     playButtonColDiv.appendChild(playButton);
 
     rowDiv.appendChild(badgeColDiv);

@@ -39,6 +39,9 @@ public class SongController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         try {
+            if (action == null){
+                action = request.getPathInfo();
+            }
             if (action != null)
                 switch (action) {
                     case "getSong":
@@ -48,6 +51,16 @@ public class SongController extends HttpServlet {
                         getDetailSong(request, response);
                         break;
                     case "getListSongFromList":
+                        getListSongFromList(request, response);
+                        break;
+                    case "/getSong":
+                        getListSongHaveCurrentSong(request, response);
+                        break;
+                    case "/getDetailSong":
+                        getDetailSong(request, response);
+                        break;
+                    case "/getListSongFromList":
+                        getListSongFromList(request, response);
                         break;
                     default:
                         System.out.println("default");
