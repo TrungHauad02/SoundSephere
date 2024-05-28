@@ -78,7 +78,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
 
     public List<Playlists> selectAll() {
 
-        Connection connection = MyUtils.getConnection();
+        Connection connection = JDBCUtil.getConnection();
         List<Playlists> playlists  = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_PLAYLISTS_QUERY);
@@ -195,7 +195,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     }
     public boolean deletePlaylistById(String playlistId) throws SQLException {
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_PLAYLIST_BY_ID)) {
             statement.setString(1, playlistId);
 

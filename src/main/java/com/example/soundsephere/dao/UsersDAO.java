@@ -151,7 +151,7 @@ public class UsersDAO{
     }
 
     public List<Users> selectAll() {
-        Connection connection = MyUtils.getConnection();
+        Connection connection = JDBCUtil.getConnection();
         List<Users> usersList = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_USERS_QUERY);
@@ -185,7 +185,7 @@ public class UsersDAO{
     }
 
     public List<Users> selectAllApproval() {
-        Connection connection = MyUtils.getConnection();
+        Connection connection = JDBCUtil.getConnection();
         List<Users> usersList = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_APPROVALS_QUERY);
@@ -221,7 +221,7 @@ public class UsersDAO{
     public boolean blockUserByUsername(String username) throws SQLException {
 
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(BLOCK_USER_BY_ID)) {
             statement.setString(1, username);
 
@@ -232,7 +232,7 @@ public class UsersDAO{
 
     public boolean approveArtistByUsername(String username) throws SQLException {
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(APPROVE_ARTIST_BY_ID)) {
                 statement.setString(1, username);
 

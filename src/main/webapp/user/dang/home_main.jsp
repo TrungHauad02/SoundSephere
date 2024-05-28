@@ -137,11 +137,11 @@
                                     </div>
 
 
-                                    ///////////////////////////// chuển hướng sang trang play nhạc
+<%--                                    ///////////////////////////// chuển hướng sang trang play nhạc--%>
                                     <a href="<%=url%>/SongPlay?action=getSong&idSong=<%= song.getId() %>" class="btn btn-primary card-button">
                                         <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">
                                     </a>
-                                    /////////////////////////////
+
 
                                 </div>
                             </div>

@@ -278,7 +278,7 @@ public class SongsDAO {
     }
     public boolean deleteSongById(String songId) throws SQLException {
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(DELETE_SONG_BY_ID)) {
             statement.setString(1, songId);
 
@@ -291,7 +291,7 @@ public class SongsDAO {
     public boolean blockSongById(String songId) throws SQLException {
 
         try (
-                Connection connection = MyUtils.getConnection();
+                Connection connection = JDBCUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(BLOCK_SONG_BY_ID)) {
             statement.setString(1, songId);
 
