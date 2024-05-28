@@ -17,8 +17,6 @@ public class Songs {
     private String artistName;
     private EnumStatus status;
 
-    private  Genre genre;
-
     public Songs(int idSong, String title, String artist, String description, int timePlay, String songData, String image, String lyric, Float rating, EnumStatus status) {
         this.id = idSong;
         this.title = title;
@@ -30,15 +28,6 @@ public class Songs {
         this.lyric = lyric;
         this.rating = rating;
         this.status = status;
-    }
-
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
     }
     // get artist
     private Users users;

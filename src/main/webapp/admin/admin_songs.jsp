@@ -351,7 +351,6 @@
                             <th>No</th>
                             <th>Name song</th>
                             <th>Artist</th>
-                            <th>Genre</th>
                             <th>Status</th>
                             <th>Block</th>
                             <th>Delete</th>
@@ -364,7 +363,6 @@
                             <td>${status.index + 1}</td>
                             <td name = "title" value="${song.title}">${song.title}</td>
                             <td>${song.users.name}</td>
-                            <td>${song.genre.name}</td>
                             <td>${song.status}</td>
                             <td>
                                 <form id="blockForm-${song.id}" action="${pageContext.request.contextPath}/song/ad_blockSong" method="post">

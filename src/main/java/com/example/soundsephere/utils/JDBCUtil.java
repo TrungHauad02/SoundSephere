@@ -5,26 +5,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class JDBCUtil {
+    private static String jdbcURL = "jdbc:mysql://localhost:3306/musicweb?";
+    private static String jdbcUsername = "root";
+    private static String jdbcPassword = "123456";
 
     public static Connection getConnection() {
-        Connection conn = null;
+        Connection connection = null;
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://soundsphere.database.windows.net:1433;database=soundsphere;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30";
-            String username = "soundsphere@soundsphere";
-            String password = "^Y5O6/p`5>q<)uFG(Jg8";
-
-
-            conn = DriverManager.getConnection(url, username, password);
-            System.out.println("Connection Successfully!");
-        } catch (ClassNotFoundException e) {
-            System.err.println("SQL Server JDBC driver not found.");
-            e.printStackTrace();
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+            System.out.println("Connection Success...");
         } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        return conn;
+        return connection;
     }
 
     public static void closeConnection(Connection conn) {
@@ -43,3 +41,4 @@ public class JDBCUtil {
         closeConnection(conn);
     }
 }
+
