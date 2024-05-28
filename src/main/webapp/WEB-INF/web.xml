@@ -6,10 +6,7 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
-    <servlet>
-        <servlet-name>UserController</servlet-name>
-        <servlet-class>com.example.soundsephere.controller.UserController</servlet-class>
-    </servlet>
+    <!-- Servlet admin -->
     <servlet>
         <servlet-name>UsersController</servlet-name>
         <servlet-class>com.example.soundsephere.adminController.UsersController</servlet-class>
@@ -26,32 +23,6 @@
         <servlet-name>PlaylistController</servlet-name>
         <servlet-class>com.example.soundsephere.adminController.PlaylistController</servlet-class>
     </servlet>
-
-
-    <servlet-mapping>
-        <servlet-name>UserController</servlet-name>
-        <url-pattern>/User/*</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet-mapping>
-        <servlet-name>SongController</servlet-name>
-        <url-pattern>/Song</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>RateController</servlet-name>
-        <servlet-class>com.example.soundsephere.controller.RateController</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>RateController</servlet-name>
-        <url-pattern>/Rate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PlaylistController</servlet-name>
-        <url-pattern>/Playlist/*</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UsersController</servlet-name>
         <url-pattern>/Users/*</url-pattern>
@@ -67,6 +38,52 @@
     <servlet-mapping>
         <servlet-name>PlaylistController</servlet-name>
         <url-pattern>/playlist/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet user -->
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.UserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/User/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserSongController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.SongController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserSongController</servlet-name>
+        <url-pattern>/SongPlay/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RateController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.RateController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RateController</servlet-name>
+        <url-pattern>/Rate</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserPlaylistController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.PlaylistController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserPlaylistController</servlet-name>
+        <url-pattern>/Playlist/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SearchController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.SearchController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchController</servlet-name>
+        <url-pattern>/Search/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

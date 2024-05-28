@@ -2,9 +2,8 @@ import {getImageFromFirebase} from "./firebaseModule.js";
 
 
 export function goToPlaylistDetail(playlistId) {
-    window.location.href = `playlist_detail.jsp?playlistId=${playlistId}`;
+    window.location.href = `/SoundSephere/user/playlist_detail.jsp?playlistId=${playlistId}`;
 }
-
 
 document.addEventListener('DOMContentLoaded', function() {
     loadPlaylistDetail();

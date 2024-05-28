@@ -22,10 +22,9 @@ ALTER TABLE users
 ALTER COLUMN [name] nvarchar(255) COLLATE Vietnamese_CI_AS;
 
 CREATE TABLE [songs] (
-    [id] int IDENTITY(1,1) NOT NULL, //Song id
+    [id] int IDENTITY(1,1) NOT NULL,
     [title] nvarchar(255) NOT NULL,
     [id_artist] varchar(255) NOT NULL,
-    [genre_id] int NOT NULL,
     [description] nvarchar(255) NOT NULL,
     [time_play] int NOT NULL DEFAULT 0,
     [song_data] TEXT NOT NULL,
@@ -54,12 +53,6 @@ CREATE TABLE [rating] (
     CONSTRAINT [PK_rating] PRIMARY KEY ([user_id], [song_id]),
     CONSTRAINT [FK_rating_users_user_id] FOREIGN KEY ([user_id]) REFERENCES [users]([username]),
     CONSTRAINT [FK_rating_songs_song_id] FOREIGN KEY ([song_id]) REFERENCES [songs]([id])
-);
-
-CREATE TABLE [genre] (
-    [id] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    [name] nvarchar(255) NOT NULL,
-    [status] nvarchar(10) CHECK (status IN ('unavailable', 'available', 'deleted')) DEFAULT ('available')
 );
 
 CREATE TABLE [playlists] (
@@ -97,9 +90,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
     DECLARE @new_role NVARCHAR(10) = (SELECT i.role FROM inserted i);
-    DECLARE @new_birthday DATE = (SELECT i.birthday FROM inserted i);
-    INSERT INTO [users] ([username], [name], [sex], [birthday], [description], [email], [password], [role], [status])
-    SELECT i.username, i.name, i.sex, i.birthday, i.description, i.email, i.password, CASE WHEN @new_role = 'artist' THEN 'pending' ELSE 'normal' END AS [status]
+    INSERT INTO [users] ([username], [name], [sex], [description], [email], [password], [role], [status])
+    SELECT i.username, i.name, i.sex, i.description, i.email, i.password, CASE WHEN @new_role = 'artist' THEN 'pending' ELSE 'normal' END AS [status]
     FROM inserted i;
     INSERT INTO playlists (name, user_id, status)
     SELECT 'Favorite', inserted.username, 'available'

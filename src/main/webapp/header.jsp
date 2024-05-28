@@ -33,7 +33,7 @@
             <%
                 if ((user.getRole() == EnumRole.ARTIST) && (user.getStatus().equals(EnumUserStatus.NORMAL))) {
             %>
-                <li><a href="<%= request.getContextPath() %>/User?action=goToArtist" class="nav-link">Artist</a></li>
+                <li><a href="<%= request.getContextPath() %>/User/artist_login" class="nav-link">Artist</a></li>
             <%
                 }
             %>

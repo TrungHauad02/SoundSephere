@@ -17,8 +17,8 @@ import java.util.List;
 public class SongsDAO {
     private  static final String SELECT_ALL_SONG = "SELECT * FROM songs";
     private static final String INSERT_SONG_QUERY =
-            "INSERT INTO [songs] ([title], [id_artist], [genre_id], [description], [time_play], [song_data], [image], [lyric], [rating], [status]) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO [songs] ([title], [id_artist], [description], [time_play], [song_data], [image], [lyric], [rating], [status]) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_ALL_SONGS_QUERY = "SELECT s.*, a.name AS artist_name \n" +
             "FROM songs s\n" +
             "JOIN users a ON s.id_artist = a.username\n" +
@@ -27,10 +27,7 @@ public class SongsDAO {
     private static final String DELETE_SONG_BY_ID ="UPDATE songs SET status = 'deleted' WHERE id = ?" ;
     private static final String SELECT_SONG_BY_ID = "SELECT * FROM songs where id=?; ";
     private static final String SELECT_LIST_SONG_RANDOM =
-            "SELECT * FROM songs " +
-                    "WHERE id <> ? "+
-                    "ORDER BY RAND() " +
-                    "LIMIT ?;";
+            "SELECT TOP (?) * FROM songs WHERE id <> ? ORDER BY NEWID();";
     private static final String SELECT_ALL_SONG_BY_ID_QUERY = "SELECT * FROM user_listened join songs on user_listened.song_id = songs.id  WHERE user_id = ?";
     private static final String SONGS_COUNT_BY_ID_ARTIST_QUERY =
         "SELECT COUNT(*) AS song_count\n" +
@@ -59,7 +56,6 @@ public class SongsDAO {
             try (PreparedStatement ps = conn.prepareStatement(INSERT_SONG_QUERY)) {
                 ps.setString(1, entity.getTitle());
                 ps.setString(2, entity.getId_artist());
-                ps.setString(3, entity.getGenre_id());
                 ps.setString(4, entity.getDescription());
                 ps.setInt(5, entity.getTime_play());
                 ps.setString(6, entity.getSong_data());
@@ -101,7 +97,6 @@ public class SongsDAO {
                     Users artistName = usersDAO.selectById(rs.getString("id_artist"));
 
                     song.setArtistName(artistName.getName());
-                    song.setGenre_id(rs.getString("genre_id"));
                     song.setDescription(rs.getString("description"));
                     song.setTime_play(rs.getInt("time_play"));
                     song.setSong_data(rs.getString("song_data"));
@@ -142,7 +137,6 @@ public class SongsDAO {
                     song.setArtistName(artistName.getName());
 
                     song.setId_artist(rs.getString("id_artist"));
-                    song.setGenre_id(rs.getString("genre_id"));
                     song.setDescription(rs.getString("description"));
                     song.setTime_play(rs.getInt("time_play"));
                     song.setSong_data(rs.getString("song_data"));
@@ -174,7 +168,6 @@ public class SongsDAO {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String id_artist = rs.getString("id_artist");
-                String genre_id = rs.getString("genre_id");
                 String description = rs.getString("description");
                 int time_play = rs.getInt("time_play");
                 String song_data = rs.getString("song_data");
@@ -186,7 +179,7 @@ public class SongsDAO {
                 UsersDAO usersDAO = new UsersDAO();
                 Users u = usersDAO.selectById(id_artist);
 
-                Songs song = new Songs(id, title, id_artist, genre_id, description, time_play, song_data, image, lyric, rating, status);
+                Songs song = new Songs(id, title, id_artist, description, time_play, song_data, image, lyric, rating, status);
                 song.setArtistName(u.getName());
 
                 songs.add(song);
@@ -248,7 +241,6 @@ public class SongsDAO {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String id_artist = rs.getString("id_artist");
-                String genre_id = rs.getString("genre_id");
                 String description = rs.getString("description");
                 int time_play = rs.getInt("time_play");
                 String song_data = rs.getString("song_data");
@@ -256,7 +248,7 @@ public class SongsDAO {
                 String lyric = rs.getString("lyric");
                 float rating = rs.getFloat("rating");
                 EnumStatus status = EnumStatus.valueOf(rs.getString("status").toUpperCase());
-                Songs song = new Songs(id, title, id_artist, genre_id, description, time_play, song_data, image, lyric, rating, status);
+                Songs song = new Songs(id, title, id_artist, description, time_play, song_data, image, lyric, rating, status);
 
                 Users user = new Users();
                 user.setName(rs.getString("artist_name"));
@@ -342,7 +334,6 @@ public class SongsDAO {
                     song.setId(resultSet.getInt("id"));
                     song.setTitle(resultSet.getString("title"));
                     song.setId_artist(resultSet.getString("id_artist"));
-                    song.setGenre_id(resultSet.getString("genre_id"));
                     song.setDescription(resultSet.getString("description"));
                     song.setTime_play(resultSet.getInt("time_play"));
                     song.setSong_data(resultSet.getString("song_data"));

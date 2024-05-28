@@ -39,6 +39,9 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        if(action == null)
+            action = request.getPathInfo();
+        System.out.println(action);
         switch (action) {
             case "login":
                 login(request, response);
@@ -99,7 +102,7 @@ public class UserController extends HttpServlet {
             request.getSession().setAttribute("user", user);
 
 
-            if (user.getRole() == EnumRole.ARTIST ||user.getRole() == EnumRole.LISTENER) {
+            if (user.getRole() == EnumRole.LISTENER) {
                 //lấy danh sách playlist của user
                 List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getUsername());//
                 request.getSession().setAttribute("playlists", playlists);
@@ -116,8 +119,9 @@ public class UserController extends HttpServlet {
             //
             if (user.getRole() == EnumRole.ARTIST && (user.getStatus().equals(EnumUserStatus.NORMAL)) ) {
                 System.out.println("Artist");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("user/artist_main.jsp");
-                dispatcher.forward(request, response);
+//                RequestDispatcher dispatcher = request.getRequestDispatcher("user/artist_main.jsp");
+//                dispatcher.forward(request, response);
+                artistLogin(request, response);
             } else if((user.getRole() == EnumRole.LISTENER) || ((user.getRole() == EnumRole.ARTIST) && (user.getStatus().equals(EnumUserStatus.PENDING)))) {
                 System.out.println("user");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("user/dang/home_main.jsp");

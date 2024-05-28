@@ -69,11 +69,54 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
     }
 
     public boolean delete(Integer id) {
-        return false;
+        Connection conn = JDBCUtil.getConnection();
+        boolean result = true;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(DELETE_PLAYLIST_BY_ID)) {
+                ps.setInt(1, id);
+
+                int rowsAffected = ps.executeUpdate();
+                result = rowsAffected > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return result;
     }
 
     public Playlists selectById(Integer id) {
-        return null;
+        Connection conn = JDBCUtil.getConnection();
+        Playlists playlist = null;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(SELECT_PLAYLIST_BY_ID_QUERY)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    playlist = new Playlists();
+                    playlist.setId(rs.getInt("id"));
+                    playlist.setName(rs.getString("name"));
+                    playlist.setUser_id(rs.getString("user_id"));
+                    playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
+                    playlist.setStatus(EnumStatus.valueOf(rs.getString("status").toUpperCase()));
+                    playlist.setNumber_of_songs(getNumberofsongs(playlist.getId()));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return  playlist;
     }
 
     public List<Playlists> selectAll() {
@@ -148,6 +191,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                     playlist.setUser_id(rs.getString("user_id"));
                     playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
                     playlist.setStatus(EnumStatus.valueOf(rs.getString("status").toUpperCase()));
+                    playlist.setNumber_of_songs(getNumberofsongs(playlist.getId()));
                     lstPlaylist.add(playlist);
                 }
             } catch (SQLException e) {

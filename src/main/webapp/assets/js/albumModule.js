@@ -114,7 +114,7 @@ export function createAlbumCard(album) {
     const playButton = document.createElement('a');
     playButton.className = 'btn btn-primary';
     playButton.textContent = 'Play';
-    playButton.href = '/SoundSephere/Song/getListSongFromList?idPlaylist=' + album.id;
+    playButton.href = '/SoundSephere/SongPlay/getListSongFromList?idPlaylist=' + album.id;
     buttonColDiv.appendChild(playButton);
 
     rowDiv.appendChild(badgeColDiv);
