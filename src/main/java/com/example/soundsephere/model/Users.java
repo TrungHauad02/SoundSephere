@@ -3,15 +3,14 @@ package com.example.soundsephere.model;
 
 import com.example.soundsephere.enumModel.EnumRole;
 import com.example.soundsephere.enumModel.EnumSex;
+import com.example.soundsephere.enumModel.EnumStatus;
 import com.example.soundsephere.enumModel.EnumUserStatus;
 
 import java.util.Date;
 
 public class Users {
-    private String  id;
     private String name;
     private EnumSex sex;
-    private Date birthday;
     private String description;
     private String username;
     private String email;
@@ -22,27 +21,17 @@ public class Users {
     public Users() {
     }
 
-    public Users(String id, String name, EnumSex sex, Date birthday,
+    public Users(String name, EnumSex sex, Date birthday,
                  String description, String username, String email, String password, EnumRole role, EnumUserStatus status) {
         super();
-        this.id = id;
         this.name = name;
         this.sex = sex;
-        this.birthday = birthday;
         this.description = description;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
         this.status = status;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -59,14 +48,6 @@ public class Users {
 
     public void setSex(EnumSex sex) {
         this.sex = sex;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
     public String getDescription() {
@@ -110,7 +91,7 @@ public class Users {
     }
 
     public EnumUserStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(EnumUserStatus status) {

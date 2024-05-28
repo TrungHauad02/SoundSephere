@@ -32,6 +32,26 @@
         <servlet-name>UserController</servlet-name>
         <url-pattern>/User/*</url-pattern>
     </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>SongController</servlet-name>
+        <url-pattern>/Song</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RateController</servlet-name>
+        <servlet-class>com.example.soundsephere.controller.RateController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RateController</servlet-name>
+        <url-pattern>/Rate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlaylistController</servlet-name>
+        <url-pattern>/Playlist/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UsersController</servlet-name>
         <url-pattern>/Users/*</url-pattern>

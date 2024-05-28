@@ -49,7 +49,9 @@
                             </div>
                             <div class="col-6 title_item"  style="justify-content:flex-end ">
                                 <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <img class="image_card" src="<%=request.getContextPath()%>/assets/img/icons/add.png" alt="">
+                                    <a href="<%=request.getContextPath()%>/User?action=goToAddPlaylist">
+                                        <img class="image_card" src="<%=request.getContextPath()%>/assets/img/icons/add.png" alt="">
+                                    </a>
                                 </button>
                             </div>
                         </div>
@@ -124,7 +126,8 @@
                         <div class="row list">
                             <div class="card card-hover" style="border-radius: 40px; background-color: black;height: 100px;">
                                 <div class="card-body card_song_body">
-                                    <img src="<%=song.getImage()%>"
+                                    <img
+                                         id="song-image-<%= count %>"
                                          class="card-img-left image_card"
                                          alt="..."
                                     >
@@ -133,12 +136,29 @@
                                         <p class="card-text"><%=song.getArtistName()%></p>
                                     </div>
 
-                                    <a href="#" class="btn btn-primary card-button">
+
+<%--                                    ///////////////////////////// chuển hướng sang trang play nhạc--%>
+                                    <a href="<%=url%>/SongPlay?action=getSong&idSong=<%= song.getId() %>" class="btn btn-primary card-button">
                                         <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">
                                     </a>
+
+
                                 </div>
                             </div>
                         </div>
+                        <script type="module">
+                            import { getImage } from '<%=url%>/assets/js/getImage.js';
+                            document.addEventListener('DOMContentLoaded', () => {
+                                getImage("<%= song.getImage() %>").then(
+                                    (url) => {
+                                        console.log(url);
+                                        document.getElementById("song-image-<%= count %>").src = url;
+                                    }
+                                ).catch((error) => {
+                                    console.error("Error fetching image:", error);
+                                });
+                            });
+                        </script>
                     <%
                             }
                         }

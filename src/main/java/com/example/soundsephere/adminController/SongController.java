@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-@WebServlet("/song")
+@WebServlet("/songs")
 public class SongController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private SongsDAO songsDAO;

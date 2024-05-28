@@ -13,9 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersDAO extends SoundSysDAO<Users, Integer> {
-    private static final String SELECT_USER_BY_USERNAME_QUERY = "select * from users where username = ?";
-    private static final String INSERT_USER = "INSERT INTO users (name,username, email, password, role,status) VALUES (? ,?, ?, ?, ?, ?)" ;
+public class UsersDAO{
+    private static final String SELECT_USER_BY_ID_QUERY = "select * from users where username = ?";
+    private static final String INSERT_USER = "INSERT INTO users (name,username, email, password, role,status) VALUES ( ? ,?, ?, ?, ?, ?)" ;
     private static final String LISTEN_COUNT_BY_ID_ARTIST_QUERY =
             "SELECT s.id_artist, SUM(ul.count) AS total_listens_count\n" +
                     "FROM songs s\n" +
@@ -27,8 +27,6 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     private static final String SELECT_ALL_APPROVALS_QUERY = "select * from users where users.role = 'artist' and users.status = 'pending'; ";
     private static final String BLOCK_USER_BY_ID = "UPDATE  users SET status = 'block' WHERE username = ?";
     private static final String APPROVE_ARTIST_BY_ID =  "UPDATE  users SET status = 'normal' WHERE username = ?";
-    private static final String SELECT_USER_BY_ID_QUERY = "select * from users where id = ?";
-    // hàm getUserByID gây lỗi do ko còn id nên t để tạm dòng trên này tránh lỗi th, xí nhớ chỉnh lại thay vì gọi hàm này thì gọi getUserByUsername nha
 
 
     public boolean checkConfirmPassword(String password, String confirmPassword) {
@@ -60,13 +58,13 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
     public boolean update(Users user) {
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
-            try (PreparedStatement ps = conn.prepareStatement("UPDATE users SET name = ?, email = ?, password = ?, description = ?,sex = ? WHERE id = ?")) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE users SET name = ?, email = ?, password = ?, description = ?,sex = ? WHERE username = ?")) {
                 ps.setString(1, user.getName());
                 ps.setString(2, user.getEmail());
                 ps.setString(3, user.getPassword());
                 ps.setString(4, user.getDescription());
                 ps.setString(5, user.getSex().toString());
-                ps.setString(6, user.getId());
+                ps.setString(6, user.getUsername());
                 System.out.println(ps);
                 ps.executeUpdate();
                 return true;
@@ -98,26 +96,19 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
 
-            try (PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_USERNAME_QUERY)) {
+            try (PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_ID_QUERY)) {
                 ps.setString(1, username);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    //user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
                     user.setRole(EnumRole.valueOf(rs.getString("role").toUpperCase()));
                     user.setDescription(rs.getString("description"));
-
-                    /*
-                    user.setBirthday(
-                            rs.getDate("birthday") != null ? new java.util.Date(rs.getDate("birthday").getTime())
-                                    : null);
-
-                     */
                     user.setSex(EnumSex.valueOf(rs.getString("sex").toUpperCase()));
+                    user.setStatus(EnumUserStatus.valueOf(rs.getString("status").toUpperCase()));
 
                     return user;
                 }
@@ -128,28 +119,25 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return user;
     }
 
-    public boolean delete(Integer id) {
+    public boolean delete(String id) {
         return false;
     }
 
-    public Users selectById(Integer id) {
+    public Users selectById(String username) {
         Users user = null;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_ID_QUERY)) {
-                ps.setInt(1, id);
+                ps.setString(1, username);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new Users();
-                    user.setId(rs.getString("id"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
+                    user.setUsername(rs.getString("username"));
                     user.setRole(EnumRole.valueOf(rs.getString("role").toUpperCase()));
                     user.setDescription(rs.getString("description"));
-                    user.setBirthday(
-                            rs.getDate("birthday") != null ? new java.util.Date(rs.getDate("birthday").getTime())
-                                    : null);
                     user.setSex(EnumSex.valueOf(rs.getString("sex").toUpperCase()));
                     user.setStatus(EnumUserStatus.valueOf(rs.getString("status").toUpperCase()));
                     return user;
@@ -242,10 +230,6 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         }
     }
 
-    protected List<Users> selectBySql(String sql, Object... args) {
-        return null;
-    }
-
     public boolean approveArtistByUsername(String username) throws SQLException {
         try (
                 Connection connection = JDBCUtil.getConnection();
@@ -259,12 +243,12 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
 
     }
 
-    public int listenCount(int idArtist){
+    public int listenCount(String idArtist){
         int count = 0;
         Connection conn = JDBCUtil.getConnection();
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(LISTEN_COUNT_BY_ID_ARTIST_QUERY)) {
-                ps.setInt(1, idArtist);
+                ps.setString(1, idArtist);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     count = rs.getInt("total_listens_count");
@@ -276,3 +260,4 @@ public class UsersDAO extends SoundSysDAO<Users, Integer> {
         return count;
     }
 }
+

@@ -56,50 +56,29 @@
 <body>
     <jsp:include page="../header.jsp"/>
 
-    <div class="container mt-5" style="max-height: 100vh; overflow-y: auto;">
+    <div class="container mt-5" style="max-height: 100vh; overflow-y: auto; background-color: #1ED760; padding-bottom: 20px; border-radius: 20px;">
         <div class="row mt-3">
             <div class="col-sm-4">
-                <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 100px; width: 100px;"> </div>
+                <div class="badge badge-primary rounded-circle" style="background-color: #ffffff; height: 100px; width: 100px;"> </div>
             </div>
             <div class="col-sm-8">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3>Playlist Name</h3>
+                        <h3 id="playlistName" style="color: #ffffff;">Playlist Name</h3>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-sm-12">
-                        <h5>Number of song: 12</h5>
+                        <h5 id="numberOfSong" style="color: #ffffff;">Number of song: 0</h5>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 50px; width: 50px;"> </div>
-                            </div>
-                            <div class="col">
-                                <h6 class="card-title">Song 1</h6>
-                                <p class="card-text">Artist Name</p>
-                            </div>
-                            <div class="col-auto">
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle dropdownMenuButton" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        ...
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="right: 0; left: auto;">
-                                        <a class="dropdown-item playSong" href="#">Play</a>
-                                        <a class="dropdown-item addToPlaylist" href="#">Add to Playlist</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ul class="list-group" id="songsContainer" style="list-style-type: none; max-height: 100vh; overflow-y: auto;">
+
+                </ul>
             </div>
         </div>
 
@@ -107,43 +86,16 @@
 
     <div id="AddSongToPlaylist" class="popup" style="display: none;">
         <div class="popup-content" style="min-width: 500px; max-height:90vh; overflow-y: auto; " >
-            <span class="close" onclick="closePopup()">&times;</span>
+            <span class="close" >&times;</span>
             <h5 class="mb-4">Add Song to Playlist</h5>
             <ul id="playlistItems" class="list-group">
 
             </ul>
-            <button type="button" class="btn btn-secondary mt-2" onclick="closePopup()">Cancel</button>
+            <button type="button" class="btn btn-secondary mt-2">Cancel</button>
         </div>
     </div>
 
+    <script src="<%= request.getContextPath() %>/assets/js/playlistDetail.js" type="module"></script>
     <jsp:include page="../link_js.jsp"/>
-
-    <script>
-        $(document).ready(function() {
-            $('.dropdown-toggle').click(function() {
-                $(this).next('.dropdown-menu').toggleClass('show');
-            });
-
-            $(document).click(function(e) {
-                if (!$(e.target).closest('.dropdown').length) {
-                    $('.dropdown-menu').removeClass('show');
-                }
-            });
-        });
-    </script>
-    <script>
-        function showPopup() {
-            document.getElementById('AddSongToPlaylist').style.display = 'flex';
-        }
-
-        function closePopup() {
-            document.getElementById('AddSongToPlaylist').style.display = 'none';
-        }
-
-        document.querySelector('.addToPlaylist').addEventListener('click', function(event) {
-            event.preventDefault();
-            showPopup();
-        });
-    </script>
 </body>
 </html>

@@ -24,7 +24,7 @@ public class SearchController extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-
+        System.out.println(action);
         switch (action) {
             case "goToSearch":
                 goToSearch(request, response);
@@ -45,6 +45,9 @@ public class SearchController extends HttpServlet {
         doGet(request, response);
     }
     public void goToSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Songs> listSongs = songsDAO.SelectAllSongs();
+        System.out.println(listSongs);
+        request.setAttribute("listSongsSearch", listSongs);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/dang/search_main.jsp");
         dispatcher.forward(request, response);
     }

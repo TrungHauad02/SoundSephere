@@ -1,17 +1,10 @@
-<%@ page import="com.example.soundsephere.model.Users" %>
+        <%@ page import="com.example.soundsephere.model.Users" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%
-    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + request.getContextPath();
-%>
 <!DOCTYPE html>
 <html>
 
 <body>
-<a href="${pageContext.request.contextPath}/song/ad_listSong">
-    INTO ADMIN TEST
-</a>
-
+    <jsp:include page="header.jsp"/>
     <%
         Users user = null;
         if (session.getAttribute("user") == null) {
@@ -22,7 +15,6 @@
         }
     %>
 
-    <jsp:include page="user/dang/home_main.jsp" />
     <jsp:include page="link_js.jsp"/>
 </body>
 </html>

@@ -51,99 +51,48 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
+        label{
+            color: #000000;
+        }
     </style>
 </head>
 <body>
     <jsp:include page="../header.jsp"/>
 
-    <div class="container mt-5" style="max-height: 100vh; overflow-y: auto;">
-        <div class="row">
+    <div class="container mt-5" style="max-height: 100vh; overflow-y: auto; background: #1ED760; border-radius: 30px;">
+        <div class="row mt-5">
             <div class="col-sm-11">
-                <h3>Playlist</h3>
+                <h3 style="color: #000000">Playlist</h3>
             </div>
             <div class="col-sm-1">
-                <button class="btn btn-success" id="btnAddPlaylist">+</button>
+                <button class="btn btn-success" id="btnOpenPopupCreatePlaylist" style="background: #000000; color: #1ED760; font-size:large ;">+</button>
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-3" >
             <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="badge badge-primary rounded-circle" style="background-color: #3E862C; height: 50px; width: 50px;"> </div>
-                            </div>
-                            <div class="col">
-                                <h6 class="card-title">Playlist 1</h6>
-                                <p class="card-text">Number of song: 12</p>
-                            </div>
-                            <div class="col-auto">
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle dropdownMenuButton" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        ...
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item playlist" href="#">Delete playlist</a>
-                                        <a class="dropdown-item addToPlaylist" href="#">Add to playlist</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <button class="btn btn-primary">Play</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ul id="playlistContainer" class="list-group" style="list-style-type: none;">
+
+                </ul>
             </div>
         </div>
-        <div class="popup" id="popupAddPlaylist">
-            <div class="popup-content">
-                <h3>Create Playlist</h3>
-                <form id="albumForm">
-                    <div class="form-group">
-                        <label for="playlistName">Playlist Name:</label>
-                        <input type="text" class="form-control" id="playlistName" name="playlistName">
-                    </div>
-                    <button type="button" class="btn btn-success" onclick="createPlaylist()">Create</button>
-                    <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancel</button>
-                </form>
-            </div>
-        </div>
+
     </div>
 
+    <!-- popup create playlist -->
+    <div class="popup" id="popupCreatePlaylist">
+        <div class="popup-content">
+            <h3>Create New Playlist</h3>
+            <form id="albumForm">
+                <div class="form-group">
+                    <label for="playlistName">Playlist Name:</label>
+                    <input type="text" class="form-control" id="playlistName" name="playlistName">
+                </div>
+                <button type="button" class="btn btn-success" id="btnCreatePlaylist">Create</button>
+                <button type="button" class="btn btn-secondary" id="btnClosePopupCreatePlaylist">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <script src="<%= request.getContextPath() %>/assets/js/playlist_main.js" type="module"></script>
     <jsp:include page="../link_js.jsp"/>
-
-    <script>
-        $(document).ready(function() {
-            $('.dropdown-toggle').click(function() {
-                $(this).next('.dropdown-menu').toggleClass('show');
-            });
-
-            $(document).click(function(e) {
-                if (!$(e.target).closest('.dropdown').length) {
-                    $('.dropdown-menu').removeClass('show');
-                }
-            });
-        });
-    </script>
-    <script>
-        function showPopup() {
-            document.getElementById('popupAddPlaylist').style.display = 'flex';
-        }
-
-        function closePopup() {
-            document.getElementById('popupAddPlaylist').style.display = 'none';
-        }
-
-        document.getElementById('btnAddPlaylist').addEventListener('click', function() {
-            showPopup();
-        });
-
-        function createPlaylist() {
-            var playlistName = document.getElementById('playlistName').value;
-            alert('Playlist "' + playlistName + '" đã được tạo!');
-            closePopup();
-        }
-    </script>
 </body>
 </html>

@@ -3,7 +3,7 @@ package com.example.soundsephere.model;
 import com.example.soundsephere.enumModel.EnumStatus;
 
 public class Songs {
-    private String id;
+    private int id;
     private String title;
     private String id_artist;
     private String genre_id;
@@ -18,6 +18,20 @@ public class Songs {
     private EnumStatus status;
 
     private  Genre genre;
+
+    public Songs(int idSong, String title, String artist, String description, int timePlay, String songData, String image, String lyric, Float rating, EnumStatus status) {
+        this.id = idSong;
+        this.title = title;
+        this.artistName = artist;
+        this.description = description;
+        this.time_play = timePlay;
+        this.song_data = songData;
+        this.image = image;
+        this.lyric = lyric;
+        this.rating = rating;
+        this.status = status;
+    }
+
 
     public Genre getGenre() {
         return genre;
@@ -39,7 +53,7 @@ public class Songs {
     //
     public Songs() {
     }
-    public Songs(String id, String title, String id_artist, String genre_id, String description,
+    public Songs(int id, String title, String id_artist, String genre_id, String description,
                  int time_play, String song_data, String image, String lyric, float rating, EnumStatus status) {
         this.id = id;
         this.title = title;
@@ -55,18 +69,18 @@ public class Songs {
     }
 
 
-    public Songs(String id, String title, String artistName, String img) {
+    public Songs(int id, String title, String artistName, String img) {
         this.id = id;
         this.title = title;
         this.artistName = artistName;
         this.image = img;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

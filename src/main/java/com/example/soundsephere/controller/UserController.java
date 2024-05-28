@@ -5,6 +5,8 @@ import com.example.soundsephere.dao.SongsDAO;
 import com.example.soundsephere.dao.UsersDAO;
 import com.example.soundsephere.enumModel.EnumRole;
 import com.example.soundsephere.enumModel.EnumSex;
+import com.example.soundsephere.enumModel.EnumStatus;
+import com.example.soundsephere.enumModel.EnumUserStatus;
 import com.example.soundsephere.model.Playlists;
 import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.model.Users;
@@ -50,6 +52,10 @@ public class UserController extends HttpServlet {
                 RequestDispatcher dispatcherHome = request.getRequestDispatcher("user/dang/home_main.jsp");
                 dispatcherHome.forward(request, response);
                 break;
+            case "goToArtist":
+                RequestDispatcher dispatcherArtist = request.getRequestDispatcher("user/artist_main.jsp");
+                dispatcherArtist.forward(request, response);
+                break;
             case "register":
                 register(request, response);
                 break;
@@ -93,8 +99,6 @@ public class UserController extends HttpServlet {
             request.getSession().setAttribute("user", user);
 
 
-
-
             if (user.getRole() == EnumRole.ARTIST ||user.getRole() == EnumRole.LISTENER) {
                 //lấy danh sách playlist của user
                 List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserID(user.getUsername());//
@@ -112,9 +116,9 @@ public class UserController extends HttpServlet {
             //
             if (user.getRole() == EnumRole.ARTIST) {
                 System.out.println("Artist");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/user/artist_main.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("user/artist_main.jsp");
                 dispatcher.forward(request, response);
-            } else if(user.getRole() == EnumRole.LISTENER) {
+            } else if((user.getRole() == EnumRole.LISTENER) || ((user.getRole() == EnumRole.ARTIST) && (user.getStatus().equals(EnumUserStatus.PENDING)))) {
                 System.out.println("user");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("user/dang/home_main.jsp");
                 dispatcher.forward(request, response);
@@ -181,7 +185,6 @@ public class UserController extends HttpServlet {
 
     public void updateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Users user = new Users();
-        user.setId(String.valueOf(Integer.parseInt(request.getParameter("idUser"))));
         user.setName(request.getParameter("nameUser"));
         user.setEmail(request.getParameter("emailUser"));
         if (request.getParameter("descriptionUser") == null){
@@ -213,12 +216,12 @@ public class UserController extends HttpServlet {
         }
     }
     public  void artistLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Users curUser = usersDAO.selectById(6);
         HttpSession session = request.getSession();
-        session.setAttribute("currentUserLogin", curUser);
-        int listensCount = usersDAO.listenCount(6);
-        int songCount = songsDAO.songsCount(6);
-        int albumCount = playlistsDAO.playlistCount(6);
+        Users curUser = (Users) session.getAttribute("user");
+        request.setAttribute("user",curUser);
+        int listensCount = usersDAO.listenCount(curUser.getUsername());
+        int songCount = songsDAO.songsCount(curUser.getUsername());
+        int albumCount = playlistsDAO.playlistCount(curUser.getUsername());
         request.setAttribute("listensCount", listensCount);
         request.setAttribute("songCount", songCount);
         request.setAttribute("albumCount", albumCount);
@@ -228,7 +231,9 @@ public class UserController extends HttpServlet {
     }
 
     public void getListSongJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Songs> lstSong = songsDAO.selectBySql(SongsDAO.SELECT_SONGS_BY_ID_ARTIST_QUERY, 6);
+        HttpSession session = request.getSession();
+        Users curUser = (Users) session.getAttribute("user");
+        List<Songs> lstSong = songsDAO.selectBySql(SongsDAO.SELECT_SONGS_BY_ID_ARTIST_QUERY, curUser.getUsername());
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonSongs = objectMapper.writeValueAsString(lstSong);
 

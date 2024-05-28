@@ -38,7 +38,6 @@
                             <div class="main-profile-edit-component-header">
                                 <h3 class="label_title">Edit profile</h3>
                             </div>
-                            <input name="idUser" value="<%=user.getId()%>" hidden="hidden">
                             <div class="col main-profile-edit-infor">
                                 <div class="item">
                                     <label for="nameUser">Name</label>
