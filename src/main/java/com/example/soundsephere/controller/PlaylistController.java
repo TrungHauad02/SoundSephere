@@ -180,6 +180,7 @@ public class PlaylistController extends HttpServlet {
         Users curUser = (Users) session.getAttribute("user");
         List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getUsername());
         lstPlaylist.removeIf(playlist -> playlist.getType().equals(EnumTypePlaylist.PLAYLIST));
+        lstPlaylist.removeIf(playlist -> playlist.getStatus().equals(EnumStatus.DELETED));
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
 
@@ -194,6 +195,7 @@ public class PlaylistController extends HttpServlet {
         Users curUser = (Users) session.getAttribute("user");
         List<Playlists> lstPlaylist = playlistsDAO.selectAllPlaylistByUserId(curUser.getUsername());
         lstPlaylist.removeIf(playlist -> playlist.getType().equals(EnumTypePlaylist.ALBUM));
+        lstPlaylist.removeIf(playlist -> playlist.getStatus().equals(EnumStatus.DELETED));
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonPlaylist = objectMapper.writeValueAsString(lstPlaylist);
 
