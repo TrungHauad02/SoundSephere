@@ -23,7 +23,7 @@ public class SongsDAO {
     private static final String SELECT_ALL_SONGS_QUERY = "SELECT s.*, a.name AS artist_name, g.name AS genre_name\n" +
             "FROM songs s\n" +
             "JOIN users a ON s.id_artist = a.username\n" +
-            "JOIN genre g ON s.genre_id = g.name\n" +
+            "JOIN genre g ON s.genre_id = g.id\n" +
             "WHERE s.status IN ('available', 'unavailable', 'deleted');";
     private static final String BLOCK_SONG_BY_ID = "UPDATE songs SET status = 'unavailable' WHERE id = ?";
     private static final String DELETE_SONG_BY_ID ="UPDATE songs SET status = 'deleted' WHERE id = ?" ;
