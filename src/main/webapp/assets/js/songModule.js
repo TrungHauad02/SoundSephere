@@ -28,7 +28,7 @@ export function addNewSong() {
         lyricFileName: lyricFileInput ? lyricFileInput.name : null
     };
     console.log(JSON.stringify(songData));
-    fetch('http://localhost:8080/SoundSephere/Song/addNewSong', {
+    fetch('http://localhost:8080/SoundSephere/SongPlay/addNewSong', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -210,7 +210,7 @@ export function createSongCard(song){
 
     const playSongA = document.createElement('a');
     playSongA.className = 'dropdown-item playSong';
-    playSongA.href = '/SoundSephere/Song/getSong?idSong=' + song.id;
+    playSongA.href = '/SoundSephere/SongPlay/getSong?idSong=' + song.id;
     playSongA.textContent = 'Play';
 
     const addToPlaylistA = document.createElement('a');

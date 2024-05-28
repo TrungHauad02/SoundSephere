@@ -45,7 +45,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
         if (conn != null) {
             try (PreparedStatement ps = conn.prepareStatement(INSERT_PLAYLIST_QUERY)) {
                 ps.setString(1, entity.getName());
-                ps.setInt(2, entity.getId());
+                ps.setString(2, entity.getUser_id());
                 ps.setString(3, entity.getType().name().toLowerCase());
                 ps.setString(4, entity.getStatus().name().toLowerCase());
 
