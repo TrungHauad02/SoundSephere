@@ -114,7 +114,7 @@ public class UserController extends HttpServlet {
 
 
             //
-            if (user.getRole() == EnumRole.ARTIST) {
+            if (user.getRole() == EnumRole.ARTIST && (user.getStatus().equals(EnumUserStatus.NORMAL)) ) {
                 System.out.println("Artist");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("user/artist_main.jsp");
                 dispatcher.forward(request, response);

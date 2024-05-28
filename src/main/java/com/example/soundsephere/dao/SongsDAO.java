@@ -95,7 +95,7 @@ public class SongsDAO {
                 songs = new LinkedList<>();
                 while (rs.next()) {
                     Songs song = new Songs();
-                    song.setId(rs.getInt("id"));
+                    song.setId(rs.getInt("song_id"));
                     song.setTitle(rs.getString("title"));
 
                     //lấy tên nghệ sĩ

@@ -49,7 +49,7 @@
                             </div>
                             <div class="col-6 title_item"  style="justify-content:flex-end ">
                                 <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <a href="<%=request.getContextPath()%>/User?action=goToAddPlaylist">
+                                    <a href="<%=request.getContextPath()%>/Playlist?action=goToAddPlaylist">
                                         <img class="image_card" src="<%=request.getContextPath()%>/assets/img/icons/add.png" alt="">
                                     </a>
                                 </button>
@@ -138,6 +138,9 @@
 
 
 <%--                                    ///////////////////////////// chuển hướng sang trang play nhạc--%>
+                                    <%
+                                        System.out.println(song.getId());
+                                    %>
                                     <a href="<%=url%>/SongPlay?action=getSong&idSong=<%= song.getId() %>" class="btn btn-primary card-button">
                                         <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">
                                     </a>
