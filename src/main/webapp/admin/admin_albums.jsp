@@ -1,6 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+            + request.getContextPath();
+%>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -150,7 +154,7 @@
         </div>
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="<%=url%>/login.jsp">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Log out </span></a>
         </li>
