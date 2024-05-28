@@ -25,9 +25,16 @@ public class SongsDAO {
             "WHERE s.status IN ('available', 'unavailable', 'deleted');";
     private static final String BLOCK_SONG_BY_ID = "UPDATE songs SET status = 'unavailable' WHERE id = ?";
     private static final String DELETE_SONG_BY_ID ="UPDATE songs SET status = 'deleted' WHERE id = ?" ;
-    private static final String SELECT_SONG_BY_ID = "SELECT * FROM songs where id=?; ";
+    private static final String SELECT_SONG_BY_ID = "SELECT songs.*, users.name\n" +
+            "FROM songs\n" +
+            "JOIN users ON songs.id_artist = users.username\n" +
+            "WHERE songs.id = ?;\n ";
     private static final String SELECT_LIST_SONG_RANDOM =
-            "SELECT TOP (?) * FROM songs WHERE id <> ? ORDER BY NEWID();";
+            "SELECT TOP (?) *\n" +
+                    "FROM songs\n" +
+                    "JOIN users ON songs.id_artist = users.username\n" +
+                    "WHERE songs.id <> ?\n" +
+                    "ORDER BY NEWID();\n";
     private static final String SELECT_ALL_SONG_BY_ID_QUERY = "SELECT * FROM user_listened join songs on user_listened.song_id = songs.id  WHERE user_id = ?";
     private static final String SONGS_COUNT_BY_ID_ARTIST_QUERY =
         "SELECT COUNT(*) AS song_count\n" +
@@ -210,7 +217,7 @@ public class SongsDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
-                String artist = rs.getString("id_artist");
+                String artist = rs.getString("name");
                 String description = rs.getString("description");
                 int time_play = rs.getInt("time_play");
                 String song_data = rs.getString("song_data");
@@ -292,15 +299,15 @@ public class SongsDAO {
         try (Connection connection = JDBCUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_LIST_SONG_RANDOM))
         {
-            preparedStatement.setInt(1, exceptionID);
-            preparedStatement.setInt(2, nums);
+            preparedStatement.setInt(1, nums);
+            preparedStatement.setInt(2, exceptionID);
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next())
             {
                 int id_song = rs.getInt("id");
                 String title = rs.getString("title");
-                String artist = rs.getString("id_artist");
+                String artist = rs.getString("name");
                 String description = rs.getString("description");
                 int time_play  = rs.getInt("time_play");
                 String song_data = rs.getString("song_data");

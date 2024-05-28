@@ -404,7 +404,7 @@ var buttonDetailSong  = document.getElementById("btnSongDetail");
 buttonDetailSong.addEventListener("click", function () {
     var layoutInfoDetailSong = document.getElementById("infoDetail");
      $.ajax({
-            url: "/SoundSephere/Song",
+            url: "/SoundSephere/SongPlay/",
             type: "get",
             data: { action: "getDetailSong", id_song: app.currentSong.id},
 

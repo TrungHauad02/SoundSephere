@@ -130,7 +130,7 @@ public class SongController extends HttpServlet {
 
             PrintWriter out = response.getWriter();
             out.println("<h3>Title: " + currentSong.getTitle() + "</h3>");
-            out.println("<h3>ID_artist: " + currentSong.getId_artist() + "</h3>");
+            out.println("<h3>Name Artist: " + currentSong.getArtistName() + "</h3>");
             out.println("<h3>Rating: " + currentSong.getRating() + "</h3>");
             out.println("<h3>Written By: " + songDetail.getWritten_by() + "</h3>");
             out.println("<h3>Produced By: " + songDetail.getProduced_by() + "</h3>");

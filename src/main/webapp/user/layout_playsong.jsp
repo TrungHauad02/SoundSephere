@@ -93,13 +93,13 @@
                         <div class="body">
                             <h3 class="songID"> <%= song.getId() %></h3>
                             <h3 class="title"><%= song.getTitle() %></h3>
-                            <p class="author"><%= song.getId_artist() %></p>
+                            <h4 class="author"><%= song.getArtistName() %></h4>
                             <h6 class="sourceSong"> <%= song.getSong_data()%> </h6>
                             <h6 class="sourceLyric"> <%= song.getLyric()%></h6>
                         </div>
-<%--                        <div class="option">--%>
-<%--                            <i class="fas fa-ellipsis-h"></i>--%>
-<%--                        </div>--%>
+                        <div class="option">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
                     </div>
                     <%
                             }

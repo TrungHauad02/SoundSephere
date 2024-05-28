@@ -65,7 +65,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>RateController</servlet-name>
-        <url-pattern>/Rate</url-pattern>
+        <url-pattern>/Rate/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
