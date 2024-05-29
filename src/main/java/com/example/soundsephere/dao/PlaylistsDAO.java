@@ -189,9 +189,6 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                     playlist.setId(rs.getInt("id"));
                     playlist.setName(rs.getString("name"));
                     playlist.setUser_id(rs.getString("user_id"));
-                    if (!"playlist".equals(rs.getString("type").toLowerCase())) {
-                        continue;
-                    }
                     playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
                     playlist.setStatus(EnumStatus.valueOf(rs.getString("status").toUpperCase()));
                     playlist.setNumber_of_songs(getNumberofsongs(playlist.getId()));
