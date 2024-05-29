@@ -326,6 +326,19 @@
     <!-- Aduio src-->
     <audio id="audio" src=""></audio>
 </div>
+
+<!-- Popup Add Song To Playlist -->
+<div id="addSongToPlaylistPopUp" class="popup" style="display: none;">
+    <div class="popup-content" style="min-width: 500px; max-height:90vh; overflow-y: auto; " >
+        <span class="close" id="btnClosePlaylistPopupTop">&times;</span>
+        <h5 class="mb-4">Add Song to Playlist</h5>
+        <ul id="playlistItems" class="list-group">
+
+        </ul>
+        <button type="button" class="btn btn-secondary mt-2" id="btnClosePlaylistPopup">Cancel</button>
+    </div>
+</div>
+
     <script src="<%=urlFile%>/assets/js/js_playsong_handle.js" type="module"></script>
     <script src="<%=urlFile%>/assets/js/js_layout_playsong_label.js" ></script>
     <jsp:include page="../link_js.jsp"/>
