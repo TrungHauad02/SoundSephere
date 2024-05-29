@@ -1,4 +1,5 @@
 import {getImageFromFirebase} from "./firebaseModule.js";
+import {deleteSong} from "./songModule.js";
 
 
 export function goToPlaylistDetail(playlistId) {
@@ -115,9 +116,18 @@ export function createSongCardForPlaylist(song){
     playSongA.href = '/SoundSephere/SongPlay/getSong?idSong=' + song.id;
     playSongA.textContent = 'Play';
 
+    const deleteSongA = document.createElement('a');
+    deleteSongA.className = 'nav-link deleteSong';
+    deleteSongA.href = '#';
+    deleteSongA.textContent = 'Delete';
+    deleteSongA.addEventListener('click', function (){
+        deleteSong(song.id);
+    });
+
     contentDiv.appendChild(badgeDiv);
     contentDiv.appendChild(songInfoDiv);
     contentDiv.appendChild(playSongA);
+    contentDiv.appendChild(deleteSongA);
 
     li.appendChild(contentDiv);
 

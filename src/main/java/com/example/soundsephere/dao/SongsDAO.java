@@ -202,7 +202,25 @@ public class SongsDAO {
     }
 
     public boolean delete(Integer id) {
-        return false;
+        Connection conn = JDBCUtil.getConnection();
+        boolean result = true;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(DELETE_SONG_BY_ID)) {
+                ps.setInt(1, id);
+
+                int rowsAffected = ps.executeUpdate();
+                result = rowsAffected > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return result;
     }
 
     public Songs selectById(String idSong) {

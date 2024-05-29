@@ -4,6 +4,7 @@ import com.example.soundsephere.dao.PlaylistSongsDAO;
 import com.example.soundsephere.dao.SongDetailDAO;
 import com.example.soundsephere.dao.SongsDAO;
 import com.example.soundsephere.enumModel.EnumStatus;
+import com.example.soundsephere.model.PlaylistSongs;
 import com.example.soundsephere.model.SongDetail;
 import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.model.Users;
@@ -87,6 +88,41 @@ public class SongController extends HttpServlet {
             addNewSong(request, response);
         } else {
             doGet(request, response);
+        }
+    }
+
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getPathInfo();
+        if ("/deleteSong".equals(action)) {
+            deleteSong(request, response);
+        } else {
+            doPost(request, response);
+        }
+    }
+
+    private void deleteSong(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = request.getReader()) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+        }
+
+        JSONObject jsonObject = new JSONObject(sb.toString());
+
+        Integer songId = jsonObject.getInt("songId");
+
+        playListSongsDAO.deleteSong(songId);
+        boolean success = songDetailDAO.delete(songId);
+        if(success) {
+            success = songDAO.delete(songId);
+        }
+
+        if (success) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
