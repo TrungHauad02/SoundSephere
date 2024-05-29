@@ -63,13 +63,13 @@ public class SongsDAO {
             try (PreparedStatement ps = conn.prepareStatement(INSERT_SONG_QUERY)) {
                 ps.setString(1, entity.getTitle());
                 ps.setString(2, entity.getId_artist());
-                ps.setString(4, entity.getDescription());
-                ps.setInt(5, entity.getTime_play());
-                ps.setString(6, entity.getSong_data());
-                ps.setString(7, entity.getImage());
-                ps.setString(8, entity.getLyric());
-                ps.setFloat(9, entity.getRating());
-                ps.setString(10, entity.getStatus().name().toLowerCase());
+                ps.setString(3, entity.getDescription());
+                ps.setInt(4, entity.getTime_play());
+                ps.setString(5, entity.getSong_data());
+                ps.setString(6, entity.getImage());
+                ps.setString(7, entity.getLyric());
+                ps.setFloat(8, entity.getRating());
+                ps.setString(9, entity.getStatus().name().toLowerCase());
 
                 int rowsAffected = ps.executeUpdate();
                 result = rowsAffected > 0;
