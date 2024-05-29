@@ -79,6 +79,8 @@ public class PlaylistController extends HttpServlet {
             deletePlaylist(request, response);
         } else if ("/getPlaylistDetail".equals(action)) {
             getPlaylistDetail(request, response);
+        } else if ("/deleteSongFromPlaylist".equals(action)) {
+            deleteSongFromPlaylist(request, response);
         } else {
             doGet(request, response);
         }
@@ -174,7 +176,31 @@ public class PlaylistController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{ \"result\": " + result + " }");
     }
+    public void deleteSongFromPlaylist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
+        }
+        String data = buffer.toString();
 
+        JSONObject json = new JSONObject(data);
+        int songId = json.getInt("songId");
+        int playlistId = json.getInt("playlistId");
+        System.out.println(songId + " " + playlistId);
+
+        PlaylistSongs playlistSongs = new PlaylistSongs();
+        playlistSongs.setSong_id(songId);
+        playlistSongs.setPlaylist_id(playlistId);
+
+        PlaylistSongsDAO playlistSongsDAO = new PlaylistSongsDAO();
+        boolean result = playlistSongsDAO.deleteSongFromPlaylist(playlistSongs);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{ \"result\": " + result + " }");
+    }
     public void getListAlbumJson(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         Users curUser = (Users) session.getAttribute("user");

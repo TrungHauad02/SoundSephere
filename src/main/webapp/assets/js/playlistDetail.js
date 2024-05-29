@@ -1,6 +1,4 @@
 import {getImageFromFirebase} from "./firebaseModule.js";
-import {deleteSong} from "./songModule.js";
-
 
 export function goToPlaylistDetail(playlistId) {
     window.location.href = `/SoundSephere/user/playlist_detail.jsp?playlistId=${playlistId}`;
@@ -63,7 +61,7 @@ export function renderPlaylistDetail(data){
 
     container.innerHTML = '';
     data.songs.forEach(function(song) {
-        const songCard = createSongCardForPlaylist(song);
+        const songCard = createSongCardForPlaylist(song, data.playlist.id);
         container.appendChild(songCard);
     });
 }
@@ -73,7 +71,7 @@ function getPlaylistIdFromURL() {
     return urlParams.get('playlistId');
 }
 
-export function createSongCardForPlaylist(song){
+export function createSongCardForPlaylist(song, playlistId){
     const li = document.createElement('li');
     li.className = 'list-group-item d-flex justify-content-between align-items-center';
 
@@ -121,7 +119,7 @@ export function createSongCardForPlaylist(song){
     deleteSongA.href = '#';
     deleteSongA.textContent = 'Delete';
     deleteSongA.addEventListener('click', function (){
-        deleteSong(song.id);
+        deleteSongFromPlaylist(song.id, playlistId);
     });
 
     contentDiv.appendChild(badgeDiv);
@@ -132,4 +130,37 @@ export function createSongCardForPlaylist(song){
     li.appendChild(contentDiv);
 
     return li;
+}
+
+export function deleteSongFromPlaylist(songId, playlistId){
+    console.log("Delete song " + songId + " from playlist " + playlistId);
+    const payload = {
+        songId: songId,
+        playlistId: playlistId
+    };
+
+    fetch('http://localhost:8080/SoundSephere/Playlist/deleteSongFromPlaylist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.result) {
+                window.alert('Delete song from playlist successfully');
+                loadPlaylistDetail();
+            } else {
+                window.alert('Failed to delete song from playlist');
+            }
+        })
+        .catch(error => {
+            console.error('Error delete song from playlist', error);
+        });
 }
