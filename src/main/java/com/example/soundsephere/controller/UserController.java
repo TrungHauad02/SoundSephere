@@ -102,7 +102,7 @@ public class UserController extends HttpServlet {
             request.getSession().setAttribute("user", user);
 
 
-            if (user.getRole() == EnumRole.LISTENER) {
+            if (user.getRole() == EnumRole.LISTENER || user.getRole() == EnumRole.ARTIST) {
                 //lấy danh sách playlist của user
                 List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getUsername());//
                 request.getSession().setAttribute("playlists", playlists);

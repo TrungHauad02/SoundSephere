@@ -51,15 +51,6 @@
                     <div class="row item-profile">
                         <h2><%=user.getName()%></h2>
                     </div>
-                    <div class="row item-profile " >
-                        <div class="col-6 item-profile-p">
-                            <p>Playlist: 1</p>
-                        </div>
-                        <div class="col-6 item-profile-p">
-                            <p >Like: 1</p>
-                        </div>
-
-                    </div>
 
                 </div>
             </div>
