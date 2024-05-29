@@ -79,10 +79,10 @@
 
                                                     <div class="card_song_title">
                                                          <h5 class="card-title"><%=playlist.getName()%></h5>
-                                                         <p class="card-text"><%=playlist.getNumber_of_songs()%></p>
+                                                         <p class="card-text"><%=playlist.getNumber_of_songs()%> <% if(playlist.getNumber_of_songs() >=2) { %> songs <% } else {  %> song <% } %></p>
                                                     </div>
 
-                                                    <a href="#" class="btn btn-primary card-button">
+                                                    <a href="<%=url%>/SongPlay?action=getListSongFromList&idPlaylist=<%= playlist.getId() %>" class="btn btn-primary card-button">
                                                         <img class="image_card" src="https://cdn-icons-png.flaticon.com/512/4028/4028535.png" alt="">
                                                     </a>
                                                 </div>

@@ -28,7 +28,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
 
     private static final String SELECT_PLAYLIST_BY_ID_QUERY = "SELECT * FROM playlists WHERE id = ?";
     private static final String SELECT_ALL_PLAYLIST_BY_USER_ID_QUERY ="SELECT * FROM playlists WHERE user_id = ?";
-    private static final String SELECT_NUMBER_OF_SONGS_IN_PLAYLIST_QUERY = "SELECT COUNT(*) FROM playlist_songs WHERE playlist_id = ?";
+    private static final String SELECT_NUMBER_OF_SONGS_IN_PLAYLIST_QUERY = "SELECT * FROM playlist_songs WHERE playlist_id = ?";
     private static final String ALBUM_COUNT_BY_ID_ARTIST_QUERY =
             "SELECT COUNT(*) AS playlist_count\n" +
                     "FROM playlists\n" +
@@ -162,7 +162,7 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                 ps.setInt(1, playlist_id);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    numberofsongs = rs.getInt(1);
+                    numberofsongs++;
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -189,6 +189,9 @@ public class PlaylistsDAO extends SoundSysDAO<Playlists, Integer> {
                     playlist.setId(rs.getInt("id"));
                     playlist.setName(rs.getString("name"));
                     playlist.setUser_id(rs.getString("user_id"));
+                    if (!"playlist".equals(rs.getString("type").toLowerCase())) {
+                        continue;
+                    }
                     playlist.setType(EnumTypePlaylist.valueOf(rs.getString("type").toUpperCase()));
                     playlist.setStatus(EnumStatus.valueOf(rs.getString("status").toUpperCase()));
                     playlist.setNumber_of_songs(getNumberofsongs(playlist.getId()));
