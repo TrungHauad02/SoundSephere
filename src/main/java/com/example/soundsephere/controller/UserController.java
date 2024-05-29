@@ -3,10 +3,7 @@ package com.example.soundsephere.controller;
 import com.example.soundsephere.dao.PlaylistsDAO;
 import com.example.soundsephere.dao.SongsDAO;
 import com.example.soundsephere.dao.UsersDAO;
-import com.example.soundsephere.enumModel.EnumRole;
-import com.example.soundsephere.enumModel.EnumSex;
-import com.example.soundsephere.enumModel.EnumStatus;
-import com.example.soundsephere.enumModel.EnumUserStatus;
+import com.example.soundsephere.enumModel.*;
 import com.example.soundsephere.model.Playlists;
 import com.example.soundsephere.model.Songs;
 import com.example.soundsephere.model.Users;
@@ -105,6 +102,7 @@ public class UserController extends HttpServlet {
             if (user.getRole() == EnumRole.LISTENER || user.getRole() == EnumRole.ARTIST) {
                 //lấy danh sách playlist của user
                 List<Playlists> playlists = playlistsDAO.selectAllPlaylistByUserId(user.getUsername());//
+                playlists.removeIf(playlists1 -> playlists1.getType().equals(EnumTypePlaylist.ALBUM));
                 request.getSession().setAttribute("playlists", playlists);
                 // lấy danh sách bài hát của user vừa nghe
                 List<Songs> recentlyPlayed = songsDAO.selectAllSongById(user.getUsername());//

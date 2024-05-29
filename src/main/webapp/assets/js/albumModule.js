@@ -1,4 +1,5 @@
 import {loadAlbum} from "./artist_main.js";
+import {goToPlaylistDetail} from "./playlistDetail.js";
 
 export function openCreateAlbumPopup() {
     const albumPopup = document.getElementById('albumPopup');
@@ -115,7 +116,14 @@ export function createAlbumCard(album) {
     playButton.className = 'btn btn-primary';
     playButton.textContent = 'Play';
     playButton.href = '/SoundSephere/SongPlay/getListSongFromList?idPlaylist=' + album.id;
+
+    const showDetailA = document.createElement('a');
+    showDetailA.className = 'btn btn-primary ml-2';
+    showDetailA.href = '/SoundSephere/user/playlist_detail.jsp?playlistId=' + album.id;
+    showDetailA.textContent = 'Show detail';
+
     buttonColDiv.appendChild(playButton);
+    buttonColDiv.appendChild(showDetailA);
 
     rowDiv.appendChild(badgeColDiv);
     rowDiv.appendChild(infoColDiv);

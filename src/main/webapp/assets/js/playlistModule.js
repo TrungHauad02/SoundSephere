@@ -94,7 +94,7 @@ export function createPlaylistCard(playlist){
     });
 
     const showDetailA = document.createElement('a');
-    showDetailA.className = 'dropdown-item addToPlaylist';
+    showDetailA.className = 'dropdown-item';
     showDetailA.href = '#';
     showDetailA.textContent = 'Show detail';
 
