@@ -7,6 +7,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
+    <jsp:include page="../link_css.jsp"/>
     <title>Nghe nhạc cùng bẹn</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -31,7 +32,6 @@
     %>
     <link rel="stylesheet" href="<%=urlFile%>/assets/css/css_layout_playsong.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<%--    <jsp:include page="../link_css.jsp"/>--%>
 </head>
 <body>
 
@@ -338,10 +338,58 @@
         <button type="button" class="btn btn-secondary mt-2" id="btnClosePlaylistPopup">Cancel</button>
     </div>
 </div>
-
+    <script src="<%=urlFile%>/assets/js/songModule.js" type="module"></script>
     <script src="<%=urlFile%>/assets/js/js_playsong_handle.js" type="module"></script>
     <script src="<%=urlFile%>/assets/js/js_layout_playsong_label.js" ></script>
     <jsp:include page="../link_js.jsp"/>
     </body>
+
+<style>
+    ::-webkit-scrollbar {
+        width: 10px; /* Chiều rộng của scrollbar */
+    }
+
+    /* Thiết lập màu nền của scrollbar */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Thiết lập màu của thanh cuộn (thumb) */
+    ::-webkit-scrollbar-thumb {
+        background: #009309;
+        border-radius: 5px;
+    }
+
+    /* Thiết lập hover cho thanh cuộn (thumb) */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #1e52c8;
+    }
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen nhẹ */
+        z-index: 999; /* Chỉ số z để popup hiển thị trên cùng */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .list-group-item{
+        color: #000000;
+    }
+    label{
+        color: #748a7b;
+    }
+</style>
 </html>
 

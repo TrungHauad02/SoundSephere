@@ -8,6 +8,8 @@ import {
 
 import {openAddSongToPlaylistPopup} from "./songModule.js"
 
+window.openAddSongToPlaylistPopup = openAddSongToPlaylistPopup;
+
 const firebaseConfig = {
     apiKey: "AIzaSyAujB-WRTuVQ3abGStWa7oz0RyxN7vmmBQ",
     authDomain: "image-mp3.firebaseapp.com",
@@ -34,6 +36,7 @@ const prevBtn = document.querySelector(".btn-prev");
 const nextBtn = document.querySelector(".btn-next");
 const autoSwitchCheckbox = document.getElementById("customSwitch");
 const playList = document.querySelector(".playlist");
+const timeDuration = document.getElementById('timeDuration');
 let autoSwitchMode = false;
 
 function getImageUrl(imagePath) {
@@ -98,7 +101,6 @@ const app = {
         nameAuthor.textContent = this.currentSong.singer;
         this.loadSongFromFirebase();
 
-        const timeDuration = document.getElementById('timeDuration');
         timeDuration.textContent = this.formatTime(audio.duration);
     },
 
@@ -206,6 +208,7 @@ const app = {
                 // Update timeNow
                 const timeNow = document.getElementById('timeNow');
                 timeNow.textContent = _this.formatTime(audio.currentTime);
+                timeDuration.textContent = this.formatTime(audio.duration);
             }
         };
 
@@ -239,7 +242,8 @@ const app = {
 
         playList.onclick = function (e) {
             const songNode = e.target.closest(`.song:not(.active)`);
-            if (songNode || e.target.closest(".option")) {
+            const optionNode = e.target.closest(".option");
+            if (songNode && optionNode==null) {
                 //Xử lý khi click vào song
                 if (songNode) {
                     audio.pause();
@@ -250,10 +254,40 @@ const app = {
                         audio.play();
                     }, _this.timeout);
                 }
-                if (e.target.closest(".option")) {
-                }
+            }
+            if(optionNode)
+            {
+                console.log("Ban vừa nhấn vào");
             }
         };
+    },
+
+    render: async function () {
+        const htmls = await Promise.all(
+            this.songs.map(async (song, index) => {
+                try {
+                    let urlImg = await getImageUrl(song.image);
+
+                    return `<div class="song ${
+                        index === this.currentIndex ? "active" : ""
+                    }" data-index="${index}">
+        <div class="thumb" style="background-image: url('${urlImg}')" >
+        </div>
+        <div class="body">
+          <h3 class="title">${song.name}</h3>
+          <p class="author">${song.singer}</p>
+        </div>
+        <button class="option btn-outline-success" onclick="openAddSongToPlaylistPopup(${song.id})">Add to playlist</button>
+      </div>`;
+                } catch (error) {
+                    // Xử lý lỗi nếu có
+                    console.error(error);
+                    return ""; // Trả về chuỗi rỗng nếu có lỗi
+                }
+            })
+        );
+
+        playList.innerHTML = htmls.join(" ");
     },
 
     nextSong: function () {
@@ -272,45 +306,6 @@ const app = {
         this.loadCurrentSong();
     },
 
-    // scrollToActiveSong: function () {
-    //   setTimeout(() => {
-    //     document.querySelector(".song .active").scrollIntoView({
-    //       behavior: "smooth",
-    //       block: "nearest"
-    //     });
-    //   }, 300);
-    // },
-
-    render: async function () {
-        const htmls = await Promise.all(
-            this.songs.map(async (song, index) => {
-                try {
-                    let urlImg = await getImageUrl(song.image);
-
-                    return `<div class="song ${
-                        index === this.currentIndex ? "active" : ""
-                    }" data-index="${index}">
-        <div class="thumb" style="background-image: url('${urlImg}')" >
-        </div>
-        <div class="body">
-          <h3 class="title">${song.name}</h3>
-          <p class="author">${song.singer}</p>
-        </div>
-        <div class="" >
-          <button class="fas fa-ellipsis-h" onclick="openAddSongToPlaylistPopup(${song.id})">Add to playlist</button>
-        </div>
-      </div>`;
-                } catch (error) {
-                    // Xử lý lỗi nếu có
-                    console.error(error);
-                    return ""; // Trả về chuỗi rỗng nếu có lỗi
-                }
-            })
-        );
-
-        playList.innerHTML = htmls.join(" ");
-    },
-
     start: function () {
         this.loadAllSong();
         //Định nghĩa các thuộc tính object
@@ -321,6 +316,8 @@ const app = {
         this.render();
         //Tai thong tin
         this.loadCurrentSong();
+        playBtn.click();
+        timeDuration.textContent = this.formatTime(audio.duration);
     },
 };
 
