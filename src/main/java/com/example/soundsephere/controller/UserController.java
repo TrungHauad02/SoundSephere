@@ -238,6 +238,7 @@ public class UserController extends HttpServlet {
         HttpSession session = request.getSession();
         Users curUser = (Users) session.getAttribute("user");
         List<Songs> lstSong = songsDAO.selectBySql(SongsDAO.SELECT_SONGS_BY_ID_ARTIST_QUERY, curUser.getUsername());
+        lstSong.removeIf(songs -> songs.getStatus().equals(EnumStatus.DELETED));
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonSongs = objectMapper.writeValueAsString(lstSong);
 

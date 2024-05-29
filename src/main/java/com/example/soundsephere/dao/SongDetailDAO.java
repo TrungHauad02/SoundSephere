@@ -11,6 +11,7 @@ public class SongDetailDAO {
 
     private final static String INSERT_SONG_DETAIL_QUERY =
             "INSERT INTO song_detail (song_id, written_by, produced_by, date_release) VALUES (?,?,?,?)";
+    private final static String DELETE_SONG_DETAIL_BY_ID = "DELETE FROM [song_detail] WHERE song_id = ?;";
 
     public SongDetail getSongDetailByIDSong(int song_id)
     {
@@ -48,6 +49,28 @@ public class SongDetailDAO {
                 ps.setString(2, songDetail.getWritten_by());
                 ps.setString(3, songDetail.getProduced_by());
                 ps.setDate(4, (Date) songDetail.getDate_release());
+
+                int rowsAffected = ps.executeUpdate();
+                result = rowsAffected > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return result;
+    }
+
+    public boolean delete(Integer id) {
+        Connection conn = JDBCUtil.getConnection();
+        boolean result = true;
+        if (conn != null) {
+            try (PreparedStatement ps = conn.prepareStatement(DELETE_SONG_DETAIL_BY_ID)) {
+                ps.setInt(1, id);
 
                 int rowsAffected = ps.executeUpdate();
                 result = rowsAffected > 0;

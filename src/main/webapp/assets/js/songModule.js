@@ -222,10 +222,17 @@ export function createSongCard(song){
         openAddSongToAlbumPopup(song.id);
     });
 
-
+    const deleteSongA = document.createElement('a');
+    deleteSongA.className = 'dropdown-item deleteSong';
+    deleteSongA.href = '#';
+    deleteSongA.textContent = 'Delete';
+    deleteSongA.addEventListener('click', function (){
+        deleteSong(song.id);
+    });
 
     dropdownMenuDiv.appendChild(playSongA);
     dropdownMenuDiv.appendChild(addToPlaylistA);
+    dropdownMenuDiv.appendChild(deleteSongA);
     dropdown.appendChild(button);
     dropdown.appendChild(dropdownMenuDiv);
     dropdownDiv.appendChild(dropdown);
@@ -342,4 +349,25 @@ export function addSongToPlaylist(songId, playlistId){
         .catch(error => {
             console.error('Error add song to playlist', error);
         });
+}
+
+export async function deleteSong(songId) {
+    try {
+        const response = await fetch(`http://localhost:8080/SoundSephere/SongPlay/deleteSong`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({songId: songId})
+        });
+
+        if (response.ok) {
+            console.log('Song deleted successfully');
+            loadSong();
+        } else {
+            console.error('Failed to delete song');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
