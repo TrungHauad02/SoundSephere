@@ -6,6 +6,8 @@ import {
     getDownloadURL,
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
+import {openAddSongToPlaylistPopup} from "./songModule.js"
+
 const firebaseConfig = {
     apiKey: "AIzaSyAujB-WRTuVQ3abGStWa7oz0RyxN7vmmBQ",
     authDomain: "image-mp3.firebaseapp.com",
@@ -294,9 +296,9 @@ const app = {
           <h3 class="title">${song.name}</h3>
           <p class="author">${song.singer}</p>
         </div>
-<!--        <div class="option" >-->
-<!--          <i class="fas fa-ellipsis-h"></i>-->
-<!--        </div>-->
+        <div class="" >
+          <button class="fas fa-ellipsis-h" onclick="openAddSongToPlaylistPopup(${song.id})">Add to playlist</button>
+        </div>
       </div>`;
                 } catch (error) {
                     // Xử lý lỗi nếu có
